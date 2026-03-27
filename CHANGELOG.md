@@ -1,5 +1,23 @@
 ## [Unreleased]
 
+## [2.1.107] - 2026-03-27
+
+### Docs
+- Update docs/README.md
+- Update project/README.md
+
+### Test
+- Update test_large_file_auto.py
+- Update test_path_extraction.py
+
+### Other
+- Update debug_recovery.py
+- Update project/duplication.toon.yaml
+- Update project/index.html
+- Update project/project.toon.yaml
+- Update project/prompt.txt
+- Update project/validation.toon.yaml
+
 ## [2.1.106] - 2026-03-27
 
 ### Docs

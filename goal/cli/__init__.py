@@ -187,6 +187,8 @@ from . import config_cmd
 from . import commit_cmd
 from . import recover_cmd
 from . import wizard_cmd
+from . import license_cmd
+from . import authors_cmd
 
 # Import version functions for external access
 from .version import sync_all_versions

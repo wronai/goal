@@ -304,18 +304,12 @@ class LargeFileStrategy(RecoveryStrategy):
             if path.lower() in skip_words:
                 continue
             
-            # Skip if it doesn't look like a file path
             # Must contain either a slash (directory) or a dot (extension)
             if '/' not in path and '.' not in path:
                 continue
             
             # Skip if it's too short
             if len(path) < 3:
-                continue
-            
-            # Skip if it's just a word (only letters, no numbers, dots, or slashes)
-            cleaned = path.replace('/', '').replace('.', '').replace('_', '').replace('-', '')
-            if cleaned.isalpha():
                 continue
             
             valid_paths.append(path)

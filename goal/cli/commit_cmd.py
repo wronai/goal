@@ -8,6 +8,7 @@ from goal.git_ops import get_staged_files, get_diff_content, get_diff_stats
 from goal.enhanced_summary import EnhancedSummaryGenerator
 from goal.formatter import format_enhanced_summary
 from goal.cli import main, apply_ticket_prefix
+from goal.authors.utils import get_co_authors_from_command_line, add_co_authors_to_message
 
 
 @main.command()
@@ -16,8 +17,9 @@ from goal.cli import main, apply_ticket_prefix
 @click.option('--markdown/--ascii', default=False, help='Output format')
 @click.option('--ticket', default=None, help='Ticket ID for commit prefix')
 @click.option('--abstraction', default=None, help='Abstraction level for commit message')
+@click.option('--co-author', multiple=True, help='Add co-author (Name <email> or email)')
 @click.pass_context
-def commit(ctx, detailed, unstaged, markdown, ticket, abstraction):
+def commit(ctx, detailed, unstaged, markdown, ticket, abstraction, co_author):
     """Generate a smart commit message for current changes."""
     files = get_staged_files()
     
@@ -30,11 +32,18 @@ def commit(ctx, detailed, unstaged, markdown, ticket, abstraction):
     
     generator = CommitMessageGenerator(config=config_dict)
     
+    # Parse co-authors
+    co_authors = get_co_authors_from_command_line(list(co_author))
+    
     if detailed:
         result = generator.generate_detailed_message(cached=not unstaged)
         if result:
             title = apply_ticket_prefix(result.get('title'), ticket)
             body = result.get('body', '')
+            
+            # Add co-authors to body
+            if co_authors:
+                body = add_co_authors_to_message(body, co_authors)
             
             if markdown or ctx.obj.get('markdown'):
                 click.echo(f"## Commit Message\n\n**{title}**\n\n{body}")
@@ -50,11 +59,24 @@ def commit(ctx, detailed, unstaged, markdown, ticket, abstraction):
         message = generator.generate_commit_message(cached=not unstaged)
         title = apply_ticket_prefix(message, ticket)
         
-        if markdown or ctx.obj.get('markdown'):
-            click.echo(f"## Commit Message\n\n**{title}**")
+        # Add co-authors as separate lines for simple commits
+        if co_authors:
+            if markdown or ctx.obj.get('markdown'):
+                click.echo(f"## Commit Message\n\n**{title}**\n\n")
+                for author in co_authors:
+                    click.echo(f"Co-authored-by: {author['name']} <{author['email']}>")
+            else:
+                click.echo(click.style("Generated commit message:", fg='cyan'))
+                click.echo(click.style(title, fg='green'))
+                click.echo()
+                for author in co_authors:
+                    click.echo(click.style(f"Co-authored-by: {author['name']} <{author['email']}>", fg='cyan'))
         else:
-            click.echo(click.style("Generated commit message:", fg='cyan'))
-            click.echo(click.style(title, fg='green'))
+            if markdown or ctx.obj.get('markdown'):
+                click.echo(f"## Commit Message\n\n**{title}**")
+            else:
+                click.echo(click.style("Generated commit message:", fg='cyan'))
+                click.echo(click.style(title, fg='green'))
 
 
 @main.command()
