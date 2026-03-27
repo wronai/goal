@@ -4,6 +4,8 @@ flowchart TD
     classDef entry fill:#4dabf7,stroke:#1971c2,color:#fff
 
     subgraph CLI
+        goal__cli__recover_cmd__recover["recover"]
+        goal__cli__recover_cmd___get_error_output["_get_error_output"]
         goal__cli__doctor_cmd__doctor["doctor"]
         goal__cli__commit_cmd__commit["commit"]
         goal__cli__commit_cmd__fix_summary["fix_summary"]
@@ -17,9 +19,7 @@ flowchart TD
         goal__cli__version__update_json_version["update_json_version"]
         goal__cli__version__update_project_metadata["update_project_metadata"]
         goal__cli__version__update_readme_metadata["update_readme_metadata"]
-        goal__cli__version___update_version_file["_update_version_file"]
-        goal__cli__version___update_json_version_file["_update_json_version_file"]
-        ...["+37 more"]
+        ...["+39 more"]
     end
 
     subgraph Core
@@ -38,7 +38,7 @@ flowchart TD
         goal__project_bootstrap__bootstrap_all_projects["bootstrap_all_projects"]
         goal__formatter__MarkdownFormatter__add_header["add_header"]
         goal__formatter__MarkdownFormatter__add_metadata["add_metadata"]
-        ...["+208 more"]
+        ...["+248 more"]
     end
 
     class goal__version_validation__get_registry_version,goal__version_validation__check_readme_badges,goal__user_config__UserConfig___load,goal__user_config__UserConfig___save,goal__user_config__UserConfig__get,goal__user_config__UserConfig__is_initialized,goal__project_bootstrap__bootstrap_all_projects,goal__formatter__MarkdownFormatter__add_header,goal__formatter__MarkdownFormatter__add_metadata,goal__formatter__MarkdownFormatter__add_section entry

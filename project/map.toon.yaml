@@ -1,25 +1,26 @@
-# goal | 65f 11951L | python:62,shell:3 | 2026-03-27
-# stats: 367 func | 0 cls | 65 mod | CC̄=6.1 | critical:29 | cycles:0
+# goal | 70f 13126L | python:67,shell:3 | 2026-03-27
+# stats: 420 func | 0 cls | 70 mod | CC̄=5.7 | critical:30 | cycles:0
 # alerts[5]: fan-out execute_push_workflow=37; CC ContentAnalyzer.short_action_summary=34; CC execute_push_workflow=34; CC sync_all_versions=33; CC validate_project_versions=30
 # hotspots[5]: execute_push_workflow fan=37; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; update_changelog fan=23
-# evolution: CC̄ 6.1→6.1 (flat 0.0)
+# evolution: CC̄ 6.1→5.7 (improved -0.4)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[65]:
+M[70]:
   goal/__init__.py,3
   goal/__main__.py,17
   goal/changelog.py,125
-  goal/cli/__init__.py,206
+  goal/cli/__init__.py,207
   goal/cli/commit_cmd.py,187
   goal/cli/config_cmd.py,110
   goal/cli/doctor_cmd.py,99
   goal/cli/publish.py,136
   goal/cli/publish_cmd.py,38
   goal/cli/push_cmd.py,103
+  goal/cli/recover_cmd.py,125
   goal/cli/utils_cmd.py,207
   goal/cli/version.py,730
   goal/commit_generator.py,45
   goal/config/__init__.py,24
-  goal/config/constants.py,396
+  goal/config/constants.py,435
   goal/config/manager.py,449
   goal/deep_analyzer.py,554
   goal/doctor/__init__.py,55
@@ -53,9 +54,13 @@ M[65]:
   goal/push/stages/commit.py,213
   goal/push/stages/dry_run.py,98
   goal/push/stages/publish.py,31
-  goal/push/stages/push_remote.py,56
+  goal/push/stages/push_remote.py,102
   goal/push/stages/tag.py,28
   goal/push/stages/version.py,51
+  goal/recovery/__init__.py,48
+  goal/recovery/exceptions.py,58
+  goal/recovery/manager.py,317
+  goal/recovery/strategies.py,541
   goal/smart_commit/__init__.py,14
   goal/smart_commit/abstraction.py,269
   goal/smart_commit/generator.py,524
@@ -208,6 +213,10 @@ D:
   goal/deep_analyzer.py:
     e: CodeChangeAnalyzer
     CodeChangeAnalyzer: __init__(0),analyze_file_diff(3),_detect_language(1),_analyze_python_diff(2),_extract_python_entities(1),_get_decorator_name(1),_calculate_complexity(1),_analyze_js_diff(2),_analyze_generic_diff(2),_detect_functional_areas(2),aggregate_changes(1),_detect_file_patterns(1),_check_analyzer_value(2),_check_cli_value(2),_check_area_values(2),_check_complexity_value(1),_check_architecture_value(1),_build_entity_fallback(2),infer_functional_value(2),detect_relations(1),generate_functional_summary(1),_build_summary(3)  # Analyzes code changes to extract functional meaning...
+  goal/push/stages/push_remote.py:
+    e: push_to_remote,_offer_recovery
+    push_to_remote(branch;tag_name;no_tag;yes)
+    _offer_recovery(error_output)
   goal/cli/__init__.py:
     e: GoalGroup,_setup_nfo_logging,_nfo_log_call,strip_ansi,split_paths_by_type,stage_paths,confirm,main
     GoalGroup(click.Group): get_command(2),parse_args(2)  # Custom Click Group that shows docs URL for unknown commands ...
@@ -239,9 +248,6 @@ D:
   goal/cli/doctor_cmd.py:
     e: doctor
     doctor(ctx;fix;path;todo)
-  goal/push/stages/push_remote.py:
-    e: push_to_remote
-    push_to_remote(branch;tag_name;no_tag;yes)
   goal/user_config.py:
     e: UserConfig,get_git_user_name,get_git_user_email,prompt_for_license,initialize_user_config,get_user_config,show_user_config
     UserConfig: __init__(0),_load(0),_save(0),get(2),set(2),is_initialized(0)  # Manages user-specific configuration stored in ~/.goal...
@@ -284,6 +290,15 @@ D:
     init_config(force)
     load_config(config_path)
     ensure_config(auto_update)
+  goal/recovery/strategies.py:
+    e: RecoveryStrategy,AuthErrorStrategy,LargeFileStrategy,DivergentHistoryStrategy,CorruptedObjectStrategy,LFSIssueStrategy,ForcePushStrategy
+    RecoveryStrategy(ABC): __init__(2),can_handle(1),recover(1),run_git(0),run_git_with_output(0)  # Base class for all recovery strategies...
+    AuthErrorStrategy(RecoveryStrategy): can_handle(1),recover(1)  # Handles authentication errors...
+    LargeFileStrategy(RecoveryStrategy): can_handle(1),recover(1),_extract_file_paths(1),_find_large_files(1),_get_file_size_mb(1),_remove_large_files(1),_move_to_lfs(1),_skip_large_files(1)  # Handles large file errors...
+    DivergentHistoryStrategy(RecoveryStrategy): can_handle(1),recover(1),_rebase_changes(1),_merge_changes(1),_pull_changes(0),_force_push(0)  # Handles divergent history errors...
+    CorruptedObjectStrategy(RecoveryStrategy): can_handle(1),recover(1)  # Handles corrupted git objects...
+    LFSIssueStrategy(RecoveryStrategy): can_handle(1),recover(1)  # Handles Git LFS issues...
+    ForcePushStrategy(RecoveryStrategy): can_handle(1),recover(1)  # Handles force push recovery scenarios...
   goal/doctor/todo.py:
     e: _generate_ticket_id,_read_existing_tickets,_format_todo_entry,add_issues_to_todo,diagnose_and_report_with_todo
     _generate_ticket_id(issue)
@@ -301,6 +316,13 @@ D:
   goal/doctor/php.py:
     e: diagnose_php
     diagnose_php(project_dir;auto_fix)
+  goal/recovery/manager.py:
+    e: RecoveryManager
+    RecoveryManager: __init__(2),_ensure_recovery_dir(0),run_git(0),recover_from_push_failure(1),_identify_strategy(1),_create_backup(0),_cleanup_backup(1),_rollback_to_backup(1),_attempt_push(0),setup_clean_clone(0),identify_new_commits(0),cherry_pick_commits(1),push_from_clean_clone(0),full_recovery_workflow(0)  # Manages the recovery process for failed git pushes...
+  goal/cli/recover_cmd.py:
+    e: recover,_get_error_output
+    recover(ctx;full;error_file;error_message;no_backup;verbose)
+    _get_error_output(error_file;error_message)
   goal/doctor/java.py:
     e: diagnose_java
     diagnose_java(project_dir;auto_fix)
@@ -328,6 +350,17 @@ D:
   goal/push/stages/tag.py:
     e: create_tag
     create_tag(new_version;no_tag)
+  goal/recovery/exceptions.py:
+    e: RecoveryError,AuthError,LargeFileError,DivergentHistoryError,CorruptedObjectError,LFSIssueError,RollbackError,NetworkError,QuotaExceededError
+    RecoveryError(Exception): __init__(2)  # Base exception for all recovery operations...
+    AuthError(RecoveryError): __init__(2)  # Raised when authentication fails...
+    LargeFileError(RecoveryError): __init__(2)  # Raised when large files block the push...
+    DivergentHistoryError(RecoveryError): __init__(2)  # Raised when local and remote histories have diverged...
+    CorruptedObjectError(RecoveryError): __init__(2)  # Raised when git objects are corrupted...
+    LFSIssueError(RecoveryError): __init__(2)  # Raised when Git LFS has issues...
+    RollbackError(RecoveryError): __init__(2)  # Raised when rollback operation fails...
+    NetworkError(RecoveryError): __init__(2)  # Raised when network connectivity issues occur...
+    QuotaExceededError(RecoveryError): __init__(2)  # Raised when GitHub API quota is exceeded...
   goal/doctor/ruby.py:
     e: diagnose_ruby
     diagnose_ruby(project_dir;auto_fix)
@@ -365,9 +398,14 @@ D:
   goal/project_doctor.py:
   goal/generator/__init__.py:
   goal/validators/__init__.py:
+  goal/recovery/__init__.py:
   goal/push/__init__.py:
   goal/config/constants.py:
   goal/doctor/__init__.py:
+  goal/doctor/models.py:
+    e: Issue,DoctorReport
+    Issue:  # A single diagnosed issue...
+    DoctorReport:  # Aggregated report from a doctor run...
   goal/push/stages/__init__.py:
   project.sh:
   integration/run_docker_matrix.sh:
@@ -378,7 +416,3 @@ D:
     print()
     main()
     self()
-  goal/doctor/models.py:
-    e: Issue,DoctorReport
-    Issue:  # A single diagnosed issue...
-    DoctorReport:  # Aggregated report from a doctor run...

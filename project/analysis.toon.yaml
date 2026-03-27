@@ -1,7 +1,8 @@
-# code2llm | 65f 11951L | python:62,shell:3 | 2026-03-27
-# CC̄=6.1 | critical:29/367 | dups:0 | cycles:0
+# code2llm | 70f 13126L | python:67,shell:3 | 2026-03-27
+# CC̄=5.7 | critical:30/420 | dups:0 | cycles:0
 
 HEALTH[20]:
+  🔴 GOD   goal/recovery/strategies.py = 541L, 7 classes, 27m, max CC=9
   🟡 CC    update_changelog CC=24 (limit:15)
   🟡 CC    validate_project_versions CC=30 (limit:15)
   🟡 CC    guess_package_name CC=20 (limit:15)
@@ -21,12 +22,12 @@ HEALTH[20]:
   🟡 CC    update_project_metadata CC=26 (limit:15)
   🟡 CC    sync_all_versions CC=33 (limit:15)
   🟡 CC    auto_fix CC=19 (limit:15)
-  🟡 CC    generate_value_title CC=19 (limit:15)
 
-REFACTOR[1]:
-  1. split 20 high-CC methods  (CC>15)
+REFACTOR[2]:
+  1. split goal/recovery/strategies.py  (god module)
+  2. split 19 high-CC methods  (CC>15)
 
-PIPELINES[241]:
+PIPELINES[290]:
   [1] Src [get_registry_version]: get_registry_version
       PURITY: 100% pure
   [2] Src [check_readme_badges]: check_readme_badges → extract_badge_versions
@@ -39,45 +40,50 @@ PIPELINES[241]:
       PURITY: 100% pure
 
 LAYERS:
-  goal/                           CC̄=6.2    ←in:100  →out:3
+  goal/                           CC̄=5.8    ←in:102  →out:3
   │ !! version                    730L  0C   18m  CC=33     ←4
   │ !! generator                  675L  1C   16m  CC=26     ←0
   │ !! package_managers           631L  1C   12m  CC=11     ←1
   │ !! project_bootstrap          589L  0C    9m  CC=25     ←3
   │ !! deep_analyzer              554L  1C   22m  CC=16     ←0
+  │ !! strategies                 541L  7C   27m  CC=9      ←0
   │ !! generator                  524L  1C   18m  CC=24     ←0
   │ !! python                     486L  1C   16m  CC=17     ←0
   │ !! git_ops                    473L  0C   22m  CC=23     ←11
   │ manager                    449L  1C   25m  CC=10     ←3
+  │ constants                  435L  0C    0m  CC=0.0    ←0
   │ !! file_validator             418L  4C   11m  CC=23     ←1
   │ !! formatter                  402L  1C   14m  CC=29     ←3
   │ !! analyzer                   396L  2C   16m  CC=34     ←0
-  │ constants                  396L  0C    0m  CC=0.0    ←0
   │ generator                  384L  1C   24m  CC=12     ←0
   │ !! quality_filter             328L  1C   14m  CC=25     ←0
+  │ manager                    317L  1C   14m  CC=6      ←0
   │ !! validator                  310L  1C   13m  CC=19     ←0
   │ !! version_validation         301L  0C   10m  CC=30     ←2
   │ !! core                       288L  1C    6m  CC=34     ←4
   │ !! abstraction                269L  1C    9m  CC=20     ←0
-  │ user_config                247L  1C   12m  CC=11     ←15
+  │ user_config                247L  1C   12m  CC=11     ←16
   │ !! commit                     213L  0C    4m  CC=17     ←1
   │ utils_cmd                  207L  0C    8m  CC=10     ←0
-  │ __init__                   206L  1C    9m  CC=14     ←5
+  │ __init__                   207L  1C    9m  CC=14     ←5
   │ commit_cmd                 187L  0C    3m  CC=13     ←0
   │ git_ops                    171L  1C    7m  CC=11     ←0
   │ publish                    136L  0C    4m  CC=13     ←2
   │ todo                       127L  0C    5m  CC=9      ←1
   │ !! changelog                  125L  0C    1m  CC=24     ←1
+  │ recover_cmd                125L  0C    2m  CC=6      ←0
   │ config_cmd                 110L  0C    7m  CC=4      ←0
   │ push_cmd                   103L  0C    1m  CC=1      ←0
+  │ !! push_remote                102L  0C    2m  CC=15     ←1
   │ doctor_cmd                  99L  0C    1m  CC=12     ←0
   │ !! dry_run                     98L  0C    1m  CC=19     ←1
   │ core                        87L  0C    2m  CC=8      ←2
   │ nodejs                      77L  0C    1m  CC=13     ←0
-  │ push_remote                 56L  0C    1m  CC=12     ←1
+  │ exceptions                  58L  9C    9m  CC=3      ←0
   │ __init__                    56L  0C    0m  CC=0.0    ←0
   │ __init__                    55L  0C    0m  CC=0.0    ←0
   │ version                     51L  0C    4m  CC=3      ←2
+  │ __init__                    48L  0C    0m  CC=0.0    ←0
   │ php                         45L  0C    1m  CC=7      ←0
   │ commit_generator            45L  0C    0m  CC=0.0    ←0
   │ __init__                    42L  0C    3m  CC=2      ←0
@@ -112,22 +118,23 @@ LAYERS:
   │
 
 COUPLING:
-                                  goal          goal.push           goal.cli        goal.config    goal.validators       goal.summary        goal.doctor     goal.generator  goal.smart_commit
-               goal                 ──                ←43                ←35                  2                 ←7                 ←6                  1                 ←4                 ←2  hub
-          goal.push                 43                 ──                  7                                     1                                                                              !! fan-out
-           goal.cli                 35                  1                 ──                  6                                                        1                                        hub
-        goal.config                 ←2                                    ←6                 ──                                                                                                 hub
-    goal.validators                  7                 ←1                                                       ──                                                                            
-       goal.summary                  6                                                                                             ──                                                         
-        goal.doctor                  3                                    ←1                                                                          ──                                      
-     goal.generator                  4                                                                                                                                   ──                   
-  goal.smart_commit                  2                                                                                                                                                      ──
+                                  goal          goal.push           goal.cli        goal.config    goal.validators       goal.summary        goal.doctor     goal.generator  goal.smart_commit      goal.recovery
+               goal                 ──                ←44                ←35                  2                 ←7                 ←6                  1                 ←4                 ←2                 ←1  hub
+          goal.push                 44                 ──                  7                                     1                                                                                                 !! fan-out
+           goal.cli                 35                  1                 ──                  6                                                        1                                                           hub
+        goal.config                 ←2                                    ←6                 ──                                                                                                                    hub
+    goal.validators                  7                 ←1                                                       ──                                                                                               
+       goal.summary                  6                                                                                             ──                                                                            
+        goal.doctor                  3                                    ←1                                                                          ──                                                         
+     goal.generator                  4                                                                                                                                   ──                                      
+  goal.smart_commit                  2                                                                                                                                                      ──                   
+      goal.recovery                  1                                                                                                                                                                         ──
   CYCLES: none
-  HUB: goal.cli/ (fan-in=7)
   HUB: goal.config/ (fan-in=8)
-  HUB: goal/ (fan-in=100)
+  HUB: goal.cli/ (fan-in=7)
+  HUB: goal/ (fan-in=102)
+  SMELL: goal.push/ fan-out=52 → split needed
   SMELL: goal.cli/ fan-out=43 → split needed
-  SMELL: goal.push/ fan-out=51 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

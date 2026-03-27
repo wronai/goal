@@ -4,14 +4,19 @@
 
 - **Project**: /home/tom/github/wronai/goal
 - **Primary Language**: python
-- **Languages**: python: 62, shell: 5
+- **Languages**: python: 67, shell: 5
 - **Analysis Mode**: static
-- **Total Functions**: 367
-- **Total Classes**: 24
-- **Modules**: 67
-- **Entry Points**: 256
+- **Total Functions**: 420
+- **Total Classes**: 41
+- **Modules**: 72
+- **Entry Points**: 307
 
 ## Architecture by Module
+
+### goal.recovery.strategies
+- **Functions**: 27
+- **Classes**: 7
+- **File**: `strategies.py`
 
 ### goal.config.manager
 - **Functions**: 25
@@ -61,6 +66,11 @@
 - **Classes**: 1
 - **File**: `formatter.py`
 
+### goal.recovery.manager
+- **Functions**: 14
+- **Classes**: 1
+- **File**: `manager.py`
+
 ### goal.summary.quality_filter
 - **Functions**: 14
 - **Classes**: 1
@@ -98,15 +108,6 @@
 ### goal.project_bootstrap
 - **Functions**: 9
 - **File**: `project_bootstrap.py`
-
-### goal.smart_commit.abstraction
-- **Functions**: 9
-- **Classes**: 1
-- **File**: `abstraction.py`
-
-### goal.cli.utils_cmd
-- **Functions**: 8
-- **File**: `utils_cmd.py`
 
 ## Key Entry Points
 
@@ -175,6 +176,10 @@ Returns:
 > Calculate quality metrics for the changes.
 - **Calls**: analysis.get, len, analysis.get, aggregated.get, min, min, min, min
 
+### goal.recovery.strategies.DivergentHistoryStrategy.recover
+> Attempt to recover from divergent history.
+- **Calls**: click.echo, self.run_git_with_output, click.echo, click.style, click.echo, self.run_git, click.echo, self.run_git_with_output
+
 ### goal.smart_commit.abstraction.CodeAbstraction.extract_entities
 > Extract code entities (functions, classes, etc.) from diff.
 - **Calls**: self.get_language, self.code_parsers.get, parser.get, parser.get, parser.get, goal.user_config.UserConfig.set, None.strip, any
@@ -183,17 +188,34 @@ Returns:
 > PY010: Check for consistent project name across all config files.
 - **Calls**: re.search, name_match.group, setup_py.exists, goal_yaml.exists, Issue, self.issues.append, setup_py.read_text, re.search
 
-### goal.doctor.nodejs.diagnose_nodejs
-> Run all Node.js-specific diagnostics.
-- **Calls**: json.dumps, data.get, json.dumps, pkg_json.exists, json.loads, data.get, issues.append, data.get
+### goal.recovery.manager.RecoveryManager.recover_from_push_failure
+> Attempt to recover from a git push failure.
+- **Calls**: click.echo, self._create_backup, click.style, self._identify_strategy, click.echo, strategy.recover, click.echo, click.echo
+
+### goal.cli.recover_cmd.recover
+> Recover from git push failures.
+
+This command automatically detects and attempts to recover from common
+git push failures including:
+
+- Authentication
+- **Calls**: click.command, click.option, click.option, click.option, click.option, click.option, os.getcwd, goal.cli.recover_cmd._get_error_output
 
 ### goal.doctor.python.PythonDiagnostics.check_py009_string_authors
 > PY009: Check for authors in deprecated string format (PEP 621 requires objects).
 - **Calls**: re.search, authors_match.group, re.compile, None.splitlines, Issue, self.issues.append, line.strip, string_author_pattern.match
 
+### goal.doctor.nodejs.diagnose_nodejs
+> Run all Node.js-specific diagnostics.
+- **Calls**: json.dumps, data.get, json.dumps, pkg_json.exists, json.loads, data.get, issues.append, data.get
+
 ### goal.generator.generator.CommitMessageGenerator._build_summary_section
 > Build high-level summary section.
 - **Calls**: Counter, Counter, parts.append, parts.append, parts.append, parts.append, parts.append, parts.append
+
+### goal.recovery.strategies.AuthErrorStrategy.recover
+> Attempt to recover from authentication error.
+- **Calls**: click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.style
 
 ### goal.doctor.python.diagnose_python
 > Run all Python-specific diagnostics.
@@ -215,26 +237,9 @@ Returns:
 > Detect version files in the project.
 - **Calls**: None.exists, None.exists, None.exists, None.exists, None.exists, None.rglob, version_files.append, version_files.append
 
-### goal.summary.generator.EnhancedSummaryGenerator.validate_summary_quality
-> Validate summary against quality thresholds.
-- **Calls**: None.get, config.get, config.get, config.get, None.split, sum, sum, warnings.append
-
-### goal.deep_analyzer.CodeChangeAnalyzer._build_summary
-> Build human-readable summary.
-- **Calls**: aggregated.get, aggregated.get, aggregated.get, aggregated.get, parts.append, parts.append, parts.append, parts.append
-
-### goal.config.manager.GoalConfig._detect_project_name
-> Detect project name from various sources.
-- **Calls**: None.exists, None.exists, None.exists, Path.cwd, Path, None.read_text, re.search, Path
-
-### goal.summary.validator.QualityValidator.__init__
-- **Calls**: SummaryQualityFilter, self.config.get, quality.get, quality.get, commit_summary.get, commit_summary.get, commit_summary.get, commit_summary.get
-
-### goal.summary.validator.QualityValidator.validate
-> Validate summary against all quality gates.
-
-Returns: {valid: bool, errors: [], warnings: [], score: int, fixes: []}
-- **Calls**: summary.get, summary.get, None.get, summary.get, metrics.get, metrics.get, self._extract_intent, self._validate_title
+### goal.recovery.strategies.LFSIssueStrategy.recover
+> Attempt to recover from LFS issues.
+- **Calls**: click.echo, click.style, subprocess.run, self.run_git, click.echo, self.run_git, click.echo, click.echo
 
 ## Process Flows
 
@@ -337,6 +342,11 @@ analyze_changes [goal.smart_commit.generator.SmartCommitGenerator]
 - **Methods**: 14
 - **Key Methods**: goal.generator.analyzer.ChangeAnalyzer.classify_change_type, goal.generator.analyzer.ChangeAnalyzer._detect_signals, goal.generator.analyzer.ChangeAnalyzer._has_package_code, goal.generator.analyzer.ChangeAnalyzer._is_docs_only, goal.generator.analyzer.ChangeAnalyzer._is_ci_only, goal.generator.analyzer.ChangeAnalyzer._has_new_goal_python_file, goal.generator.analyzer.ChangeAnalyzer._score_by_file_patterns, goal.generator.analyzer.ChangeAnalyzer._score_by_diff_content, goal.generator.analyzer.ChangeAnalyzer._score_by_statistics, goal.generator.analyzer.ChangeAnalyzer._score_by_signals
 
+### goal.recovery.manager.RecoveryManager
+> Manages the recovery process for failed git pushes.
+- **Methods**: 14
+- **Key Methods**: goal.recovery.manager.RecoveryManager.__init__, goal.recovery.manager.RecoveryManager._ensure_recovery_dir, goal.recovery.manager.RecoveryManager.run_git, goal.recovery.manager.RecoveryManager.recover_from_push_failure, goal.recovery.manager.RecoveryManager._identify_strategy, goal.recovery.manager.RecoveryManager._create_backup, goal.recovery.manager.RecoveryManager._cleanup_backup, goal.recovery.manager.RecoveryManager._rollback_to_backup, goal.recovery.manager.RecoveryManager._attempt_push, goal.recovery.manager.RecoveryManager.setup_clean_clone
+
 ### goal.summary.quality_filter.SummaryQualityFilter
 > Filter noise and improve summary quality.
 - **Methods**: 14
@@ -357,6 +367,12 @@ analyze_changes [goal.smart_commit.generator.SmartCommitGenerator]
 - **Methods**: 8
 - **Key Methods**: goal.formatter.MarkdownFormatter.__init__, goal.formatter.MarkdownFormatter.add_header, goal.formatter.MarkdownFormatter.add_metadata, goal.formatter.MarkdownFormatter.add_section, goal.formatter.MarkdownFormatter.add_list, goal.formatter.MarkdownFormatter.add_command_output, goal.formatter.MarkdownFormatter.add_summary, goal.formatter.MarkdownFormatter.render
 
+### goal.recovery.strategies.LargeFileStrategy
+> Handles large file errors.
+- **Methods**: 8
+- **Key Methods**: goal.recovery.strategies.LargeFileStrategy.can_handle, goal.recovery.strategies.LargeFileStrategy.recover, goal.recovery.strategies.LargeFileStrategy._extract_file_paths, goal.recovery.strategies.LargeFileStrategy._find_large_files, goal.recovery.strategies.LargeFileStrategy._get_file_size_mb, goal.recovery.strategies.LargeFileStrategy._remove_large_files, goal.recovery.strategies.LargeFileStrategy._move_to_lfs, goal.recovery.strategies.LargeFileStrategy._skip_large_files
+- **Inherits**: RecoveryStrategy
+
 ### goal.generator.git_ops.GitDiffOperations
 > Git diff operations with caching.
 - **Methods**: 7
@@ -366,6 +382,18 @@ analyze_changes [goal.smart_commit.generator.SmartCommitGenerator]
 > Manages user-specific configuration stored in ~/.goal
 - **Methods**: 6
 - **Key Methods**: goal.user_config.UserConfig.__init__, goal.user_config.UserConfig._load, goal.user_config.UserConfig._save, goal.user_config.UserConfig.get, goal.user_config.UserConfig.set, goal.user_config.UserConfig.is_initialized
+
+### goal.recovery.strategies.DivergentHistoryStrategy
+> Handles divergent history errors.
+- **Methods**: 6
+- **Key Methods**: goal.recovery.strategies.DivergentHistoryStrategy.can_handle, goal.recovery.strategies.DivergentHistoryStrategy.recover, goal.recovery.strategies.DivergentHistoryStrategy._rebase_changes, goal.recovery.strategies.DivergentHistoryStrategy._merge_changes, goal.recovery.strategies.DivergentHistoryStrategy._pull_changes, goal.recovery.strategies.DivergentHistoryStrategy._force_push
+- **Inherits**: RecoveryStrategy
+
+### goal.recovery.strategies.RecoveryStrategy
+> Base class for all recovery strategies.
+- **Methods**: 5
+- **Key Methods**: goal.recovery.strategies.RecoveryStrategy.__init__, goal.recovery.strategies.RecoveryStrategy.can_handle, goal.recovery.strategies.RecoveryStrategy.recover, goal.recovery.strategies.RecoveryStrategy.run_git, goal.recovery.strategies.RecoveryStrategy.run_git_with_output
+- **Inherits**: ABC
 
 ### goal.doctor.models.DoctorReport
 > Aggregated report from a doctor run.
@@ -381,31 +409,6 @@ analyze_changes [goal.smart_commit.generator.SmartCommitGenerator]
 > Context object wrapper for push command.
 - **Methods**: 2
 - **Key Methods**: goal.push.core.PushContext.__init__, goal.push.core.PushContext.get
-
-### goal.cli.GoalGroup
-> Custom Click Group that shows docs URL for unknown commands (like Poetry),
-and defaults to 'push' co
-- **Methods**: 2
-- **Key Methods**: goal.cli.GoalGroup.get_command, goal.cli.GoalGroup.parse_args
-- **Inherits**: click.Group
-
-### goal.validators.file_validator.FileSizeError
-> Error for files exceeding size limit.
-- **Methods**: 1
-- **Key Methods**: goal.validators.file_validator.FileSizeError.__init__
-- **Inherits**: ValidationError
-
-### goal.validators.file_validator.TokenDetectedError
-> Error when API tokens are detected in files.
-- **Methods**: 1
-- **Key Methods**: goal.validators.file_validator.TokenDetectedError.__init__
-- **Inherits**: ValidationError
-
-### goal.validators.file_validator.DotFolderError
-> Error when dot folders are detected that should be in .gitignore.
-- **Methods**: 1
-- **Key Methods**: goal.validators.file_validator.DotFolderError.__init__
-- **Inherits**: ValidationError
 
 ## Data Transformation Functions
 
@@ -551,6 +554,7 @@ Functions exposed as public API (no underscore prefix):
 - `goal.formatter.format_enhanced_summary` - 39 calls
 - `goal.cli.commit_cmd.fix_summary` - 38 calls
 - `goal.push.stages.commit.handle_split_commits` - 38 calls
+- `goal.push.stages.push_remote.push_to_remote` - 37 calls
 - `goal.summary.generator.EnhancedSummaryGenerator.generate_enhanced_summary` - 36 calls
 - `goal.push.stages.dry_run.handle_dry_run` - 36 calls
 - `goal.changelog.update_changelog` - 35 calls
@@ -566,20 +570,19 @@ Functions exposed as public API (no underscore prefix):
 - `goal.generator.analyzer.ContentAnalyzer.short_action_summary` - 26 calls
 - `goal.summary.generator.EnhancedSummaryGenerator.calculate_quality_metrics` - 26 calls
 - `goal.user_config.prompt_for_license` - 25 calls
+- `goal.recovery.strategies.DivergentHistoryStrategy.recover` - 25 calls
 - `goal.smart_commit.abstraction.CodeAbstraction.extract_entities` - 25 calls
 - `goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency` - 25 calls
 - `goal.validators.file_validator.check_dot_folders` - 24 calls
 - `goal.cli.publish.publish_project` - 24 calls
-- `goal.push.stages.push_remote.push_to_remote` - 24 calls
 - `goal.git_ops.ensure_remote` - 23 calls
-- `goal.doctor.nodejs.diagnose_nodejs` - 23 calls
+- `goal.recovery.manager.RecoveryManager.recover_from_push_failure` - 23 calls
+- `goal.cli.recover_cmd.recover` - 23 calls
 - `goal.doctor.python.PythonDiagnostics.check_py009_string_authors` - 23 calls
+- `goal.doctor.nodejs.diagnose_nodejs` - 23 calls
 - `goal.push.core.show_workflow_preview` - 22 calls
+- `goal.recovery.strategies.AuthErrorStrategy.recover` - 22 calls
 - `goal.doctor.python.diagnose_python` - 22 calls
-- `goal.formatter.format_push_result` - 21 calls
-- `goal.cli.utils_cmd.status` - 21 calls
-- `goal.doctor.core.diagnose_and_report` - 21 calls
-- `goal.push.stages.commit.get_commit_message` - 21 calls
 
 ## System Interactions
 

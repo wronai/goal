@@ -5,11 +5,12 @@ import sys
 from typing import Optional
 import click
 
-from ..recovery import RecoveryManager
-from ..git_ops import run_git
+from goal.cli import main
+from goal.recovery import RecoveryManager
+from goal.git_ops import run_git
 
 
-@click.command()
+@main.command()
 @click.option(
     '--full', '-f',
     is_flag=True,
