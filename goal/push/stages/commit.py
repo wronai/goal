@@ -202,7 +202,7 @@ def handle_split_commits(
             stage_paths(updated_files)
         else:
             from pathlib import Path
-            Path('VERSION').write_text(new_version + '\n')
+            Path('VERSION').write_text(f"{new_version}\n")
             stage_paths(['VERSION'])
         
         if not no_changelog:

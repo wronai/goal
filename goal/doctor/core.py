@@ -82,6 +82,6 @@ def diagnose_and_report(project_dir: Path, project_type: str,
         parts.append(click.style(f"{n_warn} warning(s)", fg='yellow'))
     if n_fixed:
         parts.append(click.style(f"{n_fixed} auto-fixed", fg='green'))
-    click.echo("  " + ", ".join(parts))
+    click.echo(f"  {', '.join(parts)}")
 
     return report

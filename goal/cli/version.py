@@ -222,7 +222,7 @@ def update_json_version(filepath: Path, new_version: str) -> bool:
         content = json.loads(filepath.read_text())
         if 'version' in content:
             content['version'] = new_version
-            filepath.write_text(json.dumps(content, indent=2) + '\n')
+            filepath.write_text(f"{json.dumps(content, indent=2)}\n")
             return True
     except Exception:
         pass
@@ -317,7 +317,7 @@ def update_project_metadata(filepath: Path, user_config) -> bool:
                     data['author'] = new_author
             
             data['license'] = license_id
-            content = json.dumps(data, indent=2) + '\n'
+            content = f"{json.dumps(data, indent=2)}\n"
         
         # Update Cargo.toml
         elif filepath.name == 'Cargo.toml':

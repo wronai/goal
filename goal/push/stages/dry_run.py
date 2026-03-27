@@ -49,7 +49,7 @@ def handle_dry_run(
             plan_lines.append(f"- release: chore(release): bump to {new_version}")
         
         commit_body = (commit_body or '')
-        commit_body = ("Planned split commits:\n" + "\n".join(plan_lines)).strip()
+        commit_body = f"Planned split commits:\n{'\n'.join(plan_lines)}".strip()
     
     if markdown or ctx_obj.get('markdown'):
         if detailed_result and detailed_result.get('enhanced'):
