@@ -1,5 +1,13 @@
 ## [Unreleased]
 
+## [2.1.109] - 2026-03-27
+
+### Docs
+- Update README.md
+
+### Other
+- Update .gitignore
+
 ## [2.1.108] - 2026-03-27
 
 ### Docs

@@ -4,7 +4,7 @@
 # Goal
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.108-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1.109-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/pypi-goal-orange.svg" alt="PyPI">
@@ -907,6 +907,33 @@ goal commit --co-author "Jane <jane@example.com>" --co-author "Bob <bob@example.
 ```
 
 ## Examples by Use Case
+
+### New Project Setup
+```bash
+# Interactive guided setup
+goal wizard
+```
+📖 [Full Wizard Example](examples/wizard-setup/)
+
+### License Management
+```bash
+# Create MIT license
+goal license create MIT --fullname "Your Name"
+
+# Check license compatibility
+goal license check MIT Apache-2.0
+```
+📖 [License Management Examples](examples/license-management/)
+
+### Team Collaboration
+```bash
+# Add team members
+goal authors add "Jane Doe" jane@example.com --role "Developer"
+
+# Commit with co-authors
+goal commit --co-author "Jane Doe <jane@example.com>"
+```
+📖 [Multi-Author Project Examples](examples/multi-author/)
 
 ### Development Workflow
 
