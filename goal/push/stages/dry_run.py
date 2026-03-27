@@ -48,7 +48,8 @@ def handle_dry_run(
         
         commit_body = (commit_body or '')
         newline = '\n'
-        commit_body = f"Planned split commits:\n{newline.join(plan_lines)}".strip()
+        plan_text = newline.join(plan_lines)
+        commit_body = f"Planned split commits:{newline}{plan_text}".strip()
     
     if markdown or ctx_obj.get('markdown'):
         if detailed_result and detailed_result.get('enhanced'):
