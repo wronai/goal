@@ -1,14 +1,11 @@
 """License manager for handling license templates and file operations."""
 
-import os
-import re
 from datetime import datetime
 from pathlib import Path
 from typing import Optional, List, Tuple
 
 import click
 
-from .spdx import validate_spdx_id, get_license_info
 from goal.user_config import UserConfig
 
 

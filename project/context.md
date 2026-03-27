@@ -4,11 +4,11 @@
 
 - **Project**: /home/tom/github/wronai/goal
 - **Primary Language**: python
-- **Languages**: python: 92, shell: 5
+- **Languages**: python: 93, shell: 5
 - **Analysis Mode**: static
-- **Total Functions**: 597
+- **Total Functions**: 598
 - **Total Classes**: 59
-- **Modules**: 97
+- **Modules**: 98
 - **Entry Points**: 437
 
 ## Architecture by Module
@@ -57,15 +57,15 @@
 - **Classes**: 5
 - **File**: `actions.py`
 
-### goal.doctor.python
-- **Functions**: 16
-- **Classes**: 1
-- **File**: `python.py`
-
 ### goal.summary.generator
 - **Functions**: 16
 - **Classes**: 1
 - **File**: `generator.py`
+
+### goal.doctor.python
+- **Functions**: 16
+- **Classes**: 1
+- **File**: `python.py`
 
 ### goal.formatter
 - **Functions**: 14
@@ -142,6 +142,10 @@ Main execution flows into the system:
 ### goal.deep_analyzer.CodeChangeAnalyzer._analyze_python_diff
 > Analyze Python code changes using AST.
 - **Calls**: self._extract_python_entities, self._extract_python_entities, goal.user_config.UserConfig.set, goal.user_config.UserConfig.set, sum, sum, old_entities.keys, new_entities.keys
+
+### goal.cli.doctor_cmd.doctor
+> Diagnose and auto-fix common project configuration issues.
+- **Calls**: main.command, click.option, click.option, click.option, None.resolve, goal.project_bootstrap.detect_project_types_deep, todo_file.exists, None.format
 
 ### goal.summary.generator.EnhancedSummaryGenerator.generate_enhanced_summary
 > Generate complete enhanced summary with business value focus.
@@ -239,10 +243,6 @@ git push failures including:
 > Attempt to recover from authentication error.
 - **Calls**: click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.style
 
-### goal.config.validation.ConfigValidator._validate_versioning_section
-> Validate versioning configuration.
-- **Calls**: self.config.get, versioning.get, versioning.get, versioning.get, versioning.get, versioning.get, self.errors.append, self.errors.append
-
 ## Process Flows
 
 Key execution flows identified:
@@ -291,19 +291,19 @@ _analyze_python_diff [goal.deep_analyzer.CodeChangeAnalyzer]
   └─ →> set
 ```
 
-### Flow 8: generate_enhanced_summary
+### Flow 8: doctor
+```
+doctor [goal.cli.doctor_cmd]
+```
+
+### Flow 9: generate_enhanced_summary
 ```
 generate_enhanced_summary [goal.summary.generator.EnhancedSummaryGenerator]
 ```
 
-### Flow 9: wizard
+### Flow 10: wizard
 ```
 wizard [goal.cli.wizard_cmd]
-```
-
-### Flow 10: check_py011_version_consistency
-```
-check_py011_version_consistency [goal.doctor.python.PythonDiagnostics]
 ```
 
 ## Key Classes
@@ -487,13 +487,6 @@ Checks that the configuration file is valid, complete, and f
 Checks that the configuration file is valid, complete, and follow
 - **Output to**: config.command, click.option, click.option, click.echo, click.style
 
-### goal.postcommit.manager.PostCommitManager.validate_actions
-> Validate all configured actions.
-
-Returns:
-    True if all actions are valid
-- **Output to**: self.get_config, action_config.get, action_class, click.echo, action.validate_config
-
 ### goal.postcommit.actions.PostCommitAction.validate_config
 > Validate action configuration.
 
@@ -504,6 +497,13 @@ Returns:
 ### goal.postcommit.actions.ScriptAction.validate_config
 
 ### goal.postcommit.actions.GitPushAction.validate_config
+
+### goal.postcommit.manager.PostCommitManager.validate_actions
+> Validate all configured actions.
+
+Returns:
+    True if all actions are valid
+- **Output to**: self.get_config, action_config.get, action_class, click.echo, action.validate_config
 
 ### goal.config.manager.GoalConfig.validate
 > Validate the configuration.
@@ -551,6 +551,7 @@ Functions exposed as public API (no underscore prefix):
 - `goal.formatter.format_enhanced_summary` - 39 calls
 - `goal.recovery.strategies.LargeFileStrategy.recover` - 38 calls
 - `goal.cli.commit_cmd.fix_summary` - 38 calls
+- `goal.cli.doctor_cmd.doctor` - 36 calls
 - `goal.summary.generator.EnhancedSummaryGenerator.generate_enhanced_summary` - 36 calls
 - `goal.push.stages.dry_run.handle_dry_run` - 36 calls
 - `goal.changelog.update_changelog` - 35 calls
@@ -577,7 +578,6 @@ Functions exposed as public API (no underscore prefix):
 - `goal.cli.recover_cmd.recover` - 23 calls
 - `goal.doctor.python.PythonDiagnostics.check_py009_string_authors` - 23 calls
 - `goal.doctor.nodejs.diagnose_nodejs` - 23 calls
-- `goal.recovery.strategies.AuthErrorStrategy.recover` - 22 calls
 - `goal.push.core.show_workflow_preview` - 22 calls
 
 ## System Interactions
@@ -607,15 +607,15 @@ graph TD
     _analyze_python_diff --> _extract_python_enti
     _analyze_python_diff --> set
     _analyze_python_diff --> sum
+    doctor --> command
+    doctor --> option
+    doctor --> resolve
     generate_enhanced_su --> dedupe_files
     generate_enhanced_su --> generate_functional_
     generate_enhanced_su --> detect_capabilities
     generate_enhanced_su --> prioritize_capabilit
     generate_enhanced_su --> detect_file_relation
     wizard --> command
-    wizard --> option
-    check_py011_version_ --> search
-    check_py011_version_ --> group
 ```
 
 ## Reverse Engineering Guidelines

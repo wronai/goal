@@ -44,7 +44,7 @@ def doctor(ctx, fix, path, todo) -> None:
 - Use `goal -t` to add detected issues automatically
 - Use `goal doctor --todo` to diagnose and track issues
 
-Last updated: {datetime.now().strftime('%Y-%m-%d')}"""
+Last updated: {date}""".format(date=datetime.now().strftime('%Y-%m-%d'))
         todo_file.write_text(todo_content)
         click.echo(click.style("✓ TODO.md file created", fg='green'))
     
@@ -71,7 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-Last updated: {datetime.now().strftime('%Y-%m-%d')}"""
+Last updated: """ + datetime.now().strftime('%Y-%m-%d')
         changelog_file.write_text(changelog_content)
         click.echo(click.style("✓ CHANGELOG.md file created", fg='green'))
     

@@ -5,12 +5,10 @@ import re
 import subprocess
 import time
 from abc import ABC, abstractmethod
-from typing import List, Optional, Dict, Any
+from typing import List, Dict, Any
 import click
 
 from .exceptions import (
-    RecoveryError,
-    AuthError,
     LargeFileError,
     DivergentHistoryError,
     CorruptedObjectError,

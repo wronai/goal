@@ -2,12 +2,12 @@
 
 import subprocess
 from pathlib import Path
-from typing import Optional, Any
+from typing import Optional
 
 import click
 
 from goal.cli import main
-from goal.config import ensure_config, GoalConfig
+from goal.config import ensure_config
 from goal.user_config import (
     UserConfig, 
     get_git_user_name, 

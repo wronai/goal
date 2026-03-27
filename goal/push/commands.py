@@ -1,9 +1,8 @@
 """Push workflow CLI commands."""
 
 import click
-from typing import Any
 
-from goal.cli import main, confirm, apply_ticket_prefix, stage_paths, split_paths_by_type
+from goal.cli import main
 from goal.push.core import execute_push_workflow
 
 

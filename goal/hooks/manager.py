@@ -4,7 +4,6 @@ This module provides functionality to install, manage, and run pre-commit hooks
 that integrate with Goal's validation system.
 """
 
-import os
 import sys
 import subprocess
 import yaml
@@ -12,13 +11,7 @@ from pathlib import Path
 from typing import List, Optional
 import click
 
-from ..validators.file_validator import (
-    validate_files,
-    ValidationError,
-    FileSizeError,
-    TokenDetectedError,
-    DotFolderError
-)
+from ..validators.file_validator import validate_files, ValidationError
 from ..git_ops import get_staged_files, run_git
 
 

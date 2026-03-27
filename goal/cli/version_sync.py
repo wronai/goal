@@ -2,7 +2,7 @@
 
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 from .version_utils import update_json_version, update_project_metadata, update_readme_metadata
 from goal.version_validation import update_badge_versions

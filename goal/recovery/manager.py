@@ -4,7 +4,7 @@ import os
 import shutil
 import subprocess
 from datetime import datetime
-from typing import List, Optional, Dict, Any, Tuple
+from typing import List, Optional, Dict, Any
 import click
 
 from .strategies import (
@@ -17,8 +17,6 @@ from .strategies import (
     ForcePushStrategy,
 )
 from .exceptions import (
-    RecoveryError,
-    RollbackError,
     NetworkError,
     QuotaExceededError,
 )

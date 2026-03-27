@@ -5,10 +5,8 @@ from typing import Dict, List, Any, Optional
 import click
 
 from goal.cli import apply_ticket_prefix, split_paths_by_type
-from goal.cli.version import get_current_version
 from goal.commit_generator import CommitMessageGenerator
 from goal.formatter import format_enhanced_summary, format_push_result
-from goal.push.stages.commit import get_commit_message
 
 
 def handle_dry_run(
@@ -49,7 +47,8 @@ def handle_dry_run(
             plan_lines.append(f"- release: chore(release): bump to {new_version}")
         
         commit_body = (commit_body or '')
-        commit_body = f"Planned split commits:\n{'\n'.join(plan_lines)}".strip()
+        newline = '\n'
+        commit_body = f"Planned split commits:\n{newline.join(plan_lines)}".strip()
     
     if markdown or ctx_obj.get('markdown'):
         if detailed_result and detailed_result.get('enhanced'):

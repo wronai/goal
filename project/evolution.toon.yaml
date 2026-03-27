@@ -1,4 +1,4 @@
-# code2llm/evolution | 597 func | 71f | 2026-03-27
+# code2llm/evolution | 598 func | 72f | 2026-03-27
 
 NEXT[10] (ranked by impact):
   [1] !! SPLIT           goal/summary/generator.py
@@ -6,12 +6,12 @@ NEXT[10] (ranked by impact):
       EFFORT: ~4h  IMPACT: 17550
 
   [2] !! SPLIT           goal/recovery/strategies.py
-      WHY: 687L, 7 classes, max CC=11
-      EFFORT: ~4h  IMPACT: 7557
+      WHY: 685L, 7 classes, max CC=11
+      EFFORT: ~4h  IMPACT: 7535
 
   [3] !! SPLIT           goal/package_managers.py
-      WHY: 629L, 1 classes, max CC=11
-      EFFORT: ~4h  IMPACT: 6919
+      WHY: 628L, 1 classes, max CC=11
+      EFFORT: ~4h  IMPACT: 6908
 
   [4] !  SPLIT-FUNC      SmartCommitGenerator.analyze_changes  CC=24  fan=27
       WHY: CC=24 exceeds 15
@@ -79,4 +79,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=5.3 → now CC̄=5.1
+  prev CC̄=5.1 → now CC̄=5.1

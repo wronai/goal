@@ -1,10 +1,10 @@
-# goal | 95f 17670L | python:92,shell:3 | 2026-03-27
-# stats: 597 func | 0 cls | 95 mod | CC̄=5.1 | critical:32 | cycles:0
+# goal | 96f 17751L | python:93,shell:3 | 2026-03-27
+# stats: 598 func | 0 cls | 96 mod | CC̄=5.1 | critical:32 | cycles:0
 # alerts[5]: CC ContentAnalyzer.short_action_summary=34; CC validate_project_versions=30; CC ContentAnalyzer.per_file_notes=29; CC format_enhanced_summary=29; fan-out QualityValidator.auto_fix=27
 # hotspots[5]: QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; execute_push_workflow fan=25; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; update_changelog fan=23
-# evolution: CC̄ 5.3→5.1 (improved -0.2)
+# evolution: CC̄ 5.1→5.1 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[95]:
+M[96]:
   goal/__init__.py,3
   goal/__main__.py,17
   goal/authors/__init__.py,19
@@ -13,9 +13,10 @@ M[95]:
   goal/changelog.py,123
   goal/cli/__init__.py,211
   goal/cli/authors_cmd.py,118
-  goal/cli/commit_cmd.py,207
+  goal/cli/commit_cmd.py,205
   goal/cli/config_cmd.py,129
   goal/cli/config_validate_cmd.py,50
+  goal/cli/doctor_cmd.py,99
   goal/cli/hooks_cmd.py,71
   goal/cli/license_cmd.py,198
   goal/cli/postcommit_cmd.py,82
@@ -58,30 +59,30 @@ M[95]:
   goal/git_ops.py,566
   goal/hooks/__init__.py,19
   goal/hooks/config.py,105
-  goal/hooks/manager.py,309
+  goal/hooks/manager.py,302
   goal/license/__init__.py,20
-  goal/license/manager.py,583
+  goal/license/manager.py,580
   goal/license/spdx.py,222
-  goal/package_managers.py,629
+  goal/package_managers.py,628
   goal/postcommit/__init__.py,27
   goal/postcommit/actions.py,221
   goal/postcommit/manager.py,192
   goal/project_bootstrap.py,589
   goal/project_doctor.py,32
   goal/push/__init__.py,56
-  goal/push/commands.py,41
+  goal/push/commands.py,40
   goal/push/core.py,321
   goal/push/stages/__init__.py,27
   goal/push/stages/changelog.py,30
   goal/push/stages/commit.py,220
-  goal/push/stages/dry_run.py,98
+  goal/push/stages/dry_run.py,96
   goal/push/stages/publish.py,31
   goal/push/stages/push_remote.py,377
   goal/push/stages/tag.py,28
   goal/push/stages/version.py,49
   goal/recovery/__init__.py,48
   goal/recovery/exceptions.py,58
-  goal/recovery/manager.py,317
+  goal/recovery/manager.py,315
   goal/recovery/strategies.py,687
   goal/smart_commit/__init__.py,14
   goal/smart_commit/abstraction.py,269
@@ -300,6 +301,9 @@ D:
     _handle_no_changes(ctx_obj;project_types;dry_run;markdown)
     _validate_staged_files(ctx_obj;dry_run;force)
     _handle_commit_phase(ctx_obj;split;message;commit_title;commit_body;commit_msg;files;ticket;new_version;current_version;no_version_sync;no_changelog)
+  goal/cli/doctor_cmd.py:
+    e: doctor
+    doctor(ctx;fix;path;todo)
   goal/cli/wizard_cmd.py:
     e: wizard,_setup_git_repository,_find_git_root,_add_git_remote,_setup_user_config,_setup_project_config,_show_setup_summary
     wizard(reset;skip_git;skip_user;skip_project)
@@ -404,6 +408,9 @@ D:
     license_check(license1;license2)
     license_list(custom)
     license_template(license_id;file)
+  goal/cli/publish_cmd.py:
+    e: publish
+    publish(ctx;use_make;target;version_arg)
   goal/cli/validation_cmd.py:
     e: validation,validation_run,validation_list,validation_validate,validation_info
     validation()
@@ -411,9 +418,6 @@ D:
     validation_list()
     validation_validate()
     validation_info()
-  goal/cli/publish_cmd.py:
-    e: publish
-    publish(ctx;use_make;target;version_arg)
   goal/postcommit/actions.py:
     e: PostCommitAction,NotificationAction,WebhookAction,ScriptAction,GitPushAction
     PostCommitAction(ABC): __init__(1),execute(1),get_name(0),validate_config(0)  # Base class for post-commit actions...
@@ -556,12 +560,12 @@ D:
   goal/cli/push_cmd.py:
     e: push
     push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
+  goal/config/__init__.py:
   goal/commit_generator.py:
-  goal/enhanced_summary.py:
   goal/__init__.py:
+  goal/enhanced_summary.py:
   goal/__main__.py:
   goal/smart_commit/__init__.py:
-  goal/config/__init__.py:
   goal/project_doctor.py:
   goal/generator/__init__.py:
   goal/hooks/__init__.py:
@@ -574,10 +578,6 @@ D:
   goal/config/constants.py:
   goal/validation/__init__.py:
   goal/doctor/__init__.py:
-  goal/doctor/models.py:
-    e: Issue,DoctorReport
-    Issue:  # A single diagnosed issue...
-    DoctorReport:  # Aggregated report from a doctor run...
   goal/authors/__init__.py:
   goal/license/__init__.py:
   goal/push/stages/__init__.py:
@@ -590,3 +590,7 @@ D:
     print()
     main()
     self()
+  goal/doctor/models.py:
+    e: Issue,DoctorReport
+    Issue:  # A single diagnosed issue...
+    DoctorReport:  # Aggregated report from a doctor run...

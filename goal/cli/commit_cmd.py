@@ -3,9 +3,7 @@
 import click
 
 from goal.commit_generator import CommitMessageGenerator
-from goal.git_ops import get_staged_files, get_diff_content, get_diff_stats
-from goal.enhanced_summary import EnhancedSummaryGenerator
-from goal.formatter import format_enhanced_summary
+from goal.git_ops import get_staged_files, get_diff_stats
 from goal.cli import main, apply_ticket_prefix
 from goal.authors.utils import get_co_authors_from_command_line, add_co_authors_to_message
 

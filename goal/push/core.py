@@ -16,12 +16,12 @@ from goal.push.stages import (
 )
 
 
-def run_git_local(*args, **kwargs):
+def run_git_local(*args, **kwargs) -> Any:
     """Local wrapper for run_git to avoid import issues."""
     return run_git(*args, **kwargs)
 
 
-def show_workflow_preview(files, stats, current_version, new_version, commit_msg, commit_body, markdown, ctx_obj):
+def show_workflow_preview(files, stats, current_version, new_version, commit_msg, commit_body, markdown, ctx_obj) -> None:
     """Show workflow preview for interactive mode."""
     total_adds = sum(s[0] for s in stats.values())
     total_dels = sum(s[1] for s in stats.values())
@@ -105,7 +105,7 @@ class PushContext:
     def __init__(self, ctx_obj: Dict[str, Any]):
         self.obj = ctx_obj
     
-    def get(self, key: str, default=None):
+    def get(self, key: str, default=None) -> Any:
         return self.obj.get(key, default)
 
 

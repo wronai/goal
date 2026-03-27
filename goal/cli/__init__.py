@@ -2,7 +2,7 @@
 
 import os
 import re
-from typing import List, Dict
+from typing import List, Dict, Any
 
 import click
 
@@ -114,7 +114,7 @@ class GoalGroup(click.Group):
     """Custom Click Group that shows docs URL for unknown commands (like Poetry),
     and defaults to 'push' command when -a/--all is passed without a subcommand."""
     
-    def get_command(self, ctx, cmd_name):
+    def get_command(self, ctx, cmd_name) -> Any:
         rv = super().get_command(ctx, cmd_name)
         if rv is not None:
             return rv
@@ -126,7 +126,7 @@ class GoalGroup(click.Group):
         self.list_commands(ctx)
         ctx.exit(2)
     
-    def parse_args(self, ctx, args):
+    def parse_args(self, ctx, args) -> Any:
         # Check if -a or --all is in args without any command
         has_all_flag = '-a' in args or '--all' in args
         has_subcommand = any(

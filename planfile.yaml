@@ -3839,3 +3839,16 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-955e5aaa
+    name: Fix wildcard-imports issues
+    description: Resolve 36 wildcard-imports issues in goal/cli/doctor_cmd.py
+    task_type: prefactor
+    priority: high
+    estimate: 3d
+    files:
+    - goal/cli/doctor_cmd.py
+    rule_id: wildcard-imports
+    count: 36
+    model_hints:
+      planning: balanced
+      implementation: balanced
