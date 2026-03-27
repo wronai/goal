@@ -1,5 +1,26 @@
 ## [Unreleased]
 
+## [2.1.100] - 2026-03-27
+
+### Docs
+- Update README.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Other
+- Update claude-taking-longer-than-usual.webm
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/evolution.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- Update project/index.html
+- ... and 3 more files
+
 ## [2.1.99] - 2026-03-27
 
 ### Docs

@@ -1,4 +1,4 @@
-# goal | 367 func | 49f | 14010L | python | 2026-03-27
+# goal | 367 func | 49f | 14011L | python | 2026-03-27
 
 HEALTH:
   CC̄=6.1  critical=71 (limit:10)  dup=0  cycles=0
@@ -45,12 +45,12 @@ Args:
 
 REFACTOR[15]:
   [1] H/L Split validate_project_versions (CC=30 → target CC<10)
-  [2] H/L Split ensure_project_environment (CC=25 → target CC<10)
-  [3] H/L Split format_enhanced_summary (CC=29 → target CC<10)
-  [4] H/L Split ContentAnalyzer.short_action_summary (CC=34 → target CC<10)
-  [5] H/L Split ContentAnalyzer.per_file_notes (CC=29 → target CC<10)
+  [2] H/L Split format_enhanced_summary (CC=29 → target CC<10)
+  [3] H/L Split ContentAnalyzer.short_action_summary (CC=34 → target CC<10)
+  [4] H/L Split ContentAnalyzer.per_file_notes (CC=29 → target CC<10)
+  [5] H/L Split ensure_project_environment (CC=25 → target CC<10)
 
 EVOLUTION:
   2026-03-08 CC̄=6.0 crit=66 12955L // Automated analysis
   2026-03-15 CC̄=6.0 crit=68 13352L // Automated analysis
-  2026-03-27 CC̄=6.1 crit=71 14010L // Automated analysis
+  2026-03-27 CC̄=6.1 crit=71 14011L // Automated analysis

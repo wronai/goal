@@ -1,8 +1,8 @@
-# goal | 65f 11950L | python:62,shell:3 | 2026-03-27
+# goal | 65f 11951L | python:62,shell:3 | 2026-03-27
 # stats: 367 func | 0 cls | 65 mod | CC̄=6.1 | critical:29 | cycles:0
 # alerts[5]: fan-out execute_push_workflow=37; CC ContentAnalyzer.short_action_summary=34; CC execute_push_workflow=34; CC sync_all_versions=33; CC validate_project_versions=30
 # hotspots[5]: execute_push_workflow fan=37; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; update_changelog fan=23
-# evolution: baseline
+# evolution: CC̄ 6.1→6.1 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[65]:
   goal/__init__.py,3
@@ -47,7 +47,7 @@ M[65]:
   goal/project_doctor.py,32
   goal/push/__init__.py,56
   goal/push/commands.py,41
-  goal/push/core.py,287
+  goal/push/core.py,288
   goal/push/stages/__init__.py,27
   goal/push/stages/changelog.py,30
   goal/push/stages/commit.py,213
@@ -356,10 +356,10 @@ D:
   goal/cli/push_cmd.py:
     e: push
     push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
-  goal/enhanced_summary.py:
   goal/config/__init__.py:
   goal/commit_generator.py:
   goal/__init__.py:
+  goal/enhanced_summary.py:
   goal/__main__.py:
   goal/smart_commit/__init__.py:
   goal/project_doctor.py:
@@ -368,10 +368,6 @@ D:
   goal/push/__init__.py:
   goal/config/constants.py:
   goal/doctor/__init__.py:
-  goal/doctor/models.py:
-    e: Issue,DoctorReport
-    Issue:  # A single diagnosed issue...
-    DoctorReport:  # Aggregated report from a doctor run...
   goal/push/stages/__init__.py:
   project.sh:
   integration/run_docker_matrix.sh:
@@ -382,3 +378,7 @@ D:
     print()
     main()
     self()
+  goal/doctor/models.py:
+    e: Issue,DoctorReport
+    Issue:  # A single diagnosed issue...
+    DoctorReport:  # Aggregated report from a doctor run...
