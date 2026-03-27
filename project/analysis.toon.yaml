@@ -3,21 +3,21 @@
 
 HEALTH[20]:
   🔴 GOD   goal/recovery/strategies.py = 541L, 7 classes, 27m, max CC=9
+  🟡 CC    update_changelog CC=24 (limit:15)
+  🟡 CC    validate_project_versions CC=30 (limit:15)
   🟡 CC    guess_package_name CC=20 (limit:15)
   🟡 CC    ensure_project_environment CC=25 (limit:15)
   🟡 CC    scaffold_test CC=15 (limit:15)
-  🟡 CC    validate_project_versions CC=30 (limit:15)
-  🟡 CC    update_changelog CC=24 (limit:15)
   🟡 CC    format_enhanced_summary CC=29 (limit:15)
-  🟡 CC    ensure_git_repository CC=23 (limit:15)
   🟡 CC    _analyze_python_diff CC=15 (limit:15)
   🟡 CC    _build_summary CC=16 (limit:15)
+  🟡 CC    ensure_git_repository CC=23 (limit:15)
   🟡 CC    _score_by_signals CC=15 (limit:15)
   🟡 CC    short_action_summary CC=34 (limit:15)
   🟡 CC    per_file_notes CC=29 (limit:15)
   🟡 CC    detect_tokens_in_content CC=15 (limit:15)
   🟡 CC    check_dot_folders CC=23 (limit:15)
-  🟡 CC    validate_files CC=19 (limit:15)
+  🟡 CC    validate_files CC=18 (limit:15)
   🟡 CC    execute_push_workflow CC=34 (limit:15)
   🟡 CC    update_project_metadata CC=26 (limit:15)
   🟡 CC    sync_all_versions CC=33 (limit:15)
@@ -28,15 +28,15 @@ REFACTOR[2]:
   2. split 19 high-CC methods  (CC>15)
 
 PIPELINES[290]:
-  [1] Src [bootstrap_all_projects]: bootstrap_all_projects → detect_project_types_deep → _match_marker
+  [1] Src [get_registry_version]: get_registry_version
       PURITY: 100% pure
-  [2] Src [__init__]: __init__
+  [2] Src [check_readme_badges]: check_readme_badges → extract_badge_versions
       PURITY: 100% pure
-  [3] Src [_load]: _load
+  [3] Src [__init__]: __init__
       PURITY: 100% pure
-  [4] Src [_save]: _save
+  [4] Src [_load]: _load
       PURITY: 100% pure
-  [5] Src [get]: get
+  [5] Src [_save]: _save
       PURITY: 100% pure
 
 LAYERS:
@@ -130,12 +130,12 @@ COUPLING:
   goal.smart_commit                  2                                                                                                                                                      ──                   
       goal.recovery                  1                                                                                                                                                                         ──
   CYCLES: none
-  HUB: goal.cli/ (fan-in=7)
   HUB: goal.config/ (fan-in=8)
   HUB: goal/ (fan-in=106)
-  SMELL: goal.cli/ fan-out=43 → split needed
-  SMELL: goal.validators/ fan-out=11 → split needed
+  HUB: goal.cli/ (fan-in=7)
   SMELL: goal.push/ fan-out=52 → split needed
+  SMELL: goal.validators/ fan-out=11 → split needed
+  SMELL: goal.cli/ fan-out=43 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

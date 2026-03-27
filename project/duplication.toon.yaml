@@ -6,7 +6,7 @@ SUMMARY:
   dup_groups:    5
   dup_fragments: 10
   saved_lines:   67
-  scan_ms:       2160
+  scan_ms:       2321
 
 DUPLICATES[5] (ranked by impact):
   [fe96954d342dd641]   EXAC  push  L=18 N=2 saved=18 sim=1.00

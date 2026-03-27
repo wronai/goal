@@ -147,7 +147,7 @@ Content outside the markers is preserved when regenerating. Enable this with `sy
 
 ```
 goal/
-    ├── config/    ├── enhanced_summary    ├── cli/    ├── commit_generator    ├── changelog    ├── user_config    ├── version_validation├── goal/    ├── __main__    ├── smart_commit/    ├── project_bootstrap    ├── formatter    ├── project_doctor    ├── deep_analyzer    ├── git_ops    ├── generator/        ├── git_ops    ├── validators/        ├── analyzer        ├── generator        ├── exceptions        ├── file_validator    ├── recovery/        ├── commands    ├── push/        ├── manager        ├── recover_cmd        ├── core        ├── doctor_cmd        ├── strategies        ├── commit_cmd        ├── version        ├── utils_cmd        ├── publish_cmd        ├── publish        ├── push_cmd        ├── config_cmd        ├── manager        ├── constants        ├── validator    ├── summary/        ├── generator        ├── rust        ├── ruby        ├── quality_filter    ├── package_managers        ├── dotnet    ├── doctor/        ├── go        ├── todo        ├── logging        ├── php        ├── models        ├── java        ├── abstraction        ├── generator            ├── version            ├── changelog            ├── commit            ├── dry_run            ├── tag        ├── stages/            ├── push_remote            ├── publish├── project    ├── markdown-demo    ├── run_docker_matrix    ├── run_matrix        ├── install        ├── nodejs        ├── python        ├── core```
+    ├── config/    ├── cli/    ├── enhanced_summary    ├── commit_generator    ├── user_config    ├── version_validation├── goal/    ├── changelog    ├── __main__    ├── smart_commit/    ├── project_bootstrap    ├── formatter    ├── project_doctor    ├── git_ops    ├── deep_analyzer    ├── generator/        ├── git_ops    ├── validators/        ├── analyzer        ├── generator        ├── exceptions        ├── file_validator    ├── recovery/        ├── commands    ├── push/        ├── manager        ├── recover_cmd        ├── core        ├── doctor_cmd        ├── strategies        ├── commit_cmd        ├── version        ├── utils_cmd        ├── publish_cmd        ├── publish        ├── push_cmd        ├── config_cmd        ├── constants        ├── manager        ├── validator    ├── summary/        ├── generator        ├── rust        ├── ruby        ├── quality_filter    ├── package_managers        ├── dotnet    ├── doctor/        ├── go        ├── logging        ├── php        ├── todo        ├── core        ├── java        ├── abstraction        ├── generator            ├── version            ├── changelog            ├── commit            ├── dry_run            ├── tag        ├── stages/            ├── push_remote            ├── publish├── project    ├── markdown-demo    ├── run_docker_matrix    ├── run_matrix        ├── install        ├── nodejs        ├── python        ├── models```
 
 ## API Overview
 
@@ -188,16 +188,15 @@ goal/
 - **`SummaryQualityFilter`** — Filter noise and improve summary quality.
 - **`PackageManager`** — Package manager configuration and capabilities.
 - **`GoalGroup`** — Custom Click Group that shows docs URL for unknown commands (like Poetry),
-- **`Issue`** — A single diagnosed issue.
-- **`DoctorReport`** — Aggregated report from a doctor run.
 - **`CodeAbstraction`** — Extracts meaningful abstractions from code changes.
 - **`SmartCommitGenerator`** — Generates smart commit messages using code abstraction.
 - **`App`** — —
 - **`PythonDiagnostics`** — Container for Python diagnostic checks with shared state.
+- **`Issue`** — A single diagnosed issue.
+- **`DoctorReport`** — Aggregated report from a doctor run.
 
 ### Functions
 
-- `update_changelog(version, files, commit_msg, config)` — Update CHANGELOG.md with new version and changes.
 - `get_git_user_name()` — Get git user.name from git config.
 - `get_git_user_email()` — Get git user.email from git config.
 - `prompt_for_license()` — Interactive prompt for license selection.
@@ -214,6 +213,7 @@ goal/
 - `validate_project_versions(project_types, current_version)` — Validate versions across different registries.
 - `check_readme_badges(current_version)` — Check if README badges are up to date with current version.
 - `format_validation_results(results)` — Format validation results for display.
+- `update_changelog(version, files, commit_msg, config)` — Update CHANGELOG.md with new version and changes.
 - `detect_project_types_deep(root, max_depth)` — Detect project types in *root* and up to *max_depth* subfolder levels.
 - `guess_package_name(project_dir, project_type)` — Best-effort guess of the package/module name for scaffold templates.
 - `ensure_project_environment(project_dir, project_type, yes)` — Ensure the project environment is properly set up.
@@ -312,14 +312,16 @@ goal/
 - `suggest_package_managers(project_path)` — Suggest package managers for a project based on detected languages and available tools.
 - `diagnose_dotnet(project_dir, auto_fix)` — Run all .NET-specific diagnostics.
 - `diagnose_go(project_dir, auto_fix)` — Run all Go-specific diagnostics.
-- `add_issues_to_todo(project_dir, issues, todo_file)` — Add issues to TODO.md without duplicates.
-- `diagnose_and_report_with_todo(project_dir, project_type, auto_fix, todo_file)` — Diagnose, fix, report, and optionally add issues to TODO.md.
-- `diagnose_php(project_dir, auto_fix)` — Run all PHP-specific diagnostics.
 - `strip_ansi(text)` — —
 - `split_paths_by_type(paths)` — Split file paths into groups (code/docs/ci/examples/other).
 - `stage_paths(paths)` — —
 - `confirm(prompt, default)` — Ask for user confirmation with Y/n prompt (Enter defaults to Yes).
 - `main(ctx, bump, version, yes)` — Goal - Automated git push with smart commit messages.
+- `diagnose_php(project_dir, auto_fix)` — Run all PHP-specific diagnostics.
+- `add_issues_to_todo(project_dir, issues, todo_file)` — Add issues to TODO.md without duplicates.
+- `diagnose_and_report_with_todo(project_dir, project_type, auto_fix, todo_file)` — Diagnose, fix, report, and optionally add issues to TODO.md.
+- `diagnose_project(project_dir, project_type, auto_fix)` — Run diagnostics for a single project directory.
+- `diagnose_and_report(project_dir, project_type, auto_fix)` — Diagnose, fix, and print a human-readable report.
 - `diagnose_java(project_dir, auto_fix)` — Run all Java-specific diagnostics.
 - `create_smart_generator(config)` — Factory function to create SmartCommitGenerator.
 - `sync_all_versions_wrapper(new_version, user_config)` — Wrapper to sync versions to all project files.
@@ -341,8 +343,6 @@ goal/
 - `self()` — —
 - `diagnose_nodejs(project_dir, auto_fix)` — Run all Node.js-specific diagnostics.
 - `diagnose_python(project_dir, auto_fix)` — Run all Python-specific diagnostics.
-- `diagnose_project(project_dir, project_type, auto_fix)` — Run diagnostics for a single project directory.
-- `diagnose_and_report(project_dir, project_type, auto_fix)` — Diagnose, fix, and print a human-readable report.
 
 
 ## Project Structure

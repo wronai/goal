@@ -28,14 +28,14 @@
 - **Classes**: 1
 - **File**: `generator.py`
 
-### goal.git_ops
-- **Functions**: 22
-- **File**: `git_ops.py`
-
 ### goal.deep_analyzer
 - **Functions**: 22
 - **Classes**: 1
 - **File**: `deep_analyzer.py`
+
+### goal.git_ops
+- **Functions**: 22
+- **File**: `git_ops.py`
 
 ### goal.cli.version
 - **Functions**: 19
@@ -564,8 +564,8 @@ Functions exposed as public API (no underscore prefix):
 - `goal.smart_commit.generator.SmartCommitGenerator.analyze_changes` - 33 calls
 - `goal.cli.version.update_project_metadata` - 32 calls
 - `goal.user_config.show_user_config` - 31 calls
-- `goal.project_bootstrap.guess_package_name` - 28 calls
 - `goal.version_validation.validate_project_versions` - 28 calls
+- `goal.project_bootstrap.guess_package_name` - 28 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.generate_functional_body` - 27 calls
 - `goal.generator.analyzer.ContentAnalyzer.short_action_summary` - 26 calls
 - `goal.summary.generator.EnhancedSummaryGenerator.calculate_quality_metrics` - 26 calls

@@ -48,9 +48,9 @@ WARNINGS[19]{path,score}:
   goal/validators/file_validator.py,0.93
     issues[4]{rule,severity,message,line}:
       complexity.cyclomatic,warning,check_dot_folders has cyclomatic complexity 23 (max: 15),148
-      complexity.cyclomatic,warning,validate_files has cyclomatic complexity 19 (max: 15),271
+      complexity.cyclomatic,warning,validate_files has cyclomatic complexity 18 (max: 15),271
       complexity.lizard_cc,warning,check_dot_folders: CC=23 exceeds limit 15,148
-      complexity.lizard_cc,warning,validate_files: CC=19 exceeds limit 15,271
+      complexity.lizard_cc,warning,validate_files: CC=18 exceeds limit 15,271
   goal/deep_analyzer.py,0.96
     issues[3]{rule,severity,message,line}:
       complexity.cyclomatic,warning,_build_summary has cyclomatic complexity 16 (max: 15),522

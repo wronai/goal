@@ -390,8 +390,8 @@ D:
   goal/cli/push_cmd.py:
     e: push
     push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
-  goal/enhanced_summary.py:
   goal/config/__init__.py:
+  goal/enhanced_summary.py:
   goal/commit_generator.py:
   goal/__init__.py:
   goal/__main__.py:
