@@ -1,7 +1,7 @@
 # Goal
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.98-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1.99-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/pypi-goal-orange.svg" alt="PyPI">
@@ -41,6 +41,80 @@ goal push      # Runs tests, suggests a commit, bumps patch, updates changelog, 
 
 # 3. CI/CD or cron-driven release
 goal --all --bump minor   # Non-interactive; perfect for nightly builds or release pipelines.
+```
+
+## 🆕 What's New in v2.1.99
+
+> **Security Validation & Proactive .gitignore Management** — Automatic protection against large files, API tokens, and unwanted dot folders
+
+### ✨ New Security Features
+
+**🔒 File Size Validation**
+- Automatically blocks files larger than 10MB (configurable)
+- Prevents GitHub push failures due to file size limits
+- Clear error messages with file size information
+
+**🔑 API Token Detection**
+- Scans for exposed API tokens before commit
+- Supports GitHub, AWS, Slack, Stripe, GitLab patterns
+- Detects private keys and sensitive credentials
+- Blocks commit with location details
+
+**📁 Proactive .gitignore Management**
+- Automatically detects dot folders (.idea, .vscode, etc.)
+- Adds problematic folders to .gitignore before commit
+- Unstages files that should be ignored
+- Respects existing whitelist patterns (!.vscode)
+- Safe dot files are never ignored: `.gitignore`, `.github/`, `.editorconfig`, `.gitattributes`
+
+### 🛡️ Security Validation in Action
+
+```bash
+# Before commit, Goal automatically checks:
+goal push
+
+# Also works with automation modes:
+goal -a          # Full automation with validation
+goal --all       # All stages with validation
+goal --yes       # Auto-confirm with validation
+
+# Output examples:
+✅ Added 2 dot folder(s)/file(s) to .gitignore: .idea, .DS_Store
+  → Unstaged: .idea
+  → Unstaged: .DS_Store
+
+# Or blocks dangerous commits:
+❌ Validation Error: File secrets.db is 15.2MB, which exceeds the limit of 10MB
+❌ Validation Error: Potential GitHub Personal Access token detected in .env:5
+```
+
+### ⚙️ Configuration Options
+
+```yaml
+# goal.yaml
+advanced:
+  file_validation:
+    max_file_size_mb: 10          # File size limit
+    block_large_files: true       # Block or just warn
+    detect_api_tokens: true       # Enable token detection
+    auto_manage_gitignore: true   # Auto-update .gitignore
+    auto_add_dot_folders: true    # Auto-add dot folders
+    known_dot_folders:           # Custom list of folders to ignore
+      - .idea
+      - .vscode
+      - .DS_Store
+      - .code2llm_cache
+      - .llm
+```
+
+### 🚀 Bypass Options
+
+```bash
+# Force commit (not recommended for security)
+goal push --force
+
+# Dry run to check what would be blocked
+goal push --dry-run
 ```
 
 ## 🆕 What's New in v2.1.65
@@ -147,6 +221,7 @@ What would you like to do?
 - 🐳 **CI/CD ready** - `--yes` flag for automated workflows
 - 🧪 **Test integration** - Runs project-specific test commands before committing
 - 📦 **Publish support** - Publishes to package managers (PyPI, npm, crates.io, etc.)
+- 🔒 **Security validation** - Blocks large files, detects API tokens, manages .gitignore automatically
 
 ## Installation
 
@@ -475,7 +550,32 @@ goal push --split --yes
 # ✓ Committed release: v2.0.0
 ```
 
-#### 10. Skip specific steps
+#### 11. Security Validation Examples
+
+```bash
+# Goal automatically protects against security issues
+goal push
+
+# Example 1: Large file detected
+# ❌ Validation Error: File database.dump is 15.2MB, which exceeds the limit of 10MB
+# For security reasons, the commit has been blocked.
+# To bypass this check, you can:
+# 1. Remove the sensitive/large file(s)
+# 2. Add the file(s) to .gitignore
+# 3. Use --force to bypass validation (not recommended)
+
+# Example 2: API token detected
+# ❌ Validation Error: Potential GitHub Personal Access token detected in .env:5
+# For security reasons, the commit has been blocked.
+
+# Example 3: Dot folder auto-management
+# ✅ Added 3 dot folder(s)/file(s) to .gitignore: .idea, .vscode, .DS_Store
+#   → Unstaged: .idea
+#   → Unstaged: .vscode
+#   → Unstaged: .DS_Store
+```
+
+#### 12. Skip specific steps
 
 ```bash
 # Skip version bump for hotfix
@@ -873,6 +973,20 @@ advanced:
   performance:
     max_files: 50              # Split commits if > N files
     timeout_test: 300          # Test timeout in seconds
+  file_validation:
+    max_file_size_mb: 10       # File size limit (default: 10MB)
+    block_large_files: true    # Block large files or just warn
+    detect_api_tokens: true    # Scan for API tokens
+    auto_manage_gitignore: true  # Auto-update .gitignore
+    auto_add_dot_folders: true   # Auto-add dot folders to .gitignore
+    known_dot_folders:         # Custom dot folders to ignore
+      - .idea
+      - .vscode
+      - .DS_Store
+      - .pytest_cache
+      - .code2llm_cache
+      - .llm
+    token_patterns: []         # Custom regex patterns for token detection
 ```
 
 ### Config Commands
@@ -1032,6 +1146,35 @@ Examples:
 - `test: add coverage for payment module`
 
 ## Troubleshooting
+
+### Security Validation Blocks Commit
+
+Goal automatically protects against security issues:
+
+```bash
+# Large file detected
+❌ Validation Error: File database.dump is 15.2MB, which exceeds the limit of 10MB
+
+# API token detected  
+❌ Validation Error: Potential GitHub Personal Access token detected in .env:5
+
+# Solutions:
+1. Remove the sensitive/large file
+2. Add the file to .gitignore
+3. Use --force to bypass (not recommended)
+```
+
+### Configure Security Validation
+
+```yaml
+# goal.yaml
+advanced:
+  file_validation:
+    max_file_size_mb: 10        # Adjust limit
+    block_large_files: false    # Only warn instead of block
+    detect_api_tokens: true     # Enable/disable token detection
+    auto_manage_gitignore: false # Disable auto .gitignore updates
+```
 
 ### Tests fail but I want to continue
 

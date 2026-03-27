@@ -1,8 +1,10 @@
-# goal | 65f 11547L | python:60,shell:5
-# Keys: M=modules, D=details, i=imports, c=classes, f=functions, m=methods
+# goal | 65f 11950L | python:62,shell:3 | 2026-03-27
+# stats: 367 func | 0 cls | 65 mod | CC̄=6.1 | critical:29 | cycles:0
+# alerts[5]: fan-out execute_push_workflow=37; CC ContentAnalyzer.short_action_summary=34; CC execute_push_workflow=34; CC sync_all_versions=33; CC validate_project_versions=30
+# hotspots[5]: execute_push_workflow fan=37; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; update_changelog fan=23
+# evolution: baseline
+# Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[65]:
-  examples/git-hooks/install.sh,31
-  examples/markdown-demo.sh,70
   goal/__init__.py,3
   goal/__main__.py,17
   goal/changelog.py,125
@@ -17,7 +19,7 @@ M[65]:
   goal/cli/version.py,730
   goal/commit_generator.py,45
   goal/config/__init__.py,24
-  goal/config/constants.py,351
+  goal/config/constants.py,396
   goal/config/manager.py,449
   goal/deep_analyzer.py,554
   goal/doctor/__init__.py,55
@@ -45,7 +47,7 @@ M[65]:
   goal/project_doctor.py,32
   goal/push/__init__.py,56
   goal/push/commands.py,41
-  goal/push/core.py,271
+  goal/push/core.py,287
   goal/push/stages/__init__.py,27
   goal/push/stages/changelog.py,30
   goal/push/stages/commit.py,213
@@ -62,6 +64,8 @@ M[65]:
   goal/summary/quality_filter.py,328
   goal/summary/validator.py,310
   goal/user_config.py,247
+  goal/validators/__init__.py,25
+  goal/validators/file_validator.py,418
   goal/version_validation.py,301
   integration/run_docker_matrix.sh,5
   integration/run_matrix.sh,216
@@ -71,6 +75,13 @@ D:
     e: ChangeAnalyzer,ContentAnalyzer
     ChangeAnalyzer: classify_change_type(3),_detect_signals(2),_has_package_code(1),_is_docs_only(1),_is_ci_only(1),_has_new_goal_python_file(2),_score_by_file_patterns(2),_score_by_diff_content(2),_score_by_statistics(3),_score_by_signals(4),_score_new_functionality(3),_resolve_change_type(4),detect_scope(1),extract_functions_changed(1)  # Analyze git changes to classify type, detect scope, and extr...
     ContentAnalyzer: short_action_summary(2),per_file_notes(2)  # Analyze content for short summaries and per-file notes...
+  goal/push/core.py:
+    e: PushContext,run_git_local,show_workflow_preview,output_final_summary,execute_push_workflow
+    PushContext: __init__(1),get(2)  # Context object wrapper for push command...
+    run_git_local()
+    show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
+    output_final_summary(ctx_obj;markdown;project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_exit_code;publish_success;no_tag)
+    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
   goal/cli/version.py:
     e: detect_project_types,find_version_files,get_version_from_file,get_current_version,bump_version,update_version_in_file,update_json_version,update_project_metadata,update_readme_metadata,_update_version_file,_update_json_version_file,_update_toml_version,_update_cargo_version,_update_csproj_versions,_update_pom_xml,_update_readme_metadata,_update_init_py_versions,sync_all_versions,sync_all_versions
     detect_project_types()
@@ -113,13 +124,6 @@ D:
     format_push_result(project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_result;test_exit_code;actions;error;analysis)
     format_enhanced_summary(commit_title;commit_body;capabilities;roles;relations;metrics;files;stats;current_version;new_version)
     format_status_output(version;branch;staged_files;unstaged_files)
-  goal/push/core.py:
-    e: PushContext,run_git_local,show_workflow_preview,output_final_summary,execute_push_workflow
-    PushContext: __init__(1),get(2)  # Context object wrapper for push command...
-    run_git_local()
-    show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
-    output_final_summary(ctx_obj;markdown;project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_exit_code;publish_success;no_tag)
-    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
   goal/summary/generator.py:
     e: EnhancedSummaryGenerator
     EnhancedSummaryGenerator: __init__(1),map_entity_to_role(1),detect_capabilities(2),detect_file_relations(2),_infer_domain(1),_build_relation_chain(1),_render_relations_ascii(2),calculate_quality_metrics(2),generate_value_title(3),generate_enhanced_summary(4),_format_changes_section(2),_format_testing_section(1),_format_dependencies_section(1),_format_stats_section(2),_format_enhanced_body(7),validate_summary_quality(2)  # Generate business-value focused commit summaries...
@@ -168,6 +172,20 @@ D:
     get_diff_content(cached)
     read_ticket(path)
     apply_ticket_prefix(title;ticket)
+  goal/validators/file_validator.py:
+    e: ValidationError,FileSizeError,TokenDetectedError,DotFolderError,get_file_size_mb,detect_tokens_in_content,load_gitignore,save_gitignore,check_dot_folders,manage_dot_folders,validate_files,validate_staged_files
+    ValidationError(Exception):  # Base validation error...
+    FileSizeError(ValidationError): __init__(3)  # Error for files exceeding size limit...
+    TokenDetectedError(ValidationError): __init__(3)  # Error when API tokens are detected in files...
+    DotFolderError(ValidationError): __init__(1)  # Error when dot folders are detected that should be in .gitig...
+    get_file_size_mb(file_path)
+    detect_tokens_in_content(content;patterns)
+    load_gitignore(gitignore_path)
+    save_gitignore(ignored;gitignore_path)
+    check_dot_folders(files;config)
+    manage_dot_folders(files;config;dry_run)
+    validate_files(files;max_size_mb;block_large_files;token_patterns;detect_tokens;exclude_patterns)
+    validate_staged_files(config)
   goal/smart_commit/abstraction.py:
     e: CodeAbstraction
     CodeAbstraction: __init__(1),get_domain(1),get_language(1),extract_entities(2),extract_markdown_topics(1),infer_benefit(5),detect_features(2),determine_abstraction_level(1),get_action_verb(1)  # Extracts meaningful abstractions from code changes...
@@ -338,14 +356,15 @@ D:
   goal/cli/push_cmd.py:
     e: push
     push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
-  goal/config/__init__.py:
   goal/enhanced_summary.py:
+  goal/config/__init__.py:
   goal/commit_generator.py:
   goal/__init__.py:
   goal/__main__.py:
   goal/smart_commit/__init__.py:
   goal/project_doctor.py:
   goal/generator/__init__.py:
+  goal/validators/__init__.py:
   goal/push/__init__.py:
   goal/config/constants.py:
   goal/doctor/__init__.py:
@@ -355,7 +374,6 @@ D:
     DoctorReport:  # Aggregated report from a doctor run...
   goal/push/stages/__init__.py:
   project.sh:
-  examples/markdown-demo.sh:
   integration/run_docker_matrix.sh:
   integration/run_matrix.sh:
     e: App,run_case,print,main,self
@@ -364,4 +382,3 @@ D:
     print()
     main()
     self()
-  examples/git-hooks/install.sh:
