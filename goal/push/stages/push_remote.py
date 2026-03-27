@@ -177,14 +177,154 @@ def _offer_recovery(error_output: str) -> bool:
         except Exception as e:
             click.echo(click.style(f"\n⚠️ Could not analyze error: {e}", fg='yellow'))
     
-    # For non-large-file errors, offer general recovery
-    if click.confirm(click.style("\nWould you like to attempt automatic recovery?", fg='yellow')):
+    # For non-large-file errors, offer general recovery with interactive menu
+    click.echo(click.style("\n📋 Conflict Resolution Options:", fg='blue', bold=True))
+    
+    # Show what's different between local and remote
+    try:
+        click.echo(click.style("\n🔍 Checking differences between local and remote...", fg='cyan'))
+        
+        # Get local commit count ahead/behind
+        result = subprocess.run(
+            ['git', 'rev-list', '--left-right', '--count', 'HEAD...origin/main'],
+            capture_output=True, text=True, cwd=os.getcwd()
+        )
+        if result.returncode == 0:
+            ahead_behind = result.stdout.strip().split()
+            if len(ahead_behind) == 2:
+                ahead, behind = int(ahead_behind[0]), int(ahead_behind[1])
+                click.echo(f"\n  Local branch is:")
+                if ahead > 0:
+                    click.echo(f"    • {ahead} commit(s) ahead of remote (local changes to push)")
+                if behind > 0:
+                    click.echo(f"    • {behind} commit(s) behind remote (remote changes not in local)")
+                if ahead == 0 and behind == 0:
+                    click.echo(f"    • Same commit count, but histories diverged")
+        
+        # Show recent local commits
+        click.echo(click.style("\n📤 Your local commits (not on remote):", fg='yellow'))
+        result = subprocess.run(
+            ['git', 'log', '--oneline', '--decorate', 'origin/main..HEAD', '-5'],
+            capture_output=True, text=True, cwd=os.getcwd()
+        )
+        if result.returncode == 0 and result.stdout.strip():
+            for line in result.stdout.strip().split('\n')[:5]:
+                click.echo(f"  • {line}")
+        else:
+            click.echo("  (none visible)")
+            
+    except Exception as e:
+        click.echo(click.style(f"  Could not get diff info: {e}", fg='yellow'))
+    
+    # Show interactive menu
+    click.echo(click.style("\n💡 What would you like to do?", fg='blue', bold=True))
+    click.echo("\n  [1] 🚀 Force push (overwrite remote with local changes)")
+    click.echo("       ⚠️  Warning: This will replace remote history!")
+    click.echo("       Use when: You've rewritten history (e.g., removed large files)")
+    
+    click.echo("\n  [2] 📥 Pull and merge (integrate remote changes)")
+    click.echo("       This will fetch remote and merge changes into your branch")
+    click.echo("       Use when: Remote has changes you want to keep")
+    
+    click.echo("\n  [3] 👀 View detailed diff (see exactly what's different)")
+    click.echo("       Show full commit log comparison")
+    
+    click.echo("\n  [4] 🔄 Automatic recovery (let Goal try to fix it)")
+    click.echo("       Attempt smart conflict resolution")
+    
+    click.echo("\n  [5] ❌ Cancel (exit and handle manually)")
+    click.echo("       You can fix the issue manually and retry later")
+    
+    choice = click.prompt(
+        click.style("\nEnter your choice", fg='yellow', bold=True),
+        type=click.Choice(['1', '2', '3', '4', '5']),
+        default='5'
+    )
+    
+    if choice == '1':
+        # Force push
+        click.echo(click.style("\n🚀 Attempting force push...", fg='blue', bold=True))
+        click.echo(click.style("⚠️  This will overwrite remote history!", fg='red'))
+        if click.confirm(click.style("Are you sure?", fg='red', bold=True)):
+            try:
+                # Get current branch
+                branch_result = subprocess.run(
+                    ['git', 'branch', '--show-current'],
+                    capture_output=True, text=True, cwd=os.getcwd(), check=True
+                )
+                current_branch = branch_result.stdout.strip()
+                
+                result = subprocess.run(
+                    ['git', 'push', '--force', 'origin', current_branch],
+                    capture_output=True, text=True, cwd=os.getcwd()
+                )
+                if result.returncode == 0:
+                    click.echo(click.style("✅ Force push successful!", fg='green', bold=True))
+                    return True
+                else:
+                    click.echo(click.style(f"❌ Force push failed: {result.stderr}", fg='red'))
+                    return False
+            except Exception as e:
+                click.echo(click.style(f"❌ Force push error: {e}", fg='red'))
+                return False
+        else:
+            click.echo(click.style("Force push cancelled.", fg='yellow'))
+            return False
+            
+    elif choice == '2':
+        # Pull and merge
+        click.echo(click.style("\n📥 Pulling remote changes...", fg='blue', bold=True))
+        try:
+            result = subprocess.run(
+                ['git', 'pull', 'origin', 'main'],
+                capture_output=True, text=True, cwd=os.getcwd()
+            )
+            if result.returncode == 0:
+                click.echo(click.style("✅ Pull successful! Remote changes merged.", fg='green'))
+                click.echo(click.style("\nYou can now retry 'goal push' to push your changes.", fg='cyan'))
+                return False  # Don't auto-retry, let user decide
+            else:
+                click.echo(click.style(f"❌ Pull failed: {result.stderr}", fg='red'))
+                return False
+        except Exception as e:
+            click.echo(click.style(f"❌ Pull error: {e}", fg='red'))
+            return False
+            
+    elif choice == '3':
+        # View detailed diff
+        click.echo(click.style("\n👀 Detailed diff:", fg='blue', bold=True))
+        try:
+            # Show full log comparison
+            result = subprocess.run(
+                ['git', 'log', '--oneline', '--left-right', 'HEAD...origin/main'],
+                capture_output=True, text=True, cwd=os.getcwd()
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                click.echo(click.style("\nCommits comparison (local | remote):", fg='cyan'))
+                click.echo(result.stdout)
+            
+            # Show what files differ
+            result = subprocess.run(
+                ['git', 'diff', '--stat', 'HEAD', 'origin/main'],
+                capture_output=True, text=True, cwd=os.getcwd()
+            )
+            if result.returncode == 0 and result.stdout.strip():
+                click.echo(click.style("\nFiles that differ:", fg='cyan'))
+                click.echo(result.stdout)
+            
+            click.echo(click.style("\n💡 Run 'goal push' again to choose an action.", fg='yellow'))
+        except Exception as e:
+            click.echo(click.style(f"Could not show diff: {e}", fg='yellow'))
+        return False
+        
+    elif choice == '4':
+        # Automatic recovery
+        click.echo(click.style("\n🔧 Attempting automatic recovery...", fg='blue', bold=True))
         try:
             from goal.recovery import RecoveryManager
             repo_path = os.getcwd()
             manager = RecoveryManager(repo_path)
             
-            click.echo(click.style("\n🔧 Attempting recovery...", fg='blue', bold=True))
             success = manager.recover_from_push_failure(error_output)
             
             if success:
@@ -194,10 +334,13 @@ def _offer_recovery(error_output: str) -> bool:
                 click.echo(click.style("\n❌ Automatic recovery failed.", fg='red'))
                 return False
         except ImportError:
-            click.echo(click.style("\n⚠️ Recovery module not available. Please run 'goal recover' manually.", fg='yellow'))
+            click.echo(click.style("\n⚠️ Recovery module not available.", fg='yellow'))
             return False
         except Exception as e:
-            click.echo(click.style(f"\n❌ Recovery failed with error: {e}", fg='red'))
+            click.echo(click.style(f"\n❌ Recovery failed: {e}", fg='red'))
             return False
     
-    return False
+    else:  # choice == '5' or default
+        click.echo(click.style("\n❌ Cancelled. No changes made.", fg='yellow'))
+        click.echo(click.style("You can run 'goal push' again when ready.", fg='cyan'))
+        return False
