@@ -1,11 +1,9 @@
 """Authors command for managing project authors."""
 
 import click
-from pathlib import Path
 
 from goal.cli import main
 from goal.authors import AuthorsManager, get_project_authors, add_project_author
-from goal.authors.utils import format_co_author_trailer, parse_co_authors
 
 
 @main.group()

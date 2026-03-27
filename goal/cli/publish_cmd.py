@@ -1,8 +1,6 @@
 """Publish command - extracted from cli.py."""
 
 import click
-import shutil
-from pathlib import Path
 
 from goal.git_ops import run_command_tee
 from goal.cli import main

@@ -2,12 +2,12 @@
 
 import subprocess
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional
 import yaml
 import click
 
 from goal.git_ops import get_staged_files, get_diff_stats
-from .rules import AVAILABLE_RULES, ValidationRule
+from .rules import AVAILABLE_RULES
 
 
 class ValidationRuleManager:

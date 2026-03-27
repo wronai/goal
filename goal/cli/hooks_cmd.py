@@ -1,7 +1,6 @@
 """Hooks command for pre-commit integration."""
 
 import click
-from pathlib import Path
 
 from goal.cli import main
 from goal.hooks import HooksManager, install_hooks, uninstall_hooks, run_hooks

@@ -4,8 +4,8 @@ import click
 from pathlib import Path
 from datetime import datetime
 
-from goal.project_bootstrap import detect_project_types_deep, bootstrap_all_projects
-from goal.project_doctor import diagnose_and_report_with_todo, DoctorReport
+from goal.project_doctor import diagnose_and_report_with_todo
+from goal.project_bootstrap import detect_project_types_deep
 from goal.cli import main
 
 

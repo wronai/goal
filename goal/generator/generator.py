@@ -1,9 +1,7 @@
 """Commit message generator - extracted from commit_generator.py."""
 
-import subprocess
-from typing import Dict, List, Tuple, Optional, Any
+from typing import Dict, List, Optional, Any, Tuple
 from pathlib import Path
-from collections import Counter
 import os
 
 try:

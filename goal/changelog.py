@@ -5,8 +5,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Dict, Optional
 
-from goal.git_ops import run_git
-
 
 def update_changelog(version: str, files: List[str], commit_msg: str, 
                      config: Dict = None, changelog_entry: Dict = None):
@@ -75,7 +73,7 @@ def update_changelog(version: str, files: List[str], commit_msg: str,
         if len(files) > 10:
             change_list.append(f"- ... and {len(files) - 10} more files")
         
-        entry = f"## [{version}] - {date_str}\n\n### Changed\n" + "\n".join(change_list) + "\n"
+        entry = f"## [{version}] - {date_str}\n\n### Changed\n{'\n'.join(change_list)}\n"
     
     # Insert or create changelog
     if existing_content:
@@ -89,20 +87,20 @@ def update_changelog(version: str, files: List[str], commit_msg: str,
                 match = re.search(r'\n## ', rest)
                 if match:
                     pos = match.start()
-                    new_content = parts[0] + '## [Unreleased]' + rest[:pos] + '\n' + entry + rest[pos:]
+                    new_content = f"{parts[0]}## [Unreleased]{rest[:pos]}\n{entry}{rest[pos:]}"
                 else:
-                    new_content = existing_content + '\n' + entry
+                    new_content = f"{existing_content}\n{entry}"
             else:
-                new_content = existing_content + '\n' + entry
+                new_content = f"{existing_content}\n{entry}"
         else:
             # Add at the beginning after title
             if existing_content.startswith('# '):
                 # Find first newline after title
                 first_nl = existing_content.find('\n')
                 if first_nl > 0:
-                    new_content = existing_content[:first_nl] + '\n\n## [Unreleased]\n\n' + entry + existing_content[first_nl:]
+                    new_content = f"{existing_content[:first_nl]}\n\n## [Unreleased]\n\n{entry}{existing_content[first_nl:]}"
                 else:
-                    new_content = existing_content + '\n' + entry
+                    new_content = f"{existing_content}\n{entry}"
             else:
                 new_content = '## [Unreleased]\n\n' + entry + '\n' + existing_content
     else:

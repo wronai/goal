@@ -1,7 +1,6 @@
 """Post-commit command for managing post-commit actions."""
 
 import click
-from pathlib import Path
 
 from goal.cli import main
 from goal.postcommit import PostCommitManager, run_post_commit_actions

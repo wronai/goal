@@ -1,9 +1,9 @@
-# vallm batch | 154f | 83✓ 20⚠ 26✗ | 2026-03-27
+# vallm batch | 171f | 91✓ 21⚠ 35✗ | 2026-03-27
 
 SUMMARY:
-  scanned: 154  passed: 83 (53.9%)  warnings: 20  errors: 26  unsupported: 45
+  scanned: 171  passed: 91 (53.2%)  warnings: 21  errors: 35  unsupported: 45
 
-WARNINGS[20]{path,score}:
+WARNINGS[21]{path,score}:
   goal/push/stages/push_remote.py,0.90
     issues[5]{rule,severity,message,line}:
       complexity.cyclomatic,warning,push_to_remote has cyclomatic complexity 16 (max: 15),18
@@ -19,11 +19,11 @@ WARNINGS[20]{path,score}:
       complexity.lizard_cc,warning,sync_all_versions: CC=33 exceeds limit 15,598
   goal/generator/analyzer.py,0.93
     issues[5]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,ContentAnalyzer has cyclomatic complexity 33 (max: 15),275
-      complexity.cyclomatic,warning,short_action_summary has cyclomatic complexity 34 (max: 15),278
-      complexity.cyclomatic,warning,per_file_notes has cyclomatic complexity 29 (max: 15),334
-      complexity.lizard_cc,warning,short_action_summary: CC=34 exceeds limit 15,278
-      complexity.lizard_cc,warning,per_file_notes: CC=29 exceeds limit 15,334
+      complexity.cyclomatic,warning,ContentAnalyzer has cyclomatic complexity 33 (max: 15),274
+      complexity.cyclomatic,warning,short_action_summary has cyclomatic complexity 34 (max: 15),277
+      complexity.cyclomatic,warning,per_file_notes has cyclomatic complexity 29 (max: 15),333
+      complexity.lizard_cc,warning,short_action_summary: CC=34 exceeds limit 15,277
+      complexity.lizard_cc,warning,per_file_notes: CC=29 exceeds limit 15,333
   goal/git_ops.py,0.93
     issues[3]{rule,severity,message,line}:
       complexity.cyclomatic,warning,ensure_git_repository has cyclomatic complexity 23 (max: 15),276
@@ -70,12 +70,16 @@ WARNINGS[20]{path,score}:
       complexity.lizard_cc,warning,check_py011_version_consistency: CC=17 exceeds limit 15,320
   goal/changelog.py,0.97
     issues[2]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,update_changelog has cyclomatic complexity 24 (max: 15),11
-      complexity.lizard_cc,warning,update_changelog: CC=24 exceeds limit 15,11
+      complexity.cyclomatic,warning,update_changelog has cyclomatic complexity 24 (max: 15),9
+      complexity.lizard_cc,warning,update_changelog: CC=24 exceeds limit 15,9
   goal/cli/tests.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,_run_tests_in_subdirs has cyclomatic complexity 20 (max: 15),32
       complexity.lizard_cc,warning,_run_tests_in_subdirs: CC=20 exceeds limit 15,32
+  goal/config/validation.py,0.97
+    issues[2]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,_validate_advanced_section has cyclomatic complexity 21 (max: 15),265
+      complexity.lizard_cc,warning,_validate_advanced_section: CC=21 exceeds limit 15,265
   goal/formatter.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,format_enhanced_summary has cyclomatic complexity 29 (max: 15),265
@@ -104,15 +108,16 @@ WARNINGS[20]{path,score}:
     issues[1]{rule,severity,message,line}:
       complexity.lizard_length,warning,run_case: 175 lines exceeds limit 100,11
 
-ERRORS[26]{path,score}:
+ERRORS[35]{path,score}:
   goal/authors/__init__.py,0.57
     issues[2]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'manager' not found,9
       python.import.resolvable,error,Module 'utils' not found,10
   goal/config/__init__.py,0.57
-    issues[2]{rule,severity,message,line}:
+    issues[3]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'constants' not found,8
       python.import.resolvable,error,Module 'manager' not found,11
+      python.import.resolvable,error,Module 'validation' not found,19
   goal/generator/__init__.py,0.57
     issues[3]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'git_ops' not found,3
@@ -126,6 +131,10 @@ ERRORS[26]{path,score}:
     issues[2]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'manager' not found,10
       python.import.resolvable,error,Module 'spdx' not found,11
+  goal/postcommit/__init__.py,0.57
+    issues[2]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'manager' not found,10
+      python.import.resolvable,error,Module 'actions' not found,11
   goal/push/__init__.py,0.57
     issues[2]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'core' not found,9
@@ -144,6 +153,10 @@ ERRORS[26]{path,score}:
       python.import.resolvable,error,Module 'quality_filter' not found,3
       python.import.resolvable,error,Module 'validator' not found,4
       python.import.resolvable,error,Module 'generator' not found,5
+  goal/validation/__init__.py,0.57
+    issues[2]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'manager' not found,10
+      python.import.resolvable,error,Module 'rules' not found,11
   goal/validators/__init__.py,0.57
     issues[1]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'file_validator' not found,7
@@ -184,28 +197,46 @@ ERRORS[26]{path,score}:
   goal/doctor/logging.py,0.79
     issues[1]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'models' not found,4
+  tests/test_formatter.py,0.79
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'pytest' not found,2
+  tests/test_config_validation.py,0.86
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'pytest' not found,3
+  tests/test_smart_commit_shim.py,0.86
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'pytest' not found,2
+  goal/cli/__init__.py,0.87
+    issues[3]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'version' not found,195
+      python.import.resolvable,error,Module 'nfo' not found,10
+      python.import.resolvable,error,Module 'nfo.terminal' not found,11
   goal/push/stages/commit.py,0.88
     issues[3]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'core' not found,195
       python.import.resolvable,error,Module 'version' not found,199
       python.import.resolvable,error,Module 'changelog' not found,209
-  goal/cli/__init__.py,0.89
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'version' not found,195
-      python.import.resolvable,error,Module 'nfo' not found,12
-      python.import.resolvable,error,Module 'nfo.terminal' not found,13
   goal/recovery/manager.py,0.89
     issues[2]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'strategies' not found,10
       python.import.resolvable,error,Module 'exceptions' not found,19
+  goal/cli/commit_cmd.py,0.90
+    issues[2]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'enhanced_summary' not found,88
+      python.import.resolvable,error,Module 'enhanced_summary' not found,146
   goal/hooks/manager.py,0.90
     issues[2]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'validators.file_validator' not found,15
       python.import.resolvable,error,Module 'git_ops' not found,22
-  goal/cli/commit_cmd.py,0.91
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'enhanced_summary' not found,89
-      python.import.resolvable,error,Module 'enhanced_summary' not found,147
+  goal/postcommit/manager.py,0.93
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'actions' not found,9
+  tests/test_user_config.py,0.93
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'pytest' not found,6
+  goal/validation/manager.py,0.94
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'rules' not found,10
   tests/test_project_doctor.py,0.94
     issues[1]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'pytest' not found,7
@@ -224,6 +255,9 @@ ERRORS[26]{path,score}:
   tests/test_project_bootstrap.py,0.95
     issues[1]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'pytest' not found,9
+  tests/test_git_ops.py,0.96
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'pytest' not found,7
   tests/test_push_e2e.py,0.98
     issues[1]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'pytest' not found,203

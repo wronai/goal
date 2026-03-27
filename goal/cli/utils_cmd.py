@@ -8,12 +8,12 @@ from goal.git_ops import (
     run_git, ensure_git_repository, validate_repo_url, clone_repository
 )
 from goal.formatter import format_status_output
-from goal.config import ensure_config, init_config
-from goal.user_config import get_user_config, show_user_config, initialize_user_config
+from goal.config import init_config
+from goal.user_config import get_user_config, initialize_user_config
 from goal.project_bootstrap import detect_project_types_deep, bootstrap_project
 from goal.package_managers import detect_package_managers, detect_project_language, suggest_package_managers
 from goal.version_validation import validate_project_versions, format_validation_results
-from goal.cli import main, confirm, apply_ticket_prefix
+from goal.cli import main
 from goal.cli.version import get_current_version, bump_version, detect_project_types, sync_all_versions
 
 

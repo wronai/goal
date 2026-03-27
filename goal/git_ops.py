@@ -296,12 +296,12 @@ def ensure_git_repository(auto: bool = False) -> bool:
     cwd_name = Path('.').resolve().name
 
     action = click.prompt(
-        click.style("What would you like to do?", fg='cyan')
-        + f"\n  [1] Initialize git here and connect to a remote  (keeps local files in '{cwd_name}/')"
-        + "\n  [2] Clone a remote repository into this directory  (downloads remote files)"
-        + "\n  [3] Initialize a local-only git repository        (no remote)"
-        + "\n  [4] Exit"
-        + "\nChoose",
+        f"{click.style('What would you like to do?', fg='cyan')}\n"
+        f"  [1] Initialize git here and connect to a remote  (keeps local files in '{cwd_name}/')\n"
+        f"  [2] Clone a remote repository into this directory  (downloads remote files)\n"
+        f"  [3] Initialize a local-only git repository        (no remote)\n"
+        f"  [4] Exit\n"
+        f"Choose",
         type=click.IntRange(1, 4),
         default=1,
     )
@@ -333,12 +333,12 @@ def ensure_git_repository(auto: bool = False) -> bool:
                     click.echo()
 
                     merge_action = click.prompt(
-                        click.style("How should goal combine local and remote files?", fg='cyan')
-                        + "\n  [1] Keep local files, push to remote later     (recommended for new projects)"
-                        + "\n  [2] Merge remote branch into local files       (combine both)"
-                        + "\n  [3] Reset local to remote branch               (overwrite local with remote)"
-                        + "\n  [4] Skip — just keep the remote configured"
-                        + "\nChoose",
+                        f"{click.style('How should goal combine local and remote files?', fg='cyan')}\n"
+                        f"  [1] Keep local files, push to remote later     (recommended for new projects)\n"
+                        f"  [2] Merge remote branch into local files       (combine both)\n"
+                        f"  [3] Reset local to remote branch               (overwrite local with remote)\n"
+                        f"  [4] Skip — just keep the remote configured\n"
+                        f"Choose",
                         type=click.IntRange(1, 4),
                         default=1,
                     )
@@ -350,7 +350,7 @@ def ensure_git_repository(auto: bool = False) -> bool:
                         else:
                             branch_list = '\n'.join(f"  [{i+1}] {b}" for i, b in enumerate(branches))
                             idx = click.prompt(
-                                click.style("Select branch:", fg='cyan') + '\n' + branch_list + '\nChoose',
+                                f"{click.style('Select branch:', fg='cyan')}\n{branch_list}\nChoose",
                                 type=click.IntRange(1, len(branches)),
                                 default=1,
                             )
@@ -436,10 +436,10 @@ def ensure_remote(auto: bool = False) -> bool:
 
     click.echo()
     action = click.prompt(
-        click.style("Would you like to add a remote?", fg='cyan')
-        + "\n  [1] Add remote origin (connect to GitHub/GitLab/etc.)"
-        + "\n  [2] Skip — commit locally without pushing"
-        + "\nChoose",
+        f"{click.style('Would you like to add a remote?', fg='cyan')}\n"
+        f"  [1] Add remote origin (connect to GitHub/GitLab/etc.)\n"
+        f"  [2] Skip — commit locally without pushing\n"
+        f"Choose",
         type=click.IntRange(1, 2),
         default=1,
     )

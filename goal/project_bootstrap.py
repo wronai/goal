@@ -9,7 +9,7 @@ import subprocess
 import shutil
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import click
 

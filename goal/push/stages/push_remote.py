@@ -7,7 +7,7 @@ from typing import Optional
 
 import click
 
-from goal.git_ops import run_git, ensure_remote, get_remote_branch, run_git_with_status, _echo_cmd, HAS_CLICKMD
+from goal.git_ops import run_git, ensure_remote, run_git_with_status, _echo_cmd, HAS_CLICKMD
 from goal.cli import confirm
 
 # Import clickmd if available

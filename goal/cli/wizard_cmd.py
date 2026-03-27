@@ -1,9 +1,8 @@
 """Wizard command for guided setup."""
 
-import os
 import subprocess
 from pathlib import Path
-from typing import Optional, List, Dict, Any
+from typing import Optional, Any
 
 import click
 

@@ -1,7 +1,6 @@
 """Publishing functions - extracted from cli.py."""
 
 import subprocess
-import shutil
 from pathlib import Path
 from typing import List
 

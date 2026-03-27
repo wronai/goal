@@ -1,10 +1,9 @@
 """Validation command for managing custom validation rules."""
 
 import click
-from pathlib import Path
 
 from goal.cli import main
-from goal.validation import ValidationRuleManager, run_custom_validations
+from goal.validation import ValidationRuleManager
 
 
 @main.group()

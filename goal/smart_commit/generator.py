@@ -4,7 +4,7 @@ import re
 import subprocess
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from goal.smart_commit.abstraction import CodeAbstraction
 

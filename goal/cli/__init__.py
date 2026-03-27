@@ -1,10 +1,8 @@
 """Goal CLI package - Split from monolithic cli.py for better maintainability."""
 
 import os
-import sys
 import re
-from pathlib import Path
-from typing import Optional, List, Dict
+from typing import List, Dict
 
 import click
 

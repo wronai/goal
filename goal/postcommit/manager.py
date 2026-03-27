@@ -6,7 +6,7 @@ from typing import Dict, Any, List, Optional
 import yaml
 import click
 
-from .actions import AVAILABLE_ACTIONS, PostCommitAction
+from .actions import AVAILABLE_ACTIONS
 
 
 class PostCommitManager:

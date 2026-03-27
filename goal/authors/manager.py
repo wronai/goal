@@ -4,7 +4,6 @@ from typing import Dict, List, Optional, Any
 from pathlib import Path
 
 import click
-import yaml
 
 from goal.config import ensure_config
 from goal.user_config import UserConfig

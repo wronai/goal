@@ -1,7 +1,6 @@
 """Commit command - extracted from cli.py."""
 
 import click
-import sys
 
 from goal.commit_generator import CommitMessageGenerator
 from goal.git_ops import get_staged_files, get_diff_content, get_diff_stats

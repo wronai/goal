@@ -7,7 +7,6 @@ import click
 
 from goal.cli import main
 from goal.recovery import RecoveryManager
-from goal.git_ops import run_git
 
 
 @main.command()

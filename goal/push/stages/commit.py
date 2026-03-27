@@ -1,7 +1,7 @@
 """Push workflow stages - commit handling."""
 
 import sys
-from typing import Dict, List, Optional, Any, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 
 import click
 

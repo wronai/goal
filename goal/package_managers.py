@@ -5,10 +5,9 @@ This module provides comprehensive support for multiple package managers
 across different programming languages and ecosystems.
 """
 
-import os
 import shutil
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Union
 from dataclasses import dataclass
 import re
 

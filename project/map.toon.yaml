@@ -1,34 +1,38 @@
-# goal | 83f 16253L | python:80,shell:3 | 2026-03-27
-# stats: 508 func | 0 cls | 83 mod | CC̄=5.5 | critical:34 | cycles:0
+# goal | 93f 17858L | python:90,shell:3 | 2026-03-27
+# stats: 581 func | 0 cls | 93 mod | CC̄=5.3 | critical:35 | cycles:0
 # alerts[5]: CC _offer_recovery=41; fan-out execute_push_workflow=37; CC ContentAnalyzer.short_action_summary=34; CC execute_push_workflow=34; CC sync_all_versions=33
 # hotspots[5]: execute_push_workflow fan=37; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; update_changelog fan=23
-# evolution: CC̄ 5.8→5.5 (improved -0.3)
+# evolution: CC̄ 5.3→5.3 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[83]:
+M[93]:
   goal/__init__.py,3
   goal/__main__.py,17
   goal/authors/__init__.py,19
-  goal/authors/manager.py,316
+  goal/authors/manager.py,315
   goal/authors/utils.py,212
-  goal/changelog.py,125
+  goal/changelog.py,123
   goal/cli/__init__.py,211
-  goal/cli/authors_cmd.py,120
-  goal/cli/commit_cmd.py,209
-  goal/cli/config_cmd.py,110
-  goal/cli/doctor_cmd.py,99
-  goal/cli/hooks_cmd.py,72
-  goal/cli/license_cmd.py,199
-  goal/cli/publish.py,136
-  goal/cli/publish_cmd.py,38
+  goal/cli/authors_cmd.py,118
+  goal/cli/commit_cmd.py,208
+  goal/cli/config_cmd.py,129
+  goal/cli/config_validate_cmd.py,50
+  goal/cli/doctor_cmd.py,97
+  goal/cli/hooks_cmd.py,71
+  goal/cli/license_cmd.py,198
+  goal/cli/postcommit_cmd.py,82
+  goal/cli/publish.py,135
+  goal/cli/publish_cmd.py,36
   goal/cli/push_cmd.py,103
-  goal/cli/recover_cmd.py,126
+  goal/cli/recover_cmd.py,125
   goal/cli/utils_cmd.py,207
+  goal/cli/validation_cmd.py,85
   goal/cli/version.py,730
-  goal/cli/wizard_cmd.py,341
+  goal/cli/wizard_cmd.py,340
   goal/commit_generator.py,45
-  goal/config/__init__.py,24
+  goal/config/__init__.py,36
   goal/config/constants.py,436
-  goal/config/manager.py,449
+  goal/config/manager.py,448
+  goal/config/validation.py,487
   goal/deep_analyzer.py,554
   goal/doctor/__init__.py,55
   goal/doctor/core.py,87
@@ -46,17 +50,20 @@ M[83]:
   goal/enhanced_summary.py,26
   goal/formatter.py,402
   goal/generator/__init__.py,14
-  goal/generator/analyzer.py,396
-  goal/generator/generator.py,384
+  goal/generator/analyzer.py,395
+  goal/generator/generator.py,382
   goal/generator/git_ops.py,171
-  goal/git_ops.py,553
+  goal/git_ops.py,566
   goal/hooks/__init__.py,19
   goal/hooks/config.py,105
   goal/hooks/manager.py,309
   goal/license/__init__.py,20
   goal/license/manager.py,589
   goal/license/spdx.py,228
-  goal/package_managers.py,631
+  goal/package_managers.py,630
+  goal/postcommit/__init__.py,27
+  goal/postcommit/actions.py,221
+  goal/postcommit/manager.py,192
   goal/project_bootstrap.py,589
   goal/project_doctor.py,32
   goal/push/__init__.py,56
@@ -82,6 +89,9 @@ M[83]:
   goal/summary/quality_filter.py,328
   goal/summary/validator.py,310
   goal/user_config.py,247
+  goal/validation/__init__.py,27
+  goal/validation/manager.py,190
+  goal/validation/rules.py,220
   goal/validators/__init__.py,25
   goal/validators/file_validator.py,481
   goal/version_validation.py,301
@@ -192,7 +202,7 @@ D:
     get_unstaged_files()
     get_working_tree_files()
     get_diff_stats(cached)
-    get_diff_content(cached)
+    get_diff_content(cached;max_lines)
     read_ticket(path)
     apply_ticket_prefix(title;ticket)
   goal/validators/file_validator.py:
@@ -210,6 +220,13 @@ D:
     validate_files(files;max_size_mb;block_large_files;token_patterns;detect_tokens;exclude_patterns;auto_handle_large)
     handle_large_files(large_files)
     validate_staged_files(config)
+  goal/config/validation.py:
+    e: ConfigValidationError,ConfigValidator,validate_config_file,validate_config_interactive,_auto_fix_config
+    ConfigValidationError(Exception): __init__(2)  # Error raised when configuration validation fails...
+    ConfigValidator: __init__(1),validate(1),_validate_required_sections(0),_validate_project_section(0),_validate_git_section(0),_validate_versioning_section(0),_validate_publishing_section(0),_validate_advanced_section(0),_validate_no_unknown_keys(0)  # Validates Goal configuration files...
+    validate_config_file(config_path;strict)
+    validate_config_interactive(config_path)
+    _auto_fix_config(config;warnings)
   goal/smart_commit/abstraction.py:
     e: CodeAbstraction
     CodeAbstraction: __init__(1),get_domain(1),get_language(1),extract_entities(2),extract_markdown_topics(1),infer_benefit(5),detect_features(2),determine_abstraction_level(1),get_action_verb(1)  # Extracts meaningful abstractions from code changes...
@@ -321,6 +338,14 @@ D:
     list_all_package_managers()
     detect_project_language(project_path)
     suggest_package_managers(project_path)
+  goal/validation/rules.py:
+    e: ValidationRule,MessagePatternRule,FilePatternRule,ScriptRule,CommitSizeRule,MessageLengthRule
+    ValidationRule(ABC): __init__(1),validate(1),get_name(0),validate_config(0)  # Base class for custom validation rules...
+    MessagePatternRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit message against pattern...
+    FilePatternRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate files against pattern rules...
+    ScriptRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Run custom validation script...
+    CommitSizeRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit size (lines changed)...
+    MessageLengthRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit message length...
   goal/cli/utils_cmd.py:
     e: status,init,info,version,package_managers,check_versions,clone,bootstrap
     status(ctx;markdown)
@@ -362,9 +387,27 @@ D:
     license_check(license1;license2)
     license_list(custom)
     license_template(license_id;file)
+  goal/cli/validation_cmd.py:
+    e: validation,validation_run,validation_list,validation_validate,validation_info
+    validation()
+    validation_run()
+    validation_list()
+    validation_validate()
+    validation_info()
   goal/cli/publish_cmd.py:
     e: publish
     publish(ctx;use_make;target;version_arg)
+  goal/postcommit/actions.py:
+    e: PostCommitAction,NotificationAction,WebhookAction,ScriptAction,GitPushAction
+    PostCommitAction(ABC): __init__(1),execute(1),get_name(0),validate_config(0)  # Base class for post-commit actions...
+    NotificationAction(PostCommitAction): get_name(0),validate_config(0),execute(1)  # Send desktop notification after commit...
+    WebhookAction(PostCommitAction): get_name(0),validate_config(0),execute(1)  # Send webhook POST request after commit...
+    ScriptAction(PostCommitAction): get_name(0),validate_config(0),execute(1)  # Run custom script after commit...
+    GitPushAction(PostCommitAction): get_name(0),validate_config(0),execute(1)  # Automatically push after commit...
+  goal/validation/manager.py:
+    e: ValidationRuleManager,run_custom_validations
+    ValidationRuleManager: __init__(1),get_rules(0),get_validation_context(0),validate_all(0),list_rules(0),validate_config(0)  # Manages custom validation rules for Goal...
+    run_custom_validations(project_dir)
   goal/doctor/php.py:
     e: diagnose_php
     diagnose_php(project_dir;auto_fix)
@@ -380,6 +423,17 @@ D:
     e: recover,_get_error_output
     recover(ctx;full;error_file;error_message;no_backup;verbose)
     _get_error_output(error_file;error_message)
+  goal/cli/postcommit_cmd.py:
+    e: postcommit,postcommit_run,postcommit_list,postcommit_validate,postcommit_info
+    postcommit()
+    postcommit_run()
+    postcommit_list()
+    postcommit_validate()
+    postcommit_info()
+  goal/postcommit/manager.py:
+    e: PostCommitManager,run_post_commit_actions
+    PostCommitManager: __init__(1),get_config(0),get_commit_info(0),run_actions(0),list_actions(0),validate_actions(0)  # Manages post-commit actions for Goal...
+    run_post_commit_actions(project_dir)
   goal/doctor/java.py:
     e: diagnose_java
     diagnose_java(project_dir;auto_fix)
@@ -422,7 +476,7 @@ D:
     e: config,config_show,config_validate,config_update,config_set,config_get,setup
     config()
     config_show(ctx;key)
-    config_validate(ctx)
+    config_validate(ctx;strict;fix)
     config_update(ctx)
     config_set(ctx;key;value)
     config_get(ctx;key)
@@ -447,6 +501,9 @@ D:
     RollbackError(RecoveryError): __init__(2)  # Raised when rollback operation fails...
     NetworkError(RecoveryError): __init__(2)  # Raised when network connectivity issues occur...
     QuotaExceededError(RecoveryError): __init__(2)  # Raised when GitHub API quota is exceeded...
+  goal/cli/config_validate_cmd.py:
+    e: validate_cmd
+    validate_cmd(ctx;config;strict;fix)
   goal/doctor/ruby.py:
     e: diagnose_ruby
     diagnose_ruby(project_dir;auto_fix)
@@ -482,24 +539,22 @@ D:
   goal/cli/push_cmd.py:
     e: push
     push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
+  goal/enhanced_summary.py:
   goal/config/__init__.py:
   goal/commit_generator.py:
-  goal/enhanced_summary.py:
   goal/__init__.py:
   goal/__main__.py:
   goal/smart_commit/__init__.py:
   goal/project_doctor.py:
   goal/generator/__init__.py:
-  goal/validators/__init__.py:
   goal/hooks/__init__.py:
+  goal/validators/__init__.py:
   goal/recovery/__init__.py:
   goal/push/__init__.py:
+  goal/postcommit/__init__.py:
   goal/config/constants.py:
+  goal/validation/__init__.py:
   goal/doctor/__init__.py:
-  goal/doctor/models.py:
-    e: Issue,DoctorReport
-    Issue:  # A single diagnosed issue...
-    DoctorReport:  # Aggregated report from a doctor run...
   goal/authors/__init__.py:
   goal/license/__init__.py:
   goal/push/stages/__init__.py:
@@ -512,3 +567,7 @@ D:
     print()
     main()
     self()
+  goal/doctor/models.py:
+    e: Issue,DoctorReport
+    Issue:  # A single diagnosed issue...
+    DoctorReport:  # Aggregated report from a doctor run...

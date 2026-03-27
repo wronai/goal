@@ -1,7 +1,7 @@
-# goal | 508 func | 63f | 18440L | python | 2026-03-27
+# goal | 581 func | 71f | 20900L | python | 2026-03-27
 
 HEALTH:
-  CC̄=5.5  critical=82 (limit:10)  dup=0  cycles=0
+  CC̄=5.3  critical=89 (limit:10)  dup=0  cycles=0
 
 ALERTS[20]:
   !!! cc_exceeded      _offer_recovery = 41 (limit:15)
@@ -15,23 +15,23 @@ ALERTS[20]:
   !!! high_fan_out     QualityValidator.auto_fix = 27 (limit:10)
   !!! high_fan_out     SmartCommitGenerator.analyze_changes = 27 (limit:10)
 
-MODULES[83] (top by size):
+MODULES[93] (top by size):
   M[goal/cli/version.py] 730L C:0 F:18 CC↑33 D:4 (python)
   M[goal/recovery/strategies.py] 687L C:7 F:30 CC↑11 D:0 (python)
   M[goal/summary/generator.py] 675L C:1 F:16 CC↑26 D:0 (python)
-  M[goal/package_managers.py] 631L C:1 F:12 CC↑11 D:1 (python)
+  M[goal/package_managers.py] 630L C:1 F:12 CC↑11 D:1 (python)
   M[goal/project_bootstrap.py] 589L C:0 F:9 CC↑25 D:3 (python)
   M[goal/license/manager.py] 589L C:1 F:9 CC↑20 D:1 (python)
+  M[goal/git_ops.py] 566L C:0 F:23 CC↑23 D:13 (python)
   M[goal/deep_analyzer.py] 554L C:1 F:22 CC↑16 D:0 (python)
-  M[goal/git_ops.py] 553L C:0 F:23 CC↑23 D:12 (python)
   M[goal/smart_commit/generator.py] 524L C:1 F:18 CC↑24 D:0 (python)
+  M[goal/config/validation.py] 487L C:2 F:13 CC↑21 D:2 (python)
   M[goal/doctor/python.py] 486L C:1 F:16 CC↑17 D:0 (python)
   M[goal/validators/file_validator.py] 481L C:4 F:12 CC↑23 D:2 (python)
-  M[goal/config/manager.py] 449L C:1 F:25 CC↑10 D:5 (python)
+  M[goal/config/manager.py] 448L C:1 F:25 CC↑10 D:6 (python)
   M[goal/config/constants.py] 436L C:0 F:0 CC↑0 D:0 (python)
   M[goal/formatter.py] 402L C:1 F:14 CC↑29 D:3 (python)
-  M[goal/generator/analyzer.py] 396L C:2 F:16 CC↑34 D:0 (python)
-  LANGS: python:80/shell:3
+  LANGS: python:90/shell:3
 
 HOTSPOTS[10]:
   ★ execute_push_workflow fan=37  // Execute the complete push workflow.
@@ -53,4 +53,4 @@ REFACTOR[15]:
 EVOLUTION:
   2026-03-08 CC̄=6.0 crit=66 12955L // Automated analysis
   2026-03-15 CC̄=6.0 crit=68 13352L // Automated analysis
-  2026-03-27 CC̄=5.5 crit=82 18440L // Automated analysis
+  2026-03-27 CC̄=5.3 crit=89 20900L // Automated analysis

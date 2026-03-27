@@ -1,7 +1,6 @@
 """License commands for Goal."""
 
 import click
-from pathlib import Path
 
 from goal.cli import main
 from goal.user_config import UserConfig

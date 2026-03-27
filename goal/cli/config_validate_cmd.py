@@ -1,6 +1,5 @@
 """Goal config validate command - validates goal.yaml configuration."""
 
-import os
 import sys
 from typing import Optional
 

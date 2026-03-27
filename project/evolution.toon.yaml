@@ -1,4 +1,4 @@
-# code2llm/evolution | 508 func | 63f | 2026-03-27
+# code2llm/evolution | 581 func | 71f | 2026-03-27
 
 NEXT[10] (ranked by impact):
   [1] !! SPLIT           goal/cli/version.py
@@ -48,10 +48,10 @@ RISKS[3]:
   ⚠ Splitting goal/summary/generator.py may break 16 import paths
 
 METRICS-TARGET:
-  CC̄:          5.5 → ≤3.8
+  CC̄:          5.3 → ≤3.7
   max-CC:      41 → ≤20
   god-modules: 9 → 0
-  high-CC(≥15): 34 → ≤17
+  high-CC(≥15): 35 → ≤17
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -79,4 +79,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=5.8 → now CC̄=5.5
+  prev CC̄=5.3 → now CC̄=5.3

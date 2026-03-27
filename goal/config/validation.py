@@ -10,8 +10,6 @@ from pathlib import Path
 
 import click
 
-from goal.config.constants import DEFAULT_CONFIG
-
 
 class ConfigValidationError(Exception):
     """Error raised when configuration validation fails."""

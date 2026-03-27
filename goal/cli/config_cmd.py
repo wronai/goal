@@ -2,8 +2,8 @@
 
 import click
 
-from goal.config import GoalConfig, load_config, ensure_config
-from goal.user_config import get_user_config, show_user_config, initialize_user_config
+from goal.config import ensure_config
+from goal.user_config import show_user_config, initialize_user_config
 from goal.cli import main
 
 

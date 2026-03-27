@@ -3,8 +3,7 @@
 import re
 import os
 from collections import Counter, defaultdict
-from typing import List, Dict, Tuple, Optional
-from pathlib import Path
+from typing import List, Dict, Optional
 
 
 class ChangeAnalyzer:

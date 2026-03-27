@@ -1,8 +1,8 @@
 flowchart TD
     goal__authors["goal.authors<br/>21 funcs"]
     goal__changelog["goal.changelog<br/>1 funcs"]
-    goal__cli["goal.cli<br/>84 funcs"]
-    goal__config["goal.config<br/>25 funcs"]
+    goal__cli["goal.cli<br/>95 funcs"]
+    goal__config["goal.config<br/>38 funcs"]
     goal__deep_analyzer["goal.deep_analyzer<br/>22 funcs"]
     goal__doctor["goal.doctor<br/>32 funcs"]
     goal__formatter["goal.formatter<br/>14 funcs"]
@@ -17,14 +17,15 @@ flowchart TD
     goal__smart_commit["goal.smart_commit<br/>27 funcs"]
     goal__summary["goal.summary<br/>46 funcs"]
     goal__user_config["goal.user_config<br/>12 funcs"]
+    goal__validation["goal.validation<br/>26 funcs"]
     goal__validators["goal.validators<br/>12 funcs"]
     goal__version_validation["goal.version_validation<br/>10 funcs"]
     goal__push ==>|27| goal__git_ops
     goal__cli ==>|19| goal__git_ops
     goal__push ==>|17| goal__cli
+    goal__cli ==>|13| goal__config
     goal__cli ==>|12| goal__user_config
     goal__deep_analyzer ==>|11| goal__user_config
-    goal__cli ==>|10| goal__config
     goal__validators ==>|9| goal__git_ops
     goal__cli ==>|7| goal__license
     goal__summary ==>|6| goal__user_config
@@ -32,12 +33,13 @@ flowchart TD
     goal__push ==>|4| goal__formatter
     goal__cli ==>|4| goal__version_validation
     goal__cli ==>|4| goal__package_managers
-    goal__cli -->|3| goal__hooks
-    goal__cli -->|3| goal__authors
     goal__cli -->|3| goal__project_bootstrap
+    goal__cli -->|3| goal__authors
+    goal__cli -->|3| goal__hooks
     goal__doctor -->|3| goal__user_config
     goal__validators -->|2| goal__user_config
     goal__push -->|2| goal__project_bootstrap
+    goal__validation -->|2| goal__git_ops
     goal__smart_commit -->|2| goal__user_config
     goal__authors -->|2| goal__user_config
     goal__project_bootstrap -->|1| goal__doctor
@@ -48,6 +50,7 @@ flowchart TD
     goal__cli -->|1| goal__doctor
     goal__cli -->|1| goal__formatter
     goal__cli -->|1| goal__push
+    goal__config -->|1| goal__user_config
     goal__package_managers -->|1| goal__user_config
     goal__authors -->|1| goal__config
     goal__push -->|1| goal__changelog

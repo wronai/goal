@@ -4,9 +4,7 @@ import os
 import re
 import subprocess
 from abc import ABC, abstractmethod
-from typing import Dict, Any, Optional, List
-from pathlib import Path
-import click
+from typing import Dict, Any, Optional
 
 
 class ValidationRule(ABC):

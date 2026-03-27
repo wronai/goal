@@ -4,7 +4,7 @@ import subprocess
 import os
 import shutil
 from pathlib import Path
-from typing import List, Dict
+from typing import List
 
 from goal.git_ops import run_git, run_command
 from goal.cli.version import PROJECT_TYPES

@@ -4,12 +4,12 @@
 
 - **Project**: /home/tom/github/wronai/goal
 - **Primary Language**: python
-- **Languages**: python: 80, shell: 5
+- **Languages**: python: 90, shell: 5
 - **Analysis Mode**: static
-- **Total Functions**: 508
-- **Total Classes**: 44
-- **Modules**: 85
-- **Entry Points**: 375
+- **Total Functions**: 581
+- **Total Classes**: 59
+- **Modules**: 95
+- **Entry Points**: 445
 
 ## Architecture by Module
 
@@ -41,6 +41,11 @@
 - **Functions**: 19
 - **File**: `version.py`
 
+### goal.validation.rules
+- **Functions**: 19
+- **Classes**: 6
+- **File**: `rules.py`
+
 ### goal.smart_commit.generator
 - **Functions**: 18
 - **Classes**: 1
@@ -50,6 +55,11 @@
 - **Functions**: 16
 - **Classes**: 2
 - **File**: `analyzer.py`
+
+### goal.postcommit.actions
+- **Functions**: 16
+- **Classes**: 5
+- **File**: `actions.py`
 
 ### goal.summary.generator
 - **Functions**: 16
@@ -81,6 +91,11 @@
 - **Classes**: 1
 - **File**: `quality_filter.py`
 
+### goal.config.validation
+- **Functions**: 13
+- **Classes**: 2
+- **File**: `validation.py`
+
 ### goal.summary.validator
 - **Functions**: 13
 - **Classes**: 1
@@ -95,20 +110,6 @@
 - **Functions**: 12
 - **Classes**: 4
 - **File**: `file_validator.py`
-
-### goal.package_managers
-- **Functions**: 12
-- **Classes**: 1
-- **File**: `package_managers.py`
-
-### goal.authors.manager
-- **Functions**: 12
-- **Classes**: 1
-- **File**: `manager.py`
-
-### goal.version_validation
-- **Functions**: 10
-- **File**: `version_validation.py`
 
 ## Key Entry Points
 
@@ -177,6 +178,10 @@ Returns:
     Tuple of (section_text, test_scenarios, has_changes)
 - **Calls**: self.quality_filter.categorize_files, fa.get, fa.get, fa.get, fa.get, categorized.items, change_lines.append, change_lines.append
 
+### goal.config.validation.ConfigValidator._validate_advanced_section
+> Validate advanced configuration.
+- **Calls**: self.config.get, advanced.get, advanced.get, advanced.get, file_validation.get, file_validation.get, file_validation.get, tests.get
+
 ### goal.smart_commit.generator.SmartCommitGenerator.generate_functional_body
 > Generate a functional, human-readable commit body.
 - **Calls**: analysis.get, analysis.get, analysis.get, analysis.get, analysis.get, analysis.get, analysis.get, parts.append
@@ -201,6 +206,14 @@ Returns:
 > PY010: Check for consistent project name across all config files.
 - **Calls**: re.search, name_match.group, setup_py.exists, goal_yaml.exists, Issue, self.issues.append, setup_py.read_text, re.search
 
+### goal.config.validation.ConfigValidator._validate_project_section
+> Validate project configuration.
+- **Calls**: self.config.get, project.get, project.get, project.get, self.warnings.append, isinstance, self.errors.append, isinstance
+
+### goal.config.validation.ConfigValidator._validate_git_section
+> Validate git configuration.
+- **Calls**: self.config.get, git.get, commit.get, commit.get, commit.get, git.get, remote.get, remote.get
+
 ### goal.recovery.manager.RecoveryManager.recover_from_push_failure
 > Attempt to recover from a git push failure.
 - **Calls**: click.echo, self._create_backup, click.style, self._identify_strategy, click.echo, strategy.recover, click.echo, click.echo
@@ -214,13 +227,13 @@ git push failures including:
 - Authentication
 - **Calls**: main.command, click.option, click.option, click.option, click.option, click.option, os.getcwd, goal.cli.recover_cmd._get_error_output
 
-### goal.doctor.python.PythonDiagnostics.check_py009_string_authors
-> PY009: Check for authors in deprecated string format (PEP 621 requires objects).
-- **Calls**: re.search, authors_match.group, re.compile, None.splitlines, Issue, self.issues.append, line.strip, string_author_pattern.match
-
 ### goal.doctor.nodejs.diagnose_nodejs
 > Run all Node.js-specific diagnostics.
 - **Calls**: json.dumps, data.get, json.dumps, pkg_json.exists, json.loads, data.get, issues.append, data.get
+
+### goal.doctor.python.PythonDiagnostics.check_py009_string_authors
+> PY009: Check for authors in deprecated string format (PEP 621 requires objects).
+- **Calls**: re.search, authors_match.group, re.compile, None.splitlines, Issue, self.issues.append, line.strip, string_author_pattern.match
 
 ### goal.generator.generator.CommitMessageGenerator._build_summary_section
 > Build high-level summary section.
@@ -229,18 +242,6 @@ git push failures including:
 ### goal.recovery.strategies.AuthErrorStrategy.recover
 > Attempt to recover from authentication error.
 - **Calls**: click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.style
-
-### goal.doctor.python.diagnose_python
-> Run all Python-specific diagnostics.
-- **Calls**: pyproject.read_text, PythonDiagnostics, diag.check_py002_build_system, diag.check_py003_license_classifiers, diag.check_py004_deprecated_backends, diag.check_py005_license_table, diag.check_py006_duplicate_authors, diag.check_py007_requires_python
-
-### goal.cli.license_cmd.license_create
-> Create a LICENSE file with the specified license.
-- **Calls**: license.command, click.argument, click.option, click.option, click.option, goal.license.spdx.validate_spdx_id, goal.license.manager.LicenseManager.create_license_file, LicenseManager
-
-### goal.cli.utils_cmd.status
-> Show current git status and version info.
-- **Calls**: main.command, click.option, goal.cli.version.get_current_version, goal.git_ops.get_remote_branch, goal.git_ops.get_staged_files, goal.git_ops.get_unstaged_files, ctx.obj.get, goal.formatter.format_status_output
 
 ## Process Flows
 
@@ -373,6 +374,11 @@ wizard [goal.cli.wizard_cmd]
 - **Methods**: 10
 - **Key Methods**: goal.authors.manager.AuthorsManager.__init__, goal.authors.manager.AuthorsManager.get_authors, goal.authors.manager.AuthorsManager.add_author, goal.authors.manager.AuthorsManager.remove_author, goal.authors.manager.AuthorsManager.update_author, goal.authors.manager.AuthorsManager.find_author, goal.authors.manager.AuthorsManager.list_authors, goal.authors.manager.AuthorsManager.get_current_author, goal.authors.manager.AuthorsManager.import_from_git, goal.authors.manager.AuthorsManager.export_to_contributors
 
+### goal.config.validation.ConfigValidator
+> Validates Goal configuration files.
+- **Methods**: 9
+- **Key Methods**: goal.config.validation.ConfigValidator.__init__, goal.config.validation.ConfigValidator.validate, goal.config.validation.ConfigValidator._validate_required_sections, goal.config.validation.ConfigValidator._validate_project_section, goal.config.validation.ConfigValidator._validate_git_section, goal.config.validation.ConfigValidator._validate_versioning_section, goal.config.validation.ConfigValidator._validate_publishing_section, goal.config.validation.ConfigValidator._validate_advanced_section, goal.config.validation.ConfigValidator._validate_no_unknown_keys
+
 ### goal.smart_commit.abstraction.CodeAbstraction
 > Extracts meaningful abstractions from code changes.
 - **Methods**: 9
@@ -403,12 +409,6 @@ wizard [goal.cli.wizard_cmd]
 - **Methods**: 6
 - **Key Methods**: goal.recovery.strategies.DivergentHistoryStrategy.can_handle, goal.recovery.strategies.DivergentHistoryStrategy.recover, goal.recovery.strategies.DivergentHistoryStrategy._rebase_changes, goal.recovery.strategies.DivergentHistoryStrategy._merge_changes, goal.recovery.strategies.DivergentHistoryStrategy._pull_changes, goal.recovery.strategies.DivergentHistoryStrategy._force_push
 - **Inherits**: RecoveryStrategy
-
-### goal.recovery.strategies.RecoveryStrategy
-> Base class for all recovery strategies.
-- **Methods**: 5
-- **Key Methods**: goal.recovery.strategies.RecoveryStrategy.__init__, goal.recovery.strategies.RecoveryStrategy.can_handle, goal.recovery.strategies.RecoveryStrategy.recover, goal.recovery.strategies.RecoveryStrategy.run_git, goal.recovery.strategies.RecoveryStrategy.run_git_with_output
-- **Inherits**: ABC
 
 ## Data Transformation Functions
 
@@ -459,13 +459,47 @@ This is a convenience function that extracts validation
 > Validate the LICENSE file.
 - **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
 
+### goal.cli.config_validate_cmd.validate_cmd
+> Validate goal.yaml configuration file.
+
+Checks that the configuration file is valid, complete, and f
+- **Output to**: click.command, click.option, click.option, click.option, click.echo
+
+### goal.cli.postcommit_cmd.postcommit_validate
+> Validate post-commit action configuration.
+- **Output to**: postcommit.command, PostCommitManager, click.echo, click.echo, manager.validate_actions
+
 ### goal.cli.commit_cmd.validate
 > Validate commit summary against quality gates.
 - **Output to**: main.command, click.option, click.option, goal.git_ops.get_staged_files, goal.git_ops.get_diff_stats
 
+### goal.cli.validation_cmd.validation_validate
+> Validate rule configurations.
+- **Output to**: validation.command, ValidationRuleManager, click.echo, click.echo, manager.validate_config
+
 ### goal.cli.config_cmd.config_validate
 > Validate goal.yaml configuration.
-- **Output to**: config.command, ctx.obj.get, cfg.validate, goal.config.manager.ensure_config, click.echo
+
+Checks that the configuration file is valid, complete, and follow
+- **Output to**: config.command, click.option, click.option, click.echo, click.style
+
+### goal.postcommit.manager.PostCommitManager.validate_actions
+> Validate all configured actions.
+
+Returns:
+    True if all actions are valid
+- **Output to**: self.get_config, action_config.get, action_class, click.echo, action.validate_config
+
+### goal.postcommit.actions.PostCommitAction.validate_config
+> Validate action configuration.
+
+### goal.postcommit.actions.NotificationAction.validate_config
+
+### goal.postcommit.actions.WebhookAction.validate_config
+
+### goal.postcommit.actions.ScriptAction.validate_config
+
+### goal.postcommit.actions.GitPushAction.validate_config
 
 ### goal.config.manager.GoalConfig.validate
 > Validate the configuration.
@@ -473,64 +507,26 @@ This is a convenience function that extracts validation
 Returns a list of validation errors (empty if valid).
 - **Output to**: self.get, self.get, self.get, self.load, self.get
 
-### goal.summary.validator.QualityValidator.validate
-> Validate summary against all quality gates.
+### goal.config.validation.ConfigValidator.validate
+> Validate the configuration.
 
-Returns: {valid: bool, errors: [], warnings: [], score:
-- **Output to**: summary.get, summary.get, None.get, summary.get, metrics.get
-
-### goal.summary.validator.QualityValidator._validate_title
-> Validate title quality.
-- **Output to**: self.filter.has_banned_words, None.get, len, errors.append, fixes.append
-
-### goal.summary.validator.QualityValidator._validate_intent
-> Validate intent classification.
-- **Output to**: self.filter.classify_intent_smart, isinstance, None.get, isinstance, agg.get
-
-### goal.summary.validator.QualityValidator._validate_metrics
-> Validate complexity metrics.
-- **Output to**: metrics.get, metrics.get, abs, warnings.append, fixes.append
-
-### goal.summary.validator.QualityValidator._validate_relations
-> Validate relations quality.
-- **Output to**: self.filter.dedupe_relations, self.filter.filter_generic_nodes, len, len, errors.append
-
-### goal.summary.validator.QualityValidator._validate_files
-> Validate file list quality.
-- **Output to**: self.filter.dedupe_files, len, len, len, errors.append
-
-### goal.summary.validator.QualityValidator._validate_capabilities
-> Validate capabilities requirements.
-- **Output to**: len, errors.append, fixes.append, len, len
-
-### goal.summary.validator.QualityValidator._validate_body
-> Validate summary body metrics exposure.
-- **Output to**: summary.get, sum, errors.append, fixes.append, kw.lower
-
-### goal.summary.validator.QualityValidator._validate_value_score
-> Validate enhanced summary value score.
-- **Output to**: None.get, isinstance, metrics.get, None.get, isinstance
-
-### goal.summary.validate_summary
-> Validate summary against quality gates.
-
-Returns: {valid: bool, errors: [], warnings: [], score: int
-- **Output to**: QualityValidator, validator.validate, summary.get
-
-### goal.summary.generator.EnhancedSummaryGenerator._format_changes_section
-> Format the CHANGES section with per-file breakdown.
-
+Args:
+    strict: If True, warnings are treated as errors
+    
 Returns:
-    Tuple of (section_text, test_scena
-- **Output to**: self.quality_filter.categorize_files, fa.get, fa.get, fa.get, fa.get
+- **Output to**: self._validate_required_sections, self._validate_project_section, self._validate_git_section, self._validate_versioning_section, self._validate_publishing_section
 
-### goal.summary.generator.EnhancedSummaryGenerator._format_testing_section
-> Format the TESTING section with concrete test scenarios.
-- **Output to**: test_lines.append, test_lines.append, None.join, test_lines.append, len
+### goal.config.validation.ConfigValidator._validate_required_sections
+> Validate that required sections exist.
+- **Output to**: self.errors.append
 
-### goal.summary.generator.EnhancedSummaryGenerator._format_dependencies_section
-> Format the DEPENDENCIES section with import flow.
-- **Output to**: relations.get, None.join, relations.get, dep_lines.append, relations.get
+### goal.config.validation.ConfigValidator._validate_project_section
+> Validate project configuration.
+- **Output to**: self.config.get, project.get, project.get, project.get, self.warnings.append
+
+### goal.config.validation.ConfigValidator._validate_git_section
+> Validate git configuration.
+- **Output to**: self.config.get, git.get, commit.get, commit.get, commit.get
 
 ## Behavioral Patterns
 
@@ -573,6 +569,7 @@ Functions exposed as public API (no underscore prefix):
 - `goal.summary.generator.EnhancedSummaryGenerator.calculate_quality_metrics` - 26 calls
 - `goal.user_config.prompt_for_license` - 25 calls
 - `goal.recovery.strategies.DivergentHistoryStrategy.recover` - 25 calls
+- `goal.config.validation.validate_config_file` - 25 calls
 - `goal.smart_commit.abstraction.CodeAbstraction.extract_entities` - 25 calls
 - `goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency` - 25 calls
 - `goal.validators.file_validator.check_dot_folders` - 24 calls
@@ -580,9 +577,8 @@ Functions exposed as public API (no underscore prefix):
 - `goal.git_ops.ensure_remote` - 23 calls
 - `goal.recovery.manager.RecoveryManager.recover_from_push_failure` - 23 calls
 - `goal.cli.recover_cmd.recover` - 23 calls
-- `goal.doctor.python.PythonDiagnostics.check_py009_string_authors` - 23 calls
 - `goal.doctor.nodejs.diagnose_nodejs` - 23 calls
-- `goal.push.core.show_workflow_preview` - 22 calls
+- `goal.doctor.python.PythonDiagnostics.check_py009_string_authors` - 23 calls
 
 ## System Interactions
 

@@ -2,7 +2,7 @@
 
 import re
 from pathlib import Path
-from typing import List, Tuple
+from typing import List
 
 from goal.doctor.models import Issue
 
