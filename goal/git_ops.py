@@ -48,7 +48,7 @@ def _echo_cmd(args: List[str]) -> None:
     """Display a git command that is about to run, for transparency."""
     cmd_str = ' '.join(args)
     if HAS_CLICKMD:
-        echo_md(f"```bash\n{' '.join(args)}\n```", fg='bright_black')
+        echo_md(f"```bash\n{' '.join(args)}\n```")
     else:
         click.echo(click.style(f"  → {cmd_str}", fg='bright_black'))
 
@@ -71,12 +71,12 @@ def _run_git_verbose(*args, capture=True) -> subprocess.CompletedProcess:
     if not capture and args[0] in ['push', 'pull', 'commit']:
         if result.returncode == 0:
             if HAS_CLICKMD:
-                echo_md(f"✅ **Success**: {operation} completed", fg='green')
+                echo_md(f"✅ **Success**: {operation} completed")
             else:
                 click.echo(click.style(f"✅ Success: {operation} completed", fg='green'))
         else:
             if HAS_CLICKMD:
-                echo_md(f"❌ **Error**: {operation} failed", fg='red')
+                echo_md(f"❌ **Error**: {operation} failed")
             else:
                 click.echo(click.style(f"❌ Error: {operation} failed", fg='red'))
     
@@ -112,12 +112,12 @@ def run_git_with_status(*args, capture=True, show_output=False) -> subprocess.Co
     # Show exit status
     if result.returncode == 0:
         if HAS_CLICKMD:
-            echo_md(f"✅ **Exit code**: {result.returncode}", fg='green')
+            echo_md(f"✅ **Exit code**: {result.returncode}")
         else:
             click.echo(click.style(f"✅ Exit code: {result.returncode}", fg='green'))
     else:
         if HAS_CLICKMD:
-            echo_md(f"❌ **Exit code**: {result.returncode}", fg='red')
+            echo_md(f"❌ **Exit code**: {result.returncode}")
         else:
             click.echo(click.style(f"❌ Exit code: {result.returncode}", fg='red'))
     

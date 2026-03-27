@@ -1,5 +1,60 @@
 ## [Unreleased]
 
+## [2.1.108] - 2026-03-27
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+- Update docs/commands.md
+- Update docs/user-config.md
+- Update examples/license-management/README.md
+- Update examples/multi-author/README.md
+- Update examples/wizard-setup/README.md
+
+### Other
+- Update .gitignore
+
+## [2.2.0] - 2026-03-27
+
+### Added
+- **goal wizard** command - Interactive guided setup for new projects
+  - Git repository initialization and remote configuration
+  - User configuration (name, email, license)
+  - Project configuration (name, description, versioning strategy)
+  - Complete setup summary
+
+- **goal license** command - Comprehensive license management
+  - Create and update LICENSE files with 8 common license templates
+  - Custom license template support
+  - SPDX license ID validation
+  - License compatibility checking
+  - Automatic template variable substitution ({year}, {fullname})
+
+- **goal authors** command - Multi-author project support
+  - Add, remove, update project authors
+  - Import authors from git history
+  - Export to CONTRIBUTORS.md
+  - Find authors by name, email, or alias
+
+- **Co-author support** in commit messages
+  - `--co-author` flag for `goal commit` command
+  - Automatic formatting of co-author trailers
+  - Support for multiple co-authors
+
+### Changed
+- Improved error messages with actionable suggestions
+- Enhanced subprocess error handling in git operations
+- Updated commit command to support co-author attribution
+
+### Fixed
+- Removed outdated build-system issue from TODO.md
+- Fixed import error in license module (missing Tuple type hint)
+
+### Docs
+- Updated TODO.md with v2.2.0 completion status
+- Added documentation for new commands (will be updated in docs/)
+
 ## [2.1.107] - 2026-03-27
 
 ### Docs

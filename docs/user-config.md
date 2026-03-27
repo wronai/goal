@@ -449,6 +449,92 @@ For CI/CD, pre-configure ~/.goal:
   run: goal --all
 ```
 
+## Authors Configuration
+
+Goal supports multi-author projects with team-based author management. Authors are configured per project in `goal.yaml`, while your personal author information remains in `~/.goal`.
+
+### Personal Author Configuration
+
+Your personal author information is stored in `~/.goal`:
+
+```json
+{
+  "author_name": "John Doe",
+  "author_email": "john@example.com",
+  "license": "MIT",
+  "license_name": "MIT License",
+  "license_classifier": "License :: OSI Approved :: MIT License"
+}
+```
+
+### Project Authors Configuration
+
+Project authors are stored in the project's `goal.yaml`:
+
+```yaml
+authors:
+  - name: Alice Chen
+    email: alice@company.com
+    role: Lead Developer
+    alias: alice
+  - name: Bob Smith
+    email: bob@company.com
+    role: Designer
+    alias: bob
+```
+
+### Managing Authors
+
+Use the `goal authors` command to manage project authors:
+
+```bash
+# Add an author
+goal authors add "Alice Chen" alice@company.com --role "Lead Developer"
+
+# List all authors
+goal authors list
+
+# Import from git history
+goal authors import
+
+# Export to CONTRIBUTORS.md
+goal authors export
+```
+
+### Co-author Support
+
+Add co-authors to commits using the `--co-author` flag:
+
+```bash
+goal commit --co-author "Alice Chen <alice@company.com>"
+goal commit --co-author "Alice <alice@company.com>" --co-author "Bob <bob@company.com>"
+```
+
+This automatically adds co-author trailers to the commit message:
+
+```
+feat: implement new feature
+
+Co-authored-by: Alice Chen <alice@company.com>
+Co-authored-by: Bob Smith <bob@company.com>
+```
+
+### Author Aliases
+
+Authors can have short aliases for quick reference:
+
+```bash
+# Add with alias
+goal authors add "Very Long Name" long@example.com --alias "longname"
+
+# Use in commits
+goal commit --co-author "longname <long@example.com>"
+```
+
+### Current Author Detection
+
+Goal automatically detects the current author by matching your email from `~/.goal` with the project authors list. The current author is marked with `[you]` in the authors list output.
+
 ## FAQ
 
 **Q: Does Goal modify LICENSE files?**

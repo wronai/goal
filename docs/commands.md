@@ -348,6 +348,154 @@ goal config update
 | 4 | Configuration error |
 | 5 | Tests failed (when using --yes) |
 
+### `goal wizard`
+
+Interactive guided setup for new projects.
+
+```bash
+goal wizard [OPTIONS]
+```
+
+**Options:**
+- `--reset`: Reset and reconfigure everything
+- `--skip-git`: Skip git repository setup
+- `--skip-user`: Skip user configuration
+- `--skip-project`: Skip project configuration
+
+**Description:**
+The wizard walks you through complete project setup:
+- Git repository initialization and remote configuration
+- User configuration (name, email, license preference)
+- Project configuration (name, description, versioning strategy)
+- Commit message strategy and changelog settings
+
+**Examples:**
+```bash
+goal wizard                    # Full interactive setup
+goal wizard --skip-git         # Skip git setup
+goal wizard --reset            # Reset all configuration
+```
+
+### `goal license`
+
+Manage project licenses.
+
+```bash
+goal license <SUBCOMMAND> [OPTIONS]
+```
+
+**Subcommands:**
+
+#### `goal license create <license_id>`
+Create a LICENSE file with the specified license.
+
+**Options:**
+- `--fullname, -n TEXT`: Copyright holder full name
+- `--year, -y INTEGER`: Copyright year
+- `--force, -f`: Overwrite existing LICENSE file
+
+**Examples:**
+```bash
+goal license create MIT --fullname "John Doe"
+goal license create Apache-2.0 --year 2024
+```
+
+#### `goal license update`
+Update existing LICENSE file.
+
+**Options:**
+- `--license, -l TEXT`: New SPDX license ID
+- `--fullname, -n TEXT`: New copyright holder name
+- `--year, -y INTEGER`: New copyright year
+
+#### `goal license validate`
+Validate the LICENSE file.
+
+#### `goal license info <license_id>`
+Show information about a license.
+
+#### `goal license check <license1> <license2>`
+Check compatibility between two licenses.
+
+#### `goal license list`
+List available license templates.
+
+**Options:**
+- `--custom`: Show only custom templates
+
+#### `goal license template <license_id>`
+Add or show custom license templates.
+
+**Options:**
+- `--file, -f PATH`: Template file path to add
+
+### `goal authors`
+
+Manage project authors and team members.
+
+```bash
+goal authors <SUBCOMMAND> [OPTIONS]
+```
+
+**Subcommands:**
+
+#### `goal authors list`
+List all project authors.
+
+#### `goal authors add <name> <email>`
+Add an author to the project.
+
+**Options:**
+- `--role, -r TEXT`: Author role or title
+- `--alias, -a TEXT`: Short alias for reference
+
+**Examples:**
+```bash
+goal authors add "Jane Doe" jane@example.com --role "Developer"
+goal authors add "Bob Smith" bob@company.com --alias "bob"
+```
+
+#### `goal authors remove <email>`
+Remove an author from the project.
+
+#### `goal authors update <email>`
+Update an author's information.
+
+**Options:**
+- `--name, -n TEXT`: New name
+- `--role, -r TEXT`: New role
+- `--alias, -a TEXT`: New alias
+
+#### `goal authors import`
+Import authors from git history.
+
+#### `goal authors export`
+Export authors to CONTRIBUTORS.md.
+
+#### `goal authors find <identifier>`
+Find an author by name, email, or alias.
+
+#### `goal authors current`
+Show current user's author information.
+
+#### `goal authors co-author <name> <email>`
+Generate a co-author trailer for commit messages.
+
+### Co-author Support
+
+Add co-authors to commits using the `--co-author` flag:
+
+```bash
+goal commit --co-author "Jane Doe <jane@example.com>"
+goal commit --co-author "Jane <jane@example.com>" --co-author "Bob <bob@example.com>"
+```
+
+The co-author trailers are automatically formatted as:
+```
+Co-authored-by: Jane Doe <jane@example.com>
+Co-authored-by: Bob Smith <bob@example.com>
+```
+
 ## Environment Variables
 
 | Variable | Description |

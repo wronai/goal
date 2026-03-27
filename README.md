@@ -4,7 +4,7 @@
 # Goal
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.107-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1.108-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/pypi-goal-orange.svg" alt="PyPI">
@@ -44,6 +44,66 @@ goal push      # Runs tests, suggests a commit, bumps patch, updates changelog, 
 
 # 3. CI/CD or cron-driven release
 goal --all --bump minor   # Non-interactive; perfect for nightly builds or release pipelines.
+```
+
+## 🆕 What's New in v2.2.0
+
+> **Wizard Setup, License Management & Multi-Author Support** — Complete project initialization, professional license handling, and team collaboration features
+
+### ✨ New Features
+
+**🧙‍♂️ Interactive Setup Wizard**
+- One-command project initialization with `goal wizard`
+- Guided git repository setup and remote configuration
+- Interactive user configuration (name, email, license)
+- Project configuration with versioning and commit strategies
+- Complete setup summary with next steps
+
+```bash
+# New project setup in one command
+goal wizard
+```
+
+**📄 Professional License Management**
+- Create and update LICENSE files with 8 common license templates
+- Custom license template support for proprietary licenses
+- SPDX license ID validation with helpful error messages
+- License compatibility checking between different licenses
+- Automatic template variable substitution ({year}, {fullname})
+
+```bash
+# Create MIT license
+goal license create MIT --fullname "Your Name"
+
+# Check license compatibility
+goal license check MIT Apache-2.0
+```
+
+**👥 Multi-Author Project Support**
+- Team-based author management stored in project configuration
+- Import authors from git history automatically
+- Co-author support in commit messages with `--co-author` flag
+- Export team list to CONTRIBUTORS.md
+- Find authors by name, email, or alias
+
+```bash
+# Add team members
+goal authors add "Jane Doe" jane@example.com --role "Developer"
+
+# Commit with co-authors
+goal commit --co-author "Jane Doe <jane@example.com>"
+```
+
+### 🛠️ Enhanced Commands
+
+All new commands integrate seamlessly with existing Goal workflows:
+
+```bash
+# Complete workflow with co-authors
+goal push --co-author "Jane Doe <jane@example.com>"
+
+# Automated release with team attribution
+goal --all --co-author "Team <team@example.com>"
 ```
 
 ## 🆕 What's New in v2.1.99
@@ -779,6 +839,72 @@ Show or bump version.
 
 **Options:**
 - `--type, -t`: Version bump type [patch|minor|major] (default: patch)
+
+### `goal wizard`
+
+Interactive guided setup for new projects.
+
+Walks you through:
+- Git repository initialization and remote configuration
+- User configuration (name, email, license)
+- Project configuration (name, description, versioning strategy)
+- Complete setup summary with next steps
+
+**Options:**
+- `--reset`: Reset and reconfigure everything
+- `--skip-git`: Skip git repository setup
+- `--skip-user`: Skip user configuration
+- `--skip-project`: Skip project configuration
+
+### `goal license`
+
+Manage project licenses.
+
+**Subcommands:**
+- `create <license_id>`: Create LICENSE file
+- `update`: Update existing LICENSE file
+- `validate`: Validate LICENSE file
+- `info <license_id>`: Show license information
+- `check <license1> <license2>`: Check compatibility
+- `list`: List available templates
+- `template <license_id>`: Add/show custom templates
+
+**Examples:**
+```bash
+goal license create MIT --fullname "Your Name"
+goal license check MIT Apache-2.0
+goal license list
+```
+
+### `goal authors`
+
+Manage project authors and team members.
+
+**Subcommands:**
+- `list`: List all project authors
+- `add <name> <email>`: Add an author
+- `remove <email>`: Remove an author
+- `update <email>`: Update author info
+- `import`: Import from git history
+- `export`: Export to CONTRIBUTORS.md
+- `find <identifier>`: Find author by name/email/alias
+- `current`: Show current user info
+
+**Examples:**
+```bash
+goal authors add "Jane Doe" jane@example.com --role "Developer"
+goal authors list
+goal authors import
+```
+
+### Co-author Support
+
+Add co-authors to commits:
+
+```bash
+goal commit --co-author "Jane Doe <jane@example.com>"
+goal commit --co-author "Jane <jane@example.com>" --co-author "Bob <bob@example.com>"
+```
 
 ## Examples by Use Case
 
