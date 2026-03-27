@@ -21,7 +21,7 @@ from goal.user_config import (
 @click.option('--skip-git', is_flag=True, help='Skip git repository setup')
 @click.option('--skip-user', is_flag=True, help='Skip user configuration')
 @click.option('--skip-project', is_flag=True, help='Skip project configuration')
-def wizard(reset, skip_git, skip_user, skip_project):
+def wizard(reset, skip_git, skip_user, skip_project) -> None:
     """Interactive wizard for complete Goal setup."""
     
     click.echo()

@@ -35,7 +35,7 @@ from goal.recovery import RecoveryManager
     help='Show detailed recovery steps'
 )
 @click.pass_context
-def recover(ctx, full, error_file, error_message, no_backup, verbose):
+def recover(ctx, full, error_file, error_message, no_backup, verbose) -> None:
     """Recover from git push failures.
     
     This command automatically detects and attempts to recover from common

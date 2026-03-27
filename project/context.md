@@ -4,12 +4,12 @@
 
 - **Project**: /home/tom/github/wronai/goal
 - **Primary Language**: python
-- **Languages**: python: 90, shell: 5
+- **Languages**: python: 92, shell: 5
 - **Analysis Mode**: static
-- **Total Functions**: 581
+- **Total Functions**: 597
 - **Total Classes**: 59
-- **Modules**: 95
-- **Entry Points**: 445
+- **Modules**: 97
+- **Entry Points**: 437
 
 ## Architecture by Module
 
@@ -37,10 +37,6 @@
 - **Classes**: 1
 - **File**: `deep_analyzer.py`
 
-### goal.cli.version
-- **Functions**: 19
-- **File**: `version.py`
-
 ### goal.validation.rules
 - **Functions**: 19
 - **Classes**: 6
@@ -61,15 +57,15 @@
 - **Classes**: 5
 - **File**: `actions.py`
 
-### goal.summary.generator
-- **Functions**: 16
-- **Classes**: 1
-- **File**: `generator.py`
-
 ### goal.doctor.python
 - **Functions**: 16
 - **Classes**: 1
 - **File**: `python.py`
+
+### goal.summary.generator
+- **Functions**: 16
+- **Classes**: 1
+- **File**: `generator.py`
 
 ### goal.formatter
 - **Functions**: 14
@@ -90,6 +86,10 @@
 - **Functions**: 14
 - **Classes**: 1
 - **File**: `quality_filter.py`
+
+### goal.push.stages.push_remote
+- **Functions**: 14
+- **File**: `push_remote.py`
 
 ### goal.config.validation
 - **Functions**: 13
@@ -146,10 +146,6 @@ Main execution flows into the system:
 ### goal.summary.generator.EnhancedSummaryGenerator.generate_enhanced_summary
 > Generate complete enhanced summary with business value focus.
 - **Calls**: self.quality_filter.dedupe_files, self.analyzer.generate_functional_summary, self.detect_capabilities, self.quality_filter.prioritize_capabilities, self.detect_file_relations, self.quality_filter.dedupe_relations, self.quality_filter.filter_generic_nodes, self._build_relation_chain
-
-### goal.cli.doctor_cmd.doctor
-> Diagnose and auto-fix common project configuration issues.
-- **Calls**: main.command, click.option, click.option, click.option, None.resolve, goal.project_bootstrap.detect_project_types_deep, todo_file.exists, todo_file.write_text
 
 ### goal.cli.wizard_cmd.wizard
 > Interactive wizard for complete Goal setup.
@@ -243,6 +239,10 @@ git push failures including:
 > Attempt to recover from authentication error.
 - **Calls**: click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.style
 
+### goal.config.validation.ConfigValidator._validate_versioning_section
+> Validate versioning configuration.
+- **Calls**: self.config.get, versioning.get, versioning.get, versioning.get, versioning.get, versioning.get, self.errors.append, self.errors.append
+
 ## Process Flows
 
 Key execution flows identified:
@@ -296,14 +296,14 @@ _analyze_python_diff [goal.deep_analyzer.CodeChangeAnalyzer]
 generate_enhanced_summary [goal.summary.generator.EnhancedSummaryGenerator]
 ```
 
-### Flow 9: doctor
-```
-doctor [goal.cli.doctor_cmd]
-```
-
-### Flow 10: wizard
+### Flow 9: wizard
 ```
 wizard [goal.cli.wizard_cmd]
+```
+
+### Flow 10: check_py011_version_consistency
+```
+check_py011_version_consistency [goal.doctor.python.PythonDiagnostics]
 ```
 
 ## Key Classes
@@ -455,15 +455,19 @@ Args:
 This is a convenience function that extracts validation 
 - **Output to**: goal.git_ops.get_staged_files, goal.validators.file_validator.manage_dot_folders, goal.git_ops.get_staged_files, goal.validators.file_validator.validate_files, config.get
 
-### goal.cli.license_cmd.license_validate
-> Validate the LICENSE file.
-- **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
+### goal.push.core._validate_staged_files
+> Validate staged files for security issues.
+- **Output to**: goal.validators.file_validator.validate_staged_files, click.echo, ctx_obj.get, click.echo, click.echo
 
 ### goal.cli.config_validate_cmd.validate_cmd
 > Validate goal.yaml configuration file.
 
 Checks that the configuration file is valid, complete, and f
 - **Output to**: click.command, click.option, click.option, click.option, click.echo
+
+### goal.cli.license_cmd.license_validate
+> Validate the LICENSE file.
+- **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
 
 ### goal.cli.postcommit_cmd.postcommit_validate
 > Validate post-commit action configuration.
@@ -524,10 +528,6 @@ Returns:
 > Validate project configuration.
 - **Output to**: self.config.get, project.get, project.get, project.get, self.warnings.append
 
-### goal.config.validation.ConfigValidator._validate_git_section
-> Validate git configuration.
-- **Output to**: self.config.get, git.get, commit.get, commit.get, commit.get
-
 ## Behavioral Patterns
 
 ### state_machine_CodeChangeAnalyzer
@@ -540,8 +540,6 @@ Returns:
 Functions exposed as public API (no underscore prefix):
 
 - `goal.git_ops.ensure_git_repository` - 83 calls
-- `goal.push.core.execute_push_workflow` - 72 calls
-- `goal.cli.version.sync_all_versions` - 69 calls
 - `goal.summary.validator.QualityValidator.auto_fix` - 59 calls
 - `goal.project_bootstrap.ensure_project_environment` - 56 calls
 - `goal.user_config.initialize_user_config` - 52 calls
@@ -556,19 +554,19 @@ Functions exposed as public API (no underscore prefix):
 - `goal.summary.generator.EnhancedSummaryGenerator.generate_enhanced_summary` - 36 calls
 - `goal.push.stages.dry_run.handle_dry_run` - 36 calls
 - `goal.changelog.update_changelog` - 35 calls
-- `goal.cli.doctor_cmd.doctor` - 35 calls
 - `goal.cli.wizard_cmd.wizard` - 34 calls
 - `goal.doctor.python.PythonDiagnostics.check_py011_version_consistency` - 34 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.analyze_changes` - 33 calls
-- `goal.cli.version.update_project_metadata` - 32 calls
 - `goal.user_config.show_user_config` - 31 calls
 - `goal.version_validation.validate_project_versions` - 28 calls
 - `goal.project_bootstrap.guess_package_name` - 28 calls
+- `goal.push.core.execute_push_workflow` - 27 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.generate_functional_body` - 27 calls
 - `goal.generator.analyzer.ContentAnalyzer.short_action_summary` - 26 calls
 - `goal.summary.generator.EnhancedSummaryGenerator.calculate_quality_metrics` - 26 calls
 - `goal.user_config.prompt_for_license` - 25 calls
 - `goal.recovery.strategies.DivergentHistoryStrategy.recover` - 25 calls
+- `goal.cli.version_utils.update_project_metadata` - 25 calls
 - `goal.config.validation.validate_config_file` - 25 calls
 - `goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency` - 25 calls
 - `goal.smart_commit.abstraction.CodeAbstraction.extract_entities` - 25 calls
@@ -579,6 +577,8 @@ Functions exposed as public API (no underscore prefix):
 - `goal.cli.recover_cmd.recover` - 23 calls
 - `goal.doctor.python.PythonDiagnostics.check_py009_string_authors` - 23 calls
 - `goal.doctor.nodejs.diagnose_nodejs` - 23 calls
+- `goal.recovery.strategies.AuthErrorStrategy.recover` - 22 calls
+- `goal.push.core.show_workflow_preview` - 22 calls
 
 ## System Interactions
 
@@ -612,10 +612,10 @@ graph TD
     generate_enhanced_su --> detect_capabilities
     generate_enhanced_su --> prioritize_capabilit
     generate_enhanced_su --> detect_file_relation
-    doctor --> command
-    doctor --> option
-    doctor --> resolve
     wizard --> command
+    wizard --> option
+    check_py011_version_ --> search
+    check_py011_version_ --> group
 ```
 
 ## Reverse Engineering Guidelines

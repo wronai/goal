@@ -7,13 +7,13 @@ from goal.validation import ValidationRuleManager
 
 
 @main.group()
-def validation():
+def validation() -> None:
     """Manage custom validation rules."""
     pass
 
 
 @validation.command(name='run')
-def validation_run():
+def validation_run() -> None:
     """Run custom validation rules."""
     manager = ValidationRuleManager()
     if manager.validate_all():
@@ -25,14 +25,14 @@ def validation_run():
 
 
 @validation.command(name='list')
-def validation_list():
+def validation_list() -> None:
     """List configured validation rules."""
     manager = ValidationRuleManager()
     manager.list_rules()
 
 
 @validation.command(name='validate')
-def validation_validate():
+def validation_validate() -> None:
     """Validate rule configurations."""
     manager = ValidationRuleManager()
     click.echo()
@@ -46,7 +46,7 @@ def validation_validate():
 
 
 @validation.command(name='info')
-def validation_info():
+def validation_info() -> None:
     """Show information about available validation rules."""
     from goal.validation import AVAILABLE_RULES
     

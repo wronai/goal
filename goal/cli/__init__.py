@@ -97,7 +97,7 @@ def confirm(prompt: str, default: bool = True) -> bool:
         suffix = " [y/N] "
     
     while True:
-        response = input(click.style(prompt, fg='cyan') + suffix).strip().lower()
+        response = input(f"{click.style(prompt, fg='cyan')}{suffix}").strip().lower()
         
         if not response:
             return default

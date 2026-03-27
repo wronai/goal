@@ -6,7 +6,7 @@ import shutil
 from pathlib import Path
 from typing import List
 
-from goal.git_ops import run_git, run_command
+from goal.git_ops import run_command
 from goal.cli.version import PROJECT_TYPES
 
 

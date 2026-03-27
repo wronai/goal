@@ -4,7 +4,7 @@
 # Goal
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.117-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1.118-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/pypi-goal-orange.svg" alt="PyPI">
@@ -915,10 +915,10 @@ goal wizard
 ```
 📖 [Full Wizard Example](examples/wizard-setup/)
 
-### License Management
-```bash
-# Create MIT license
-goal license create MIT --fullname "Your Name"
+### License
+
+Licensed under Apache-2.0.
+
 
 # Check license compatibility
 goal license check MIT Apache-2.0
@@ -1499,8 +1499,10 @@ Every time you run `goal`, it updates:
 
 **README.md:**
 - License badges (Apache-2.0, MIT, GPL, etc.)
-- `## License` section
-- `## Author` section
+- `## License
+
+Licensed under Apache-2.0.
+
 
 ### Smart Author Management
 
@@ -1606,9 +1608,15 @@ jobs:
 
 ## License
 
+Licensed under Apache-2.0.
+
+
 Apache License 2.0 - see [LICENSE](LICENSE) for details.
 
 ## Author
+
+Tom Sapletta
+
 
 Created by **Tom Sapletta** - [tom@sapletta.com](mailto:tom@sapletta.com)
 

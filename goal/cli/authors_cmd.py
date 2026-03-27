@@ -3,11 +3,11 @@
 import click
 
 from goal.cli import main
-from goal.authors import AuthorsManager, get_project_authors, add_project_author
+from goal.authors import AuthorsManager
 
 
 @main.group()
-def authors():
+def authors() -> None:
     """Manage project authors and team members."""
     pass
 
@@ -57,7 +57,7 @@ def authors_import() -> None:
 
 
 @authors.command(name='export')
-def authors_export():
+def authors_export() -> None:
     """Export authors to CONTRIBUTORS.md."""
     manager = AuthorsManager()
     manager.export_to_contributors()
@@ -65,7 +65,7 @@ def authors_export():
 
 @authors.command(name='find')
 @click.argument('identifier')
-def authors_find(identifier):
+def authors_find(identifier) -> None:
     """Find an author by name, email, or alias."""
     manager = AuthorsManager()
     author = manager.find_author(identifier)

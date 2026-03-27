@@ -1,7 +1,6 @@
-"""
-Package Manager Detection and Management System
+"""Package Manager Detection and Management System.
 
-This module provides comprehensive support for multiple package managers
+Provides comprehensive support for multiple package managers
 across different programming languages and ecosystems.
 """
 

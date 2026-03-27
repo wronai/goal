@@ -8,7 +8,7 @@ from goal.cli import main
 
 
 @main.group()
-def config():
+def config() -> None:
     """Manage goal configuration."""
     pass
 
@@ -16,7 +16,7 @@ def config():
 @config.command(name='show')
 @click.argument('key', required=False)
 @click.pass_context
-def config_show(ctx, key):
+def config_show(ctx, key) -> None:
     """Show configuration value(s)."""
     cfg = ctx.obj.get('config')
     if not cfg:
@@ -43,7 +43,7 @@ def config_show(ctx, key):
     help='Interactively fix configuration issues'
 )
 @click.pass_context
-def config_validate(ctx, strict: bool, fix: bool):
+def config_validate(ctx, strict: bool, fix: bool) -> None:
     """Validate goal.yaml configuration.
     
     Checks that the configuration file is valid, complete, and follows

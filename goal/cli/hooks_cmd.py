@@ -3,18 +3,18 @@
 import click
 
 from goal.cli import main
-from goal.hooks import HooksManager, install_hooks, uninstall_hooks, run_hooks
+from goal.hooks import HooksManager
 
 
 @main.group()
-def hooks():
+def hooks() -> None:
     """Manage pre-commit hooks."""
     pass
 
 
 @hooks.command(name='install')
 @click.option('--force', '-f', is_flag=True, help='Reinstall even if already installed')
-def hooks_install(force):
+def hooks_install(force) -> None:
     """Install Goal pre-commit hooks."""
     manager = HooksManager()
     if manager.install_hooks(force):
@@ -31,7 +31,7 @@ def hooks_install(force):
 
 
 @hooks.command(name='uninstall')
-def hooks_uninstall():
+def hooks_uninstall() -> None:
     """Uninstall Goal pre-commit hooks."""
     manager = HooksManager()
     if manager.uninstall_hooks():
@@ -44,7 +44,7 @@ def hooks_uninstall():
 
 @hooks.command(name='run')
 @click.option('--all-files', '-a', is_flag=True, help='Run on all files instead of just staged')
-def hooks_run(all_files):
+def hooks_run(all_files) -> None:
     """Run pre-commit hooks manually."""
     manager = HooksManager()
     if manager.run_hooks(all_files):
@@ -56,7 +56,7 @@ def hooks_run(all_files):
 
 
 @hooks.command(name='status')
-def hooks_status():
+def hooks_status() -> None:
     """Show pre-commit hooks status."""
     manager = HooksManager()
     manager.status()

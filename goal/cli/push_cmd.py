@@ -25,7 +25,7 @@ from goal.push.core import execute_push_workflow
 @click.option('--todo', '-t', is_flag=True, help='Create TODO.md with detected issues')
 @click.pass_context
 def push(ctx, bump, no_tag, no_changelog, no_version_sync, message, dry_run, yes, 
-         markdown, split, ticket, abstraction, todo):
+         markdown, split, ticket, abstraction, todo) -> None:
     """Add, commit, tag, and push changes to remote."""
     execute_push_workflow(
         ctx_obj=ctx.obj,

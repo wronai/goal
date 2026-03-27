@@ -15,7 +15,7 @@ from goal.license import (
 
 
 @main.group()
-def license():
+def license() -> None:
     """Manage project licenses."""
     pass
 
@@ -25,7 +25,7 @@ def license():
 @click.option('--fullname', '-n', help='Copyright holder full name')
 @click.option('--year', '-y', type=int, help='Copyright year')
 @click.option('--force', '-f', is_flag=True, help='Overwrite existing LICENSE file')
-def license_create(license_id, fullname, year, force):
+def license_create(license_id, fullname, year, force) -> None:
     """Create a LICENSE file with the specified license."""
     
     # Validate license ID
@@ -56,7 +56,7 @@ def license_create(license_id, fullname, year, force):
 @click.option('--license', '-l', 'license_id', help='New SPDX license ID')
 @click.option('--fullname', '-n', help='New copyright holder full name')
 @click.option('--year', '-y', type=int, help='New copyright year')
-def license_update(license_id, fullname, year):
+def license_update(license_id, fullname, year) -> None:
     """Update existing LICENSE file."""
     
     if not Path('LICENSE').exists():
@@ -70,7 +70,7 @@ def license_update(license_id, fullname, year):
 
 
 @license.command(name='validate')
-def license_validate():
+def license_validate() -> None:
     """Validate the LICENSE file."""
     manager = LicenseManager()
     is_valid, issues = manager.validate_license_file()
@@ -85,7 +85,7 @@ def license_validate():
 
 @license.command(name='info')
 @click.argument('license_id')
-def license_info(license_id):
+def license_info(license_id) -> None:
     """Show information about a license."""
     
     # Validate and get info
@@ -117,7 +117,7 @@ def license_info(license_id):
 @license.command(name='check')
 @click.argument('license1')
 @click.argument('license2')
-def license_check(license1, license2):
+def license_check(license1, license2) -> None:
     """Check compatibility between two licenses."""
     
     is_compatible, explanation = check_compatibility(license1, license2)
@@ -132,7 +132,7 @@ def license_check(license1, license2):
 
 @license.command(name='list')
 @click.option('--custom', is_flag=True, help='Show only custom templates')
-def license_list(custom):
+def license_list(custom) -> None:
     """List available license templates."""
     
     manager = LicenseManager()
@@ -162,7 +162,7 @@ def license_list(custom):
 @license.command(name='template')
 @click.argument('license_id')
 @click.option('--file', '-f', type=click.Path(exists=True), help='Template file path')
-def license_template(license_id, file):
+def license_template(license_id, file) -> None:
     """Add or show custom license templates."""
     
     manager = LicenseManager()

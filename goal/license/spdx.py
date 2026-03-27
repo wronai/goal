@@ -1,10 +1,4 @@
-"""SPDX license identifier validation and information.
-
-This module provides functionality for:
-- Validating SPDX license identifiers
-- Getting license information from SPDX data
-- Basic license compatibility checking
-"""
+"""SPDX license identifier validation and information."""
 
 import json
 from typing import Dict, List, Optional, Tuple

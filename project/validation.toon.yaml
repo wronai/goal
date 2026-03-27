@@ -1,22 +1,9 @@
-# vallm batch | 171f | 91✓ 21⚠ 35✗ | 2026-03-27
+# vallm batch | 174f | 90✓ 19⚠ 39✗ | 2026-03-27
 
 SUMMARY:
-  scanned: 171  passed: 91 (53.2%)  warnings: 21  errors: 35  unsupported: 45
+  scanned: 174  passed: 90 (51.7%)  warnings: 19  errors: 39  unsupported: 45
 
-WARNINGS[21]{path,score}:
-  goal/push/stages/push_remote.py,0.90
-    issues[5]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,push_to_remote has cyclomatic complexity 16 (max: 15),19
-      complexity.cyclomatic,warning,_offer_recovery has cyclomatic complexity 41 (max: 15),90
-      complexity.lizard_cc,warning,push_to_remote: CC=16 exceeds limit 15,19
-      complexity.lizard_cc,warning,_offer_recovery: CC=41 exceeds limit 15,90
-      complexity.lizard_length,warning,_offer_recovery: 207 lines exceeds limit 100,90
-  goal/cli/version.py,0.93
-    issues[4]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,update_project_metadata has cyclomatic complexity 26 (max: 15),232
-      complexity.cyclomatic,warning,sync_all_versions has cyclomatic complexity 33 (max: 15),598
-      complexity.lizard_cc,warning,update_project_metadata: CC=26 exceeds limit 15,232
-      complexity.lizard_cc,warning,sync_all_versions: CC=33 exceeds limit 15,598
+WARNINGS[19]{path,score}:
   goal/generator/analyzer.py,0.93
     issues[5]{rule,severity,message,line}:
       complexity.cyclomatic,warning,ContentAnalyzer has cyclomatic complexity 33 (max: 15),274
@@ -35,11 +22,6 @@ WARNINGS[21]{path,score}:
       complexity.cyclomatic,warning,ensure_project_environment has cyclomatic complexity 25 (max: 15),340
       complexity.lizard_cc,warning,guess_package_name: CC=20 exceeds limit 15,253
       complexity.lizard_cc,warning,ensure_project_environment: CC=25 exceeds limit 15,340
-  goal/push/core.py,0.93
-    issues[3]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,execute_push_workflow has cyclomatic complexity 34 (max: 15),112
-      complexity.lizard_cc,warning,execute_push_workflow: CC=34 exceeds limit 15,112
-      complexity.lizard_length,warning,execute_push_workflow: 126 lines exceeds limit 100,112
   goal/smart_commit/generator.py,0.93
     issues[4]{rule,severity,message,line}:
       complexity.cyclomatic,warning,analyze_changes has cyclomatic complexity 24 (max: 15),32
@@ -54,10 +36,10 @@ WARNINGS[21]{path,score}:
       complexity.lizard_cc,warning,_format_changes_section: CC=26 exceeds limit 15,478
   goal/validators/file_validator.py,0.93
     issues[4]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,check_dot_folders has cyclomatic complexity 23 (max: 15),148
-      complexity.cyclomatic,warning,validate_files has cyclomatic complexity 18 (max: 15),271
-      complexity.lizard_cc,warning,check_dot_folders: CC=23 exceeds limit 15,148
-      complexity.lizard_cc,warning,validate_files: CC=18 exceeds limit 15,271
+      complexity.cyclomatic,warning,check_dot_folders has cyclomatic complexity 23 (max: 15),154
+      complexity.cyclomatic,warning,validate_files has cyclomatic complexity 18 (max: 15),277
+      complexity.lizard_cc,warning,check_dot_folders: CC=23 exceeds limit 15,154
+      complexity.lizard_cc,warning,validate_files: CC=18 exceeds limit 15,277
   goal/deep_analyzer.py,0.96
     issues[3]{rule,severity,message,line}:
       complexity.cyclomatic,warning,_build_summary has cyclomatic complexity 16 (max: 15),522
@@ -87,6 +69,10 @@ WARNINGS[21]{path,score}:
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,handle_dry_run has cyclomatic complexity 19 (max: 15),14
       complexity.lizard_cc,warning,handle_dry_run: CC=19 exceeds limit 15,14
+  goal/push/stages/push_remote.py,0.97
+    issues[2]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,push_to_remote has cyclomatic complexity 16 (max: 15),20
+      complexity.lizard_cc,warning,push_to_remote: CC=16 exceeds limit 15,20
   goal/smart_commit/abstraction.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,extract_entities has cyclomatic complexity 20 (max: 15),60
@@ -107,11 +93,19 @@ WARNINGS[21]{path,score}:
     issues[1]{rule,severity,message,line}:
       complexity.lizard_length,warning,run_case: 175 lines exceeds limit 100,11
 
-ERRORS[35]{path,score}:
+ERRORS[39]{path,score}:
+  goal/cli/doctor_cmd.py,0.00
+    issues[1]{rule,severity,message,line}:
+      syntax.parse,error,SyntaxError: invalid syntax,56
   goal/authors/__init__.py,0.57
     issues[2]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'manager' not found,9
       python.import.resolvable,error,Module 'utils' not found,10
+  goal/cli/version.py,0.57
+    issues[3]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'version_types' not found,8
+      python.import.resolvable,error,Module 'version_utils' not found,9
+      python.import.resolvable,error,Module 'version_sync' not found,20
   goal/config/__init__.py,0.57
     issues[3]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'constants' not found,8
@@ -223,6 +217,12 @@ ERRORS[35]{path,score}:
     issues[2]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'validators.file_validator' not found,15
       python.import.resolvable,error,Module 'git_ops' not found,22
+  goal/cli/version_sync.py,0.91
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'version_utils' not found,7
+  goal/cli/version_utils.py,0.91
+    issues[1]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'version_types' not found,8
   goal/postcommit/manager.py,0.93
     issues[1]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'actions' not found,9
@@ -243,7 +243,7 @@ ERRORS[35]{path,score}:
       python.import.resolvable,error,Module 'core' not found,117
   goal/license/manager.py,0.95
     issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'spdx' not found,17
+      python.import.resolvable,error,Module 'spdx' not found,11
   goal/recovery/strategies.py,0.95
     issues[1]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'exceptions' not found,11

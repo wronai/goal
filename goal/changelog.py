@@ -3,11 +3,11 @@
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import List, Dict
 
 
 def update_changelog(version: str, files: List[str], commit_msg: str, 
-                     config: Dict = None, changelog_entry: Dict = None):
+                     config: Dict = None, changelog_entry: Dict = None) -> None:
     """Update CHANGELOG.md with new version and changes.
     
     Args:
@@ -73,7 +73,7 @@ def update_changelog(version: str, files: List[str], commit_msg: str,
         if len(files) > 10:
             change_list.append(f"- ... and {len(files) - 10} more files")
         
-        entry = f"## [{version}] - {date_str}\n\n### Changed\n{'\n'.join(change_list)}\n"
+        entry = f"## [{version}] - {date_str}\n\n### Changed\n" + "\n".join(change_list) + "\n"
     
     # Insert or create changelog
     if existing_content:

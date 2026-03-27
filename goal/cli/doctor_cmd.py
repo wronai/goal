@@ -14,7 +14,7 @@ from goal.cli import main
 @click.option('--path', default='.', help='Project path to diagnose')
 @click.option('--todo', is_flag=True, help='Add issues to TODO.md')
 @click.pass_context
-def doctor(ctx, fix, path, todo):
+def doctor(ctx, fix, path, todo) -> None:
     """Diagnose and auto-fix common project configuration issues."""
     project_path = Path(path).resolve()
     
@@ -44,7 +44,7 @@ def doctor(ctx, fix, path, todo):
 - Use `goal -t` to add detected issues automatically
 - Use `goal doctor --todo` to diagnose and track issues
 
-Last updated: """ + datetime.now().strftime('%Y-%m-%d')
+Last updated: {datetime.now().strftime('%Y-%m-%d')}"""
         todo_file.write_text(todo_content)
         click.echo(click.style("✓ TODO.md file created", fg='green'))
     
@@ -71,7 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-Last updated: """ + datetime.now().strftime('%Y-%m-%d')
+Last updated: {datetime.now().strftime('%Y-%m-%d')}"""
         changelog_file.write_text(changelog_content)
         click.echo(click.style("✓ CHANGELOG.md file created", fg='green'))
     

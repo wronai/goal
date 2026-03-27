@@ -3787,3 +3787,55 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-1747b620
+    name: Fix relative-imports issues
+    description: Resolve 6 relative-imports issues in goal/cli/version.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - goal/cli/version.py
+    rule_id: relative-imports
+    count: 6
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e37ef835
+    name: Fix relative-imports issues
+    description: Resolve 1 relative-imports issues in goal/cli/version_utils.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/cli/version_utils.py
+    rule_id: relative-imports
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a1a7a963
+    name: Fix relative-imports issues
+    description: Resolve 2 relative-imports issues in goal/cli/version_sync.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/cli/version_sync.py
+    rule_id: relative-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3ac4ebd1
+    name: Fix unused-imports issues
+    description: Resolve 4 unused-imports issues in goal/cli/version_sync.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - goal/cli/version_sync.py
+    rule_id: unused-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced

@@ -1,10 +1,4 @@
-"""License manager for handling license templates and file operations.
-
-This module provides functionality for:
-- Managing license templates
-- Creating and updating LICENSE files
-- Custom license template support
-"""
+"""License manager for handling license templates and file operations."""
 
 import os
 import re

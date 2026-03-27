@@ -18,7 +18,7 @@ from goal.authors.utils import get_co_authors_from_command_line, add_co_authors_
 @click.option('--abstraction', default=None, help='Abstraction level for commit message')
 @click.option('--co-author', multiple=True, help='Add co-author (Name <email> or email)')
 @click.pass_context
-def commit(ctx, detailed, unstaged, markdown, ticket, abstraction, co_author):
+def commit(ctx, detailed, unstaged, markdown, ticket, abstraction, co_author) -> None:
     """Generate a smart commit message for current changes."""
     files = get_staged_files()
     

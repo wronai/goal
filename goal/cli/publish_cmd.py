@@ -13,7 +13,7 @@ from goal.cli.publish import makefile_has_target, publish_project
 @click.option('--target', default='publish', help='Make target to run when using --make')
 @click.option('--version', 'version_arg', default=None, help='Version to publish when not using Makefile')
 @click.pass_context
-def publish(ctx, use_make, target, version_arg):
+def publish(ctx, use_make, target, version_arg) -> None:
     """Publish the current project (optionally using Makefile)."""
     project_types = detect_project_types()
 

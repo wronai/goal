@@ -127,25 +127,11 @@ def execute_push_workflow(
 ) -> None:
     """Execute the complete push workflow."""
     
-    # Use yes from context (includes -a from main command) or local --yes flag
-    yes = ctx_obj.get('yes', False) or yes
-    ctx_obj['yes'] = yes
-    ctx_obj['bump'] = bump
-    ctx_obj['message'] = message
-    ctx_obj['markdown'] = markdown or ctx_obj.get('markdown', False)
+    # Initialize context
+    _initialize_context(ctx_obj, bump, message, yes, markdown)
     
-    # Detect project types (lazy import to avoid circular dependency)
-    from goal.cli.version import detect_project_types
-    project_types = detect_project_types()
-    if project_types and not dry_run:
-        click.echo(f"Detected project types: {click.style(', '.join(project_types), fg='cyan')}")
-    
-    # Bootstrap project environments
-    if not dry_run and project_types:
-        deep_detected = detect_project_types_deep()
-        for ptype, dirs in deep_detected.items():
-            for pdir in dirs:
-                bootstrap_project(pdir, ptype, yes=yes)
+    # Detect and bootstrap projects
+    project_types = _detect_and_bootstrap_projects(ctx_obj, dry_run, yes)
     
     # Stage all changes
     if not dry_run:
@@ -154,47 +140,15 @@ def execute_push_workflow(
     # Get staged files
     files = get_staged_files()
     if not files or files == ['']:
-        if markdown or ctx_obj.get('markdown'):
-            from goal.cli.version import get_current_version
-            from goal.formatter import format_push_result
-            
-            current_version = get_current_version()
-            md_output = format_push_result(
-                project_types=project_types or [],
-                files=[],
-                stats={},
-                current_version=current_version,
-                new_version=current_version,
-                commit_msg="(none)",
-                commit_body="No staged changes detected.",
-                test_result="Not executed",
-                test_exit_code=0,
-                actions=["Detected project types"],
-                error="No changes to commit"
-            )
-            click.echo(md_output)
-        else:
-            click.echo(click.style("No changes to commit.", fg='yellow'))
+        _handle_no_changes(ctx_obj, project_types, dry_run, markdown)
         return
     
-    # Validate staged files for security issues
-    if not dry_run and not force:
-        from goal.validators import validate_staged_files
-        try:
-            validate_staged_files(ctx_obj.get('config'))
-        except Exception as e:
-            click.echo(click.style(f"\n❌ Validation Error: {str(e)}", fg='red', bold=True))
-            click.echo(click.style("\nFor security reasons, the commit has been blocked.", fg='red'))
-            click.echo(click.style("\nTo bypass this check, you can:", fg='yellow'))
-            click.echo(click.style("1. Remove the sensitive/large file(s)", fg='yellow'))
-            click.echo(click.style("2. Add the file(s) to .gitignore", fg='yellow'))
-            click.echo(click.style("3. Use --force to bypass validation (not recommended)", fg='yellow'))
-            sys.exit(1)
-    elif force and not dry_run:
-        click.echo(click.style("⚠️  Security validation bypassed with --force", fg='yellow', bold=True))
+    # Validate staged files
+    _validate_staged_files(ctx_obj, dry_run, force)
     
-    # Get diff content
+    # Get diff content and stats
     diff_content = get_diff_content()
+    stats = get_diff_stats()
     
     # Generate commit message
     commit_title, commit_body, detailed_result = get_commit_message(
@@ -210,13 +164,10 @@ def execute_push_workflow(
     # Get version info
     current_version, new_version = get_version_info()
     
-    # Get diff stats
-    stats = get_diff_stats()
-    total_adds = sum(s[0] for s in stats.values())
-    total_dels = sum(s[1] for s in stats.values())
-    
     # Enforce quality gates
     if not message and detailed_result and detailed_result.get('enhanced'):
+        total_adds = sum(s[0] for s in stats.values())
+        total_dels = sum(s[1] for s in stats.values())
         commit_msg = enforce_quality_gates(
             ctx_obj, commit_msg, detailed_result, files, total_adds, total_dels,
             ctx_obj['yes'], markdown
@@ -240,6 +191,107 @@ def execute_push_workflow(
         current_version, new_version, commit_msg, commit_body
     )
     
+    # Commit changes
+    _handle_commit_phase(ctx_obj, split, message, commit_title, commit_body, commit_msg,
+                         files, ticket, new_version, current_version, no_version_sync,
+                         no_changelog)
+    
+    # Create tag
+    tag_name = create_tag(new_version, no_tag)
+    
+    # Push to remote
+    from goal.git_ops import get_remote_branch
+    branch = get_remote_branch()
+    push_to_remote(branch, tag_name, no_tag, ctx_obj['yes'])
+    
+    # Publish
+    publish_success = handle_publish(project_types, new_version, ctx_obj['yes'])
+    
+    # Final summary
+    output_final_summary(ctx_obj, markdown, project_types, files, stats, current_version,
+                        new_version, commit_msg, commit_body, test_exit_code,
+                        publish_success, no_tag)
+
+
+def _initialize_context(ctx_obj: Dict[str, Any], bump: str, message: Optional[str],
+                       yes: bool, markdown: bool) -> None:
+    """Initialize context with common values."""
+    # Use yes from context (includes -a from main command) or local --yes flag
+    yes = ctx_obj.get('yes', False) or yes
+    ctx_obj['yes'] = yes
+    ctx_obj['bump'] = bump
+    ctx_obj['message'] = message
+    ctx_obj['markdown'] = markdown or ctx_obj.get('markdown', False)
+
+
+def _detect_and_bootstrap_projects(ctx_obj: Dict[str, Any], dry_run: bool,
+                                 yes: bool) -> List[str]:
+    """Detect project types and bootstrap environments."""
+    # Detect project types (lazy import to avoid circular dependency)
+    from goal.cli.version import detect_project_types
+    project_types = detect_project_types()
+    if project_types and not dry_run:
+        click.echo(f"Detected project types: {click.style(', '.join(project_types), fg='cyan')}")
+    
+    # Bootstrap project environments
+    if not dry_run and project_types:
+        deep_detected = detect_project_types_deep()
+        for ptype, dirs in deep_detected.items():
+            for pdir in dirs:
+                bootstrap_project(pdir, ptype, yes=yes)
+    
+    return project_types
+
+
+def _handle_no_changes(ctx_obj: Dict[str, Any], project_types: List[str],
+                      dry_run: bool, markdown: bool) -> None:
+    """Handle case when no changes are staged."""
+    if markdown or ctx_obj.get('markdown'):
+        from goal.cli.version import get_current_version
+        from goal.formatter import format_push_result
+        
+        current_version = get_current_version()
+        md_output = format_push_result(
+            project_types=project_types or [],
+            files=[],
+            stats={},
+            current_version=current_version,
+            new_version=current_version,
+            commit_msg="(none)",
+            commit_body="No staged changes detected.",
+            test_result="Not executed",
+            test_exit_code=0,
+            actions=["Detected project types"],
+            error="No changes to commit"
+        )
+        click.echo(md_output)
+    else:
+        click.echo(click.style("No changes to commit.", fg='yellow'))
+
+
+def _validate_staged_files(ctx_obj: Dict[str, Any], dry_run: bool, force: bool) -> None:
+    """Validate staged files for security issues."""
+    if not dry_run and not force:
+        from goal.validators import validate_staged_files
+        try:
+            validate_staged_files(ctx_obj.get('config'))
+        except Exception as e:
+            click.echo(click.style(f"\n❌ Validation Error: {str(e)}", fg='red', bold=True))
+            click.echo(click.style("\nFor security reasons, the commit has been blocked.", fg='red'))
+            click.echo(click.style("\nTo bypass this check, you can:", fg='yellow'))
+            click.echo(click.style("1. Remove the sensitive/large file(s)", fg='yellow'))
+            click.echo(click.style("2. Add the file(s) to .gitignore", fg='yellow'))
+            click.echo(click.style("3. Use --force to bypass validation (not recommended)", fg='yellow'))
+            sys.exit(1)
+    elif force and not dry_run:
+        click.echo(click.style("⚠️  Security validation bypassed with --force", fg='yellow', bold=True))
+
+
+def _handle_commit_phase(ctx_obj: Dict[str, Any], split: bool, message: Optional[str],
+                        commit_title: str, commit_body: Optional[str], commit_msg: str,
+                        files: List[str], ticket: Optional[str], new_version: str,
+                        current_version: str, no_version_sync: bool, no_changelog: bool) -> None:
+    """Handle the commit phase of the workflow."""
     from goal.cli import confirm
     
     # Commit confirmation
@@ -256,8 +308,6 @@ def execute_push_workflow(
         run_git('reset')  # Unstage everything
         handle_split_commits(ctx_obj, files, ticket, new_version, current_version,
                             no_version_sync, no_changelog, ctx_obj['yes'])
-        commit_body = None
-        message = "__split__"
     else:
         # Version sync
         user_config = ctx_obj.get('user_config')
@@ -269,20 +319,3 @@ def execute_push_workflow(
         
         # Single commit
         handle_single_commit(commit_title, commit_body, commit_msg, message, ctx_obj['yes'])
-    
-    # Create tag
-    tag_name = create_tag(new_version, no_tag)
-    
-    # Push to remote
-    from goal.git_ops import get_remote_branch
-    
-    branch = get_remote_branch()
-    push_to_remote(branch, tag_name, no_tag, ctx_obj['yes'])
-    
-    # Publish
-    publish_success = handle_publish(project_types, new_version, ctx_obj['yes'])
-    
-    # Final summary
-    output_final_summary(ctx_obj, markdown, project_types, files, stats, current_version,
-                        new_version, commit_msg, commit_body, test_exit_code,
-                        publish_success, no_tag)

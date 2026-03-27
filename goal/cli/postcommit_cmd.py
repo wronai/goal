@@ -3,17 +3,17 @@
 import click
 
 from goal.cli import main
-from goal.postcommit import PostCommitManager, run_post_commit_actions
+from goal.postcommit import PostCommitManager
 
 
 @main.group()
-def postcommit():
+def postcommit() -> None:
     """Manage post-commit actions."""
     pass
 
 
 @postcommit.command(name='run')
-def postcommit_run():
+def postcommit_run() -> None:
     """Run configured post-commit actions."""
     manager = PostCommitManager()
     if manager.run_actions():
@@ -25,14 +25,14 @@ def postcommit_run():
 
 
 @postcommit.command(name='list')
-def postcommit_list():
+def postcommit_list() -> None:
     """List configured post-commit actions."""
     manager = PostCommitManager()
     manager.list_actions()
 
 
 @postcommit.command(name='validate')
-def postcommit_validate():
+def postcommit_validate() -> None:
     """Validate post-commit action configuration."""
     manager = PostCommitManager()
     click.echo()
@@ -46,7 +46,7 @@ def postcommit_validate():
 
 
 @postcommit.command(name='info')
-def postcommit_info():
+def postcommit_info() -> None:
     """Show information about available actions."""
     from goal.postcommit import AVAILABLE_ACTIONS
     

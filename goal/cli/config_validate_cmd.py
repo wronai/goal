@@ -25,7 +25,7 @@ from goal.config import validate_config_file, validate_config_interactive
     help='Interactively fix configuration issues'
 )
 @click.pass_context
-def validate_cmd(ctx, config: Optional[str], strict: bool, fix: bool):
+def validate_cmd(ctx, config: Optional[str], strict: bool, fix: bool) -> None:
     """Validate goal.yaml configuration file.
     
     Checks that the configuration file is valid, complete, and follows

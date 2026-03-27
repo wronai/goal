@@ -1,5 +1,35 @@
 ## [Unreleased]
 
+## [2.1.118] - 2026-03-27
+
+### Docs
+- Update CHANGELOG.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Other
+- Update planfile.yaml
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/duplication.toon.yaml
+- Update project/evolution.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- ... and 5 more files
+
+## [0.1.10] - 2026-03-27
+
+### Fixed
+- Fix relative-imports issues (ticket-1747b620)
+- Fix relative-imports issues (ticket-e37ef835)
+- Fix relative-imports issues (ticket-a1a7a963)
+- Fix unused-imports issues (ticket-3ac4ebd1)
+
 ## [2.1.117] - 2026-03-27
 
 ### Docs

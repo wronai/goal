@@ -20,7 +20,7 @@ from goal.cli.version import get_current_version, bump_version, detect_project_t
 @main.command()
 @click.option('--markdown/--ascii', default=True, help='Output format (default: markdown)')
 @click.pass_context
-def status(ctx, markdown):
+def status(ctx, markdown) -> None:
     """Show current git status and version info."""
     version = get_current_version()
     branch = get_remote_branch()
@@ -53,7 +53,7 @@ def status(ctx, markdown):
 @main.command()
 @click.option('--force', is_flag=True, help='Overwrite existing files')
 @click.pass_context
-def init(ctx, force):
+def init(ctx, force) -> None:
     """Initialize goal in current repository (creates VERSION, CHANGELOG.md, and goal.yaml)."""
     # Ensure git repository
     if not ensure_git_repository(auto=True):
@@ -76,7 +76,7 @@ def init(ctx, force):
 
 
 @main.command()
-def info():
+def info() -> None:
     """Show detailed project information and version status."""
     project_types = detect_project_types()
     version = get_current_version()
