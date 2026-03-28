@@ -1,5 +1,5 @@
 # goal.yaml - Goal configuration file
-# Generated: 2026-03-27 17:47:43
+# Generated: 2026-03-28 14:51:01
 # Documentation: https://github.com/wronai/goal#configuration
 #
 # This file configures Goal's behavior for:
@@ -280,14 +280,14 @@ advanced:
     - pk_test_[a-zA-Z0-9]{24}
     - sk_live_[a-zA-Z0-9]{24}
     - sk_test_[a-zA-Z0-9]{24}
-    - 'CS:^[A-Z][A-Z0-9_]{5,}=[a-zA-Z0-9_-]{20,}'
+    - CS:^[A-Z][A-Z0-9_]{5,}=[a-zA-Z0-9_-]{20,}
     - Bearer\s+[a-zA-Z0-9_-]{20,}
     - Token\s+[a-zA-Z0-9_-]{20,}
     - '-----BEGIN\s+(RSA\s+)?PRIVATE\s+KEY-----'
     - '-----BEGIN\s+EC\s+PRIVATE\s+KEY-----'
     - '-----BEGIN\s+OPENSSH\s+PRIVATE\s+KEY-----'
     - '-----BEGIN\s+DSA\s+PRIVATE\s+KEY-----'
-    - 'CS:^[A-Z][A-Z0-9_]+=[a-zA-Z0-9_-]{20,}'
+    - CS:^[A-Z][A-Z0-9_]+=[a-zA-Z0-9_-]{20,}
   recovery:
     enabled: true
     auto_offer: true
