@@ -1,5 +1,31 @@
 ## [Unreleased]
 
+## [2.1.142] - 2026-03-29
+
+### Docs
+- Update CHANGELOG.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/context.md
+
+### Other
+- Update planfile.yaml
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/duplication.toon.yaml
+- Update project/evolution.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- ... and 4 more files
+
+## [0.1.10] - 2026-03-29
+
+### Fixed
+- Fix string-concat issues (ticket-ad8108d5)
+
 ## [2.1.141] - 2026-03-29
 
 ## [2.1.140] - 2026-03-29

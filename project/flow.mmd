@@ -15,20 +15,20 @@ flowchart TD
         goal__cli__version_sync__sync_all_versions["sync_all_versions"]
         goal__cli__recover_cmd__recover["recover"]
         goal__cli__recover_cmd___get_error_output["_get_error_output"]
-        goal__cli__license_cmd__license["license"]
-        goal__cli__license_cmd__license_create["license_create"]
-        goal__cli__license_cmd__license_update["license_update"]
-        goal__cli__license_cmd__license_validate["license_validate"]
+        goal__cli__hooks_cmd__hooks["hooks"]
+        goal__cli__hooks_cmd__hooks_install["hooks_install"]
+        goal__cli__hooks_cmd__hooks_uninstall["hooks_uninstall"]
+        goal__cli__hooks_cmd__hooks_run["hooks_run"]
         ...["+80 more"]
     end
 
     subgraph Core
-        goal__changelog__update_changelog{{update_changelog CC=24}}
         goal__user_config__UserConfig___load["_load"]
         goal__user_config__UserConfig___save["_save"]
         goal__user_config__UserConfig__get["get"]
         goal__user_config__UserConfig__set["set"]
         goal__user_config__UserConfig__is_initialized["is_initialized"]
+        goal__changelog__update_changelog{{update_changelog CC=24}}
         goal__version_validation__get_registry_version["get_registry_version"]
         goal__version_validation__validate_project_versions{{validate_project_versions CC=30}}
         goal__version_validation__check_readme_badges["check_readme_badges"]
@@ -38,7 +38,7 @@ flowchart TD
         goal__project_bootstrap__bootstrap_all_projects["bootstrap_all_projects"]
         goal__formatter__MarkdownFormatter__add_header["add_header"]
         goal__formatter__MarkdownFormatter__add_metadata["add_metadata"]
-        ...["+342 more"]
+        ...["+343 more"]
     end
 
     subgraph Exporters

@@ -665,6 +665,8 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
 def _ensure_costs_config(project_dir: Path) -> bool:
     """Ensure [tool.costs] section exists in pyproject.toml.
     
+    Also adds goal and costs as dev dependencies.
+    
     Returns True if config was added or already exists.
     """
     pyproject = project_dir / 'pyproject.toml'
@@ -672,6 +674,69 @@ def _ensure_costs_config(project_dir: Path) -> bool:
         return False
     
     content = pyproject.read_text(encoding='utf-8')
+    
+    # Check/add dev dependencies for goal and costs
+    dev_deps_updated = False
+    
+    # Look for common dev dependency groups
+    dev_dep_patterns = [
+        'dev-dependencies',
+        'optional-dependencies',
+    ]
+    
+    # Check if goal/costs already in dependencies
+    has_goal = 'goal' in content.lower() and ('goal' in content.split('[project]')[1].split('[tool')[0] if '[project]' in content and '[tool' in content else True)
+    has_costs = 'costs' in content.lower()
+    
+    if not has_goal or not has_costs:
+        # Try to add to [project.optional-dependencies] dev group
+        if '[project.optional-dependencies]' in content and 'dev = [' in content.lower():
+            # Find the dev group and add
+            import re
+            # Find dev = [ ... ] and add goal/costs if not present
+            pattern = r'(dev\s*=\s*\[)([^\]]*)\]'
+            def add_deps(match):
+                existing = match.group(2)
+                to_add = []
+                if 'goal' not in existing.lower():
+                    to_add.append('"goal>=2.1.0"')
+                if 'costs' not in existing.lower():
+                    to_add.append('"costs>=0.1.20"')
+                if to_add:
+                    return f'{match.group(1)}{existing}{"," if existing.strip() else ""}{", ".join(to_add)}]'
+                return match.group(0)
+            
+            new_content = re.sub(pattern, add_deps, content, flags=re.IGNORECASE | re.DOTALL)
+            if new_content != content:
+                content = new_content
+                dev_deps_updated = True
+        
+        # Try hatch envs default
+        elif '[tool.hatch.envs.default]' in content and 'dependencies = [' in content:
+            pattern = r'(dependencies\s*=\s*\[)([^\]]*)\]'
+            def add_deps(match):
+                existing = match.group(2)
+                to_add = []
+                if 'goal' not in existing.lower():
+                    to_add.append('"goal>=2.1.0"')
+                if 'costs' not in existing.lower():
+                    to_add.append('"costs>=0.1.20"')
+                if to_add:
+                    return f'{match.group(1)}{existing}{"," if existing.strip() else ""}{", ".join(to_add)}]'
+                return match.group(0)
+            
+            # Only match dependencies within hatch envs default
+            hatch_section = content.split('[tool.hatch.envs.default]')[1].split('[')[0]
+            if 'goal' not in hatch_section.lower() or 'costs' not in hatch_section.lower():
+                new_content = re.sub(pattern, add_deps, content, flags=re.IGNORECASE | re.DOTALL)
+                if new_content != content:
+                    content = new_content
+                    dev_deps_updated = True
+    
+    if dev_deps_updated:
+        with open(pyproject, 'w', encoding='utf-8') as f:
+            f.write(content)
+        click.echo(click.style("  ✓ Added goal and costs to dev dependencies", fg='green'))
     
     # Check if already configured
     if '[tool.costs]' in content:

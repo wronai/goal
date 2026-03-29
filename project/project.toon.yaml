@@ -1,4 +1,4 @@
-# goal | 603 func | 72f | 21128L | python | 2026-03-29
+# goal | 603 func | 72f | 21154L | python | 2026-03-29
 
 HEALTH:
   CC̄=5.2  critical=90 (limit:10)  dup=0  cycles=0
@@ -16,7 +16,7 @@ ALERTS[20]:
   !!! cc_exceeded      SummaryQualityFilter.classify_intent_smart = 25 (limit:15)
 
 MODULES[96] (top by size):
-  M[goal/project_bootstrap.py] 727L C:0 F:12 CC↑25 D:3 (python)
+  M[goal/project_bootstrap.py] 753L C:0 F:12 CC↑25 D:3 (python)
   M[goal/recovery/strategies.py] 685L C:7 F:30 CC↑11 D:0 (python)
   M[goal/summary/generator.py] 675L C:1 F:16 CC↑26 D:0 (python)
   M[goal/package_managers.py] 628L C:1 F:12 CC↑11 D:1 (python)
@@ -53,4 +53,4 @@ REFACTOR[15]:
 EVOLUTION:
   2026-03-08 CC̄=6.0 crit=66 12955L // Automated analysis
   2026-03-15 CC̄=6.0 crit=68 13352L // Automated analysis
-  2026-03-29 CC̄=5.2 crit=90 21128L // Automated analysis
+  2026-03-29 CC̄=5.2 crit=90 21154L // Automated analysis

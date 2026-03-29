@@ -3891,3 +3891,16 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-ad8108d5
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in goal/project_bootstrap.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/project_bootstrap.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
