@@ -8,6 +8,7 @@ import click
 
 from goal.git_ops import run_command_tee
 from goal.cli.version import PROJECT_TYPES
+from goal.toml_validation import validate_project_toml_files
 
 
 def makefile_has_target(target: str) -> bool:
@@ -76,6 +77,14 @@ def _ensure_publish_deps(python_bin: str) -> bool:
 
 def publish_project(project_types: List[str], version: str, yes: bool = False) -> bool:
     """Publish project to appropriate package registries."""
+    # Early TOML validation for clear error messages
+    all_valid, errors = validate_project_toml_files()
+    if not all_valid:
+        for error in errors:
+            click.echo(click.style(error, fg='red', bold=True), err=True)
+        click.echo(click.style("\nFix the TOML syntax error(s) before publishing.", fg='yellow'), err=True)
+        return False
+    
     success = True
 
     for ptype in project_types:

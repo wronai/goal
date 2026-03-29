@@ -9,6 +9,7 @@ import click
 
 from goal.git_ops import run_git, get_staged_files, get_diff_content, get_diff_stats
 from goal.project_bootstrap import detect_project_types_deep, bootstrap_project
+from goal.toml_validation import check_pyproject_toml
 from goal.push.stages import (
     get_commit_message, enforce_quality_gates, handle_single_commit,
     handle_split_commits, handle_version_sync, get_version_info,
@@ -129,6 +130,14 @@ def execute_push_workflow(
     api_key: Optional[str] = None
 ) -> None:
     """Execute the complete push workflow."""
+    
+    # Early TOML validation for clear error messages
+    if not dry_run:
+        toml_error = check_pyproject_toml()
+        if toml_error:
+            click.echo(click.style(toml_error, fg='red', bold=True), err=True)
+            click.echo(click.style("\nFix the TOML syntax error and try again.", fg='yellow'), err=True)
+            sys.exit(1)
     
     # Start timing
     start_time = time.time()
