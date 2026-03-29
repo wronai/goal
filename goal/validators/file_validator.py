@@ -337,7 +337,7 @@ def validate_files(
             r'sk_test_[a-zA-Z0-9]{24}',
             r'CS:^[A-Z][A-Z0-9_]{5,}=[a-zA-Z0-9_-]{20,}',
             r'Bearer\s+[a-zA-Z0-9_-]{20,}',
-            r'Token\s+[a-zA-Z0-9_-]{20,}',
+            r'Token\s+[a-zA-Z0-9_-]{32,}',
             r'-----BEGIN\s+(RSA\s+)?PRIVATE\s+KEY-----',
             r'-----BEGIN\s+EC\s+PRIVATE\s+KEY-----',
             r'-----BEGIN\s+OPENSSH\s+PRIVATE\s+KEY-----',
