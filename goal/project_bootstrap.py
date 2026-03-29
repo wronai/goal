@@ -384,6 +384,16 @@ def _find_openrouter_api_key(project_dir: Path) -> Tuple[Optional[Path], str]:
     return None, ''
 
 
+def _find_git_root(project_dir: Path) -> Optional[Path]:
+    """Find the git repository root for a project directory."""
+    current = project_dir.resolve()
+    while current != current.parent:
+        if (current / '.git').exists():
+            return current
+        current = current.parent
+    return None
+
+
 def ensure_project_environment(project_dir: Path, project_type: str, yes: bool = False) -> bool:
     """Ensure the project environment is properly set up.
 
@@ -683,6 +693,8 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
     click.echo(click.style(f"  Generating AI cost badge...", fg='cyan'))
     
     try:
+        repo_root = _find_git_root(project_dir) or project_dir
+
         # Try new simplified API first (costs >= 0.1.21)
         try:
             from costs import calculate_human_time, update_readme_badge
@@ -719,11 +731,11 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
         import json
         
         # Get repository statistics
-        repo_stats = get_repo_stats(str(project_dir))
+        repo_stats = get_repo_stats(str(repo_root))
         
         # Get all commits with AI detection
         all_commits_data = parse_commits(
-            str(project_dir),
+            str(repo_root),
             max_count=500,
             ai_only=False,
             full_history=True
@@ -746,7 +758,7 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
             commits_with_diffs = []
             for commit_obj, commit_data in ai_commits[:50]:  # Limit to first 50 for performance
                 try:
-                    diff = get_commit_diff(str(project_dir), commit_obj.hexsha)
+                    diff = get_commit_diff(str(repo_root), commit_obj.hexsha)
                     if diff:
                         cost_result = ai_cost(diff, model='openrouter/qwen/qwen3-coder-next')
                         total_cost += cost_result.get('cost', 0.0)
