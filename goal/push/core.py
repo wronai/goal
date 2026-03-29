@@ -229,7 +229,7 @@ def execute_push_workflow(
     click.echo(click.style(f"\n⏱️  Total time: {elapsed:.1f}s", fg='cyan'))
     
     # Update AI cost badges in README
-    _update_cost_badges(ctx_obj, new_version, model=model, api_key=api_key)
+    _update_cost_badges(ctx_obj, new_version)
 
 
 def _initialize_context(ctx_obj: Dict[str, Any], bump: str, message: Optional[str],

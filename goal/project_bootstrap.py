@@ -562,6 +562,11 @@ def bootstrap_project(project_dir: Path, project_type: str, yes: bool = False) -
     # Step 2: Ensure environment (venv, deps)
     result['env_ok'] = ensure_project_environment(project_dir, project_type, yes=yes)
 
+    # Step 2b: Ensure costs package is installed for AI cost tracking (Python projects only)
+    if project_type == 'python' and result['env_ok']:
+        python_bin = _find_python_bin(project_dir)
+        _ensure_costs_installed(project_dir, python_bin)
+
     # Step 3: Find or scaffold tests
     result['tests_found'] = find_existing_tests(project_dir, project_type)
 
