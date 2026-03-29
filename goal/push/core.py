@@ -340,10 +340,13 @@ def _handle_commit_phase(ctx_obj: Dict[str, Any], split: bool, message: Optional
 
 def _update_cost_badges(ctx_obj: Dict[str, Any], version: str) -> None:
     """Update AI cost badges in README using costs package."""
+    click.echo(click.style("  DEBUG: _update_cost_badges started", fg='magenta'))
     try:
         # Lazy import to avoid hard dependency
         from costs.tracker import CostTracker
         from costs.reports import update_readme_badge
+        
+        click.echo(click.style("  DEBUG: costs imports successful", fg='magenta'))
         
         # Check if costs tracking is enabled in pyproject.toml
         import tomllib
@@ -366,28 +369,41 @@ def _update_cost_badges(ctx_obj: Dict[str, Any], version: str) -> None:
                 update_readme_enabled = False
             auto_commit = tool_costs.get("auto_commit", False)
         
+        click.echo(click.style(f"  DEBUG: badge_enabled={badge_enabled}, update_readme_enabled={update_readme_enabled}", fg='magenta'))
+        
         if not badge_enabled and not update_readme_enabled:
+            click.echo(click.style("  DEBUG: badges disabled, returning", fg='magenta'))
             return
         
         # Get analysis results from cost tracker
         tracker = CostTracker()
         results = tracker.analyze_repository(Path("."))
         
+        click.echo(click.style(f"  DEBUG: analyze_repository returned: {results is not None}", fg='magenta'))
+        
         if results and results.get("summary"):
+            click.echo(click.style(f"  DEBUG: has summary, calling update_readme_badge", fg='magenta'))
             success = update_readme_badge(Path("."), results)
+            click.echo(click.style(f"  DEBUG: update_readme_badge returned: {success}", fg='magenta'))
             if success:
                 click.echo(click.style("✓ Updated AI cost badges in README", fg='green'))
+            else:
+                click.echo(click.style("  DEBUG: update_readme_badge returned False", fg='magenta'))
             
             # Optionally commit the badge update
             if auto_commit:
                 from goal.git_ops import run_git
                 run_git('add', 'README.md')
                 run_git('commit', '-m', f'chore: update AI cost badges for v{version}')
+        else:
+            click.echo(click.style(f"  DEBUG: no results or summary: results={results is not None}", fg='magenta'))
                 
-    except ImportError:
+    except ImportError as e:
+        click.echo(click.style(f"  DEBUG: ImportError: {e}", fg='magenta'))
         # costs package not installed, skip silently
         pass
     except Exception as e:
+        click.echo(click.style(f"  DEBUG: Exception: {e}", fg='magenta'))
         # Non-critical feature, log error only in verbose mode
         if ctx_obj.get('verbose'):
             click.echo(click.style(f"⚠ Could not update cost badges: {e}", fg='yellow'))

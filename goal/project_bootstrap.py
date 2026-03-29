@@ -553,6 +553,7 @@ def bootstrap_project(project_dir: Path, project_type: str, yes: bool = False) -
     }
 
     # Step 1: Diagnose and auto-fix project configuration issues
+    click.echo(click.style(f"  DEBUG: auto_fix={yes}", fg='magenta'))
     result['doctor_report'] = diagnose_and_report(project_dir, project_type, auto_fix=yes)
 
     # Step 2: Ensure environment (venv, deps)
