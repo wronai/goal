@@ -6,7 +6,7 @@
 - **Primary Language**: python
 - **Languages**: python: 93, shell: 5
 - **Analysis Mode**: static
-- **Total Functions**: 603
+- **Total Functions**: 605
 - **Total Classes**: 59
 - **Modules**: 98
 - **Entry Points**: 438
@@ -67,6 +67,10 @@
 - **Classes**: 1
 - **File**: `generator.py`
 
+### goal.project_bootstrap
+- **Functions**: 14
+- **File**: `project_bootstrap.py`
+
 ### goal.formatter
 - **Functions**: 14
 - **Classes**: 1
@@ -105,10 +109,6 @@
 - **Functions**: 12
 - **Classes**: 1
 - **File**: `user_config.py`
-
-### goal.project_bootstrap
-- **Functions**: 12
-- **File**: `project_bootstrap.py`
 
 ## Key Entry Points
 
@@ -226,6 +226,10 @@ git push failures including:
 - Authentication
 - **Calls**: main.command, click.option, click.option, click.option, click.option, click.option, os.getcwd, goal.cli.recover_cmd._get_error_output
 
+### goal.doctor.nodejs.diagnose_nodejs
+> Run all Node.js-specific diagnostics.
+- **Calls**: json.dumps, data.get, json.dumps, pkg_json.exists, json.loads, data.get, issues.append, data.get
+
 ### goal.doctor.python.PythonDiagnostics.check_py009_string_authors
 > PY009: Check for authors in deprecated string format (PEP 621 requires objects).
 - **Calls**: re.search, authors_match.group, re.compile, None.splitlines, Issue, self.issues.append, line.strip, string_author_pattern.match
@@ -233,10 +237,6 @@ git push failures including:
 ### goal.doctor.python.diagnose_python
 > Run all Python-specific diagnostics.
 - **Calls**: pyproject.read_text, PythonDiagnostics, diag.check_py002_build_system, diag.check_py003_license_classifiers, diag.check_py004_deprecated_backends, diag.check_py005_license_table, diag.check_py006_duplicate_authors, diag.check_py007_requires_python
-
-### goal.doctor.nodejs.diagnose_nodejs
-> Run all Node.js-specific diagnostics.
-- **Calls**: json.dumps, data.get, json.dumps, pkg_json.exists, json.loads, data.get, issues.append, data.get
 
 ### goal.generator.generator.CommitMessageGenerator._build_summary_section
 > Build high-level summary section.
@@ -454,13 +454,13 @@ Args:
 This is a convenience function that extracts validation 
 - **Output to**: goal.git_ops.get_staged_files, goal.validators.file_validator.manage_dot_folders, goal.git_ops.get_staged_files, goal.validators.file_validator.validate_files, config.get
 
-### goal.push.core._validate_staged_files
-> Validate staged files for security issues.
-- **Output to**: goal.validators.file_validator.validate_staged_files, click.echo, ctx_obj.get, click.echo, click.echo
-
 ### goal.cli.license_cmd.license_validate
 > Validate the LICENSE file.
 - **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
+
+### goal.push.core._validate_staged_files
+> Validate staged files for security issues.
+- **Output to**: goal.validators.file_validator.validate_staged_files, click.echo, ctx_obj.get, click.echo, click.echo
 
 ### goal.cli.config_validate_cmd.validate_cmd
 > Validate goal.yaml configuration file.
@@ -504,6 +504,12 @@ Returns:
 
 ### goal.postcommit.actions.GitPushAction.validate_config
 
+### goal.config.manager.GoalConfig.validate
+> Validate the configuration.
+
+Returns a list of validation errors (empty if valid).
+- **Output to**: self.get, self.get, self.get, self.load, self.get
+
 ### goal.config.validation.ConfigValidator.validate
 > Validate the configuration.
 
@@ -520,10 +526,6 @@ Returns:
 ### goal.config.validation.ConfigValidator._validate_project_section
 > Validate project configuration.
 - **Output to**: self.config.get, project.get, project.get, project.get, self.warnings.append
-
-### goal.config.validation.ConfigValidator._validate_git_section
-> Validate git configuration.
-- **Output to**: self.config.get, git.get, commit.get, commit.get, commit.get
 
 ## Behavioral Patterns
 
@@ -574,8 +576,8 @@ Functions exposed as public API (no underscore prefix):
 - `goal.recovery.manager.RecoveryManager.recover_from_push_failure` - 23 calls
 - `goal.cli.recover_cmd.recover` - 23 calls
 - `goal.cli.version_utils.update_readme_metadata` - 23 calls
+- `goal.doctor.nodejs.diagnose_nodejs` - 23 calls
 - `goal.doctor.python.PythonDiagnostics.check_py009_string_authors` - 23 calls
-- `goal.doctor.python.diagnose_python` - 23 calls
 
 ## System Interactions
 

@@ -1,12 +1,12 @@
-# redup/duplication | 10 groups | 72f 16246L | 2026-03-29
+# redup/duplication | 10 groups | 72f 16433L | 2026-03-29
 
 SUMMARY:
   files_scanned: 72
-  total_lines:   16246
+  total_lines:   16433
   dup_groups:    10
   dup_fragments: 37
   saved_lines:   216
-  scan_ms:       5577
+  scan_ms:       6911
 
 DUPLICATES[10] (ranked by impact):
   [4093ed9ae3929a54] ! STRU  hooks_status  L=8 N=6 saved=40 sim=1.00
@@ -20,9 +20,9 @@ DUPLICATES[10] (ranked by impact):
       goal/cli/hooks_cmd.py:0-6  (hooks)
       goal/cli/postcommit_cmd.py:0-6  (postcommit)
       goal/cli/authors_cmd.py:0-6  (authors)
+      goal/cli/license_cmd.py:0-6  (license)
       goal/cli/validation_cmd.py:0-6  (validation)
       goal/cli/config_cmd.py:0-6  (config)
-      goal/cli/license_cmd.py:0-6  (license)
   [e8e1ba5d936993f1] ! STRU  get_name  L=4 N=9 saved=32 sim=1.00
       goal/postcommit/actions.py:0-3  (get_name)
       goal/postcommit/actions.py:0-3  (get_name)

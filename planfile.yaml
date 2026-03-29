@@ -3904,3 +3904,42 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-ffff0750
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in goal/project_bootstrap.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/project_bootstrap.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9fae4ec0
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in goal/project_bootstrap.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/project_bootstrap.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-95201114
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in goal/push/core.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/push/core.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced

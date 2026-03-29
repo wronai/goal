@@ -22,12 +22,17 @@ from goal.push.core import execute_push_workflow
 @click.option('--ticket', default=None, help='Ticket ID for commit prefix')
 @click.option('--abstraction', default=None, help='Abstraction level for commit message')
 @click.option('--todo', '-t', is_flag=True, help='Create TODO.md with detected issues')
+@click.option('--model', default=None, help='AI model for cost tracking (e.g., openrouter/qwen/qwen3-coder-next)')
+@click.option('--api-key', default=None, help='API key for cost tracking service')
 @click.pass_context
 def push(ctx, bump, no_tag, no_changelog, no_version_sync, message, dry_run,
-         markdown, split, ticket, abstraction, todo) -> None:
+         markdown, split, ticket, abstraction, todo, model, api_key) -> None:
     """Add, commit, tag, and push changes to remote."""
     # Use yes from ctx.obj (set by -a/--all or -y/--yes global flags)
     yes = ctx.obj.get('yes', False)
+    # Store model and api_key in ctx.obj for downstream use
+    ctx.obj['cost_model'] = model
+    ctx.obj['cost_api_key'] = api_key
     execute_push_workflow(
         ctx_obj=ctx.obj,
         bump=bump,
@@ -41,7 +46,9 @@ def push(ctx, bump, no_tag, no_changelog, no_version_sync, message, dry_run,
         split=split,
         ticket=ticket,
         abstraction=abstraction,
-        todo=todo
+        todo=todo,
+        model=model,
+        api_key=api_key
     )
 
 

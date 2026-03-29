@@ -124,7 +124,9 @@ def execute_push_workflow(
     ticket: Optional[str],
     abstraction: Optional[str],
     todo: bool,
-    force: bool = False
+    force: bool = False,
+    model: Optional[str] = None,
+    api_key: Optional[str] = None
 ) -> None:
     """Execute the complete push workflow."""
     
@@ -227,7 +229,7 @@ def execute_push_workflow(
     click.echo(click.style(f"\n⏱️  Total time: {elapsed:.1f}s", fg='cyan'))
     
     # Update AI cost badges in README
-    _update_cost_badges(ctx_obj, new_version)
+    _update_cost_badges(ctx_obj, new_version, model=model, api_key=api_key)
 
 
 def _initialize_context(ctx_obj: Dict[str, Any], bump: str, message: Optional[str],
@@ -338,15 +340,17 @@ def _handle_commit_phase(ctx_obj: Dict[str, Any], split: bool, message: Optional
         handle_single_commit(commit_title, commit_body, commit_msg, message, ctx_obj['yes'])
 
 
-def _update_cost_badges(ctx_obj: Dict[str, Any], version: str) -> None:
+def _update_cost_badges(ctx_obj: Dict[str, Any], version: str, model: Optional[str] = None, api_key: Optional[str] = None) -> None:
     """Update AI cost badges in README using costs package."""
-    click.echo(click.style("  DEBUG: _update_cost_badges started", fg='magenta'))
     try:
         # Lazy import to avoid hard dependency
-        from costs.tracker import CostTracker
-        from costs.reports import update_readme_badge
+        from costs.reports.badge import update_readme_badge, calculate_human_time
+        from costs.git_parser import parse_commits, get_repo_stats
+        from costs.calculator import ai_cost
         
-        click.echo(click.style("  DEBUG: costs imports successful", fg='magenta'))
+        # Use provided model or default
+        model = model or ctx_obj.get('cost_model') or "openrouter/qwen/qwen3-coder-next"
+        api_key = api_key or ctx_obj.get('cost_api_key')
         
         # Check if costs tracking is enabled in pyproject.toml
         import tomllib
@@ -369,41 +373,78 @@ def _update_cost_badges(ctx_obj: Dict[str, Any], version: str) -> None:
                 update_readme_enabled = False
             auto_commit = tool_costs.get("auto_commit", False)
         
-        click.echo(click.style(f"  DEBUG: badge_enabled={badge_enabled}, update_readme_enabled={update_readme_enabled}", fg='magenta'))
-        
         if not badge_enabled and not update_readme_enabled:
-            click.echo(click.style("  DEBUG: badges disabled, returning", fg='magenta'))
             return
         
-        # Get analysis results from cost tracker
-        tracker = CostTracker()
-        results = tracker.analyze_repository(Path("."))
+        # Get repository statistics and build results
+        project_dir = Path(".")
+        repo_stats = get_repo_stats(str(project_dir))
         
-        click.echo(click.style(f"  DEBUG: analyze_repository returned: {results is not None}", fg='magenta'))
+        # Get all commits with AI detection
+        all_commits_data = parse_commits(
+            str(project_dir),
+            max_count=500,
+            ai_only=False,
+            full_history=True
+        )
         
-        if results and results.get("summary"):
-            click.echo(click.style(f"  DEBUG: has summary, calling update_readme_badge", fg='magenta'))
-            success = update_readme_badge(Path("."), results)
-            click.echo(click.style(f"  DEBUG: update_readme_badge returned: {success}", fg='magenta'))
-            if success:
-                click.echo(click.style("✓ Updated AI cost badges in README", fg='green'))
-            else:
-                click.echo(click.style("  DEBUG: update_readme_badge returned False", fg='magenta'))
-            
-            # Optionally commit the badge update
-            if auto_commit:
-                from goal.git_ops import run_git
-                run_git('add', 'README.md')
-                run_git('commit', '-m', f'chore: update AI cost badges for v{version}')
-        else:
-            click.echo(click.style(f"  DEBUG: no results or summary: results={results is not None}", fg='magenta'))
+        # Calculate costs for AI commits
+        ai_commits = [c for c in all_commits_data if c[1].get('is_ai', False)]
+        
+        # Calculate total cost from AI commits
+        total_cost = 0.0
+        total_commits = len(ai_commits)
+        
+        if ai_commits:
+            for commit_obj, commit_data in ai_commits[:50]:
+                try:
+                    from costs.git_parser import get_commit_diff
+                    diff = get_commit_diff(str(project_dir), commit_obj.hexsha)
+                    if diff:
+                        cost_result = ai_cost(diff, model=model, api_key=api_key)
+                        total_cost += cost_result.get('cost', 0.0)
+                except Exception:
+                    total_cost += 0.15
+        
+        if total_cost == 0 and len(all_commits_data) > 0:
+            total_cost = len(all_commits_data) * 0.15
+            total_commits = len(all_commits_data)
+        
+        # Calculate human time
+        all_commits_list = [
+            {"date": c[0].committed_datetime.isoformat(), "author": c[0].author.name}
+            for c in all_commits_data
+        ]
+        human_hours = calculate_human_time(all_commits_list)
+        
+        # Build results structure
+        results = {
+            "summary": {
+                "total_cost": total_cost,
+                "total_cost_formatted": f"${total_cost:.4f}",
+                "total_commits": total_commits,
+                "model": model,
+                "version": version,
+                "human_time": human_hours,
+                "human_cost": human_hours * 100
+            }
+        }
+        
+        # Update badge
+        success = update_readme_badge(project_dir, results)
+        if success:
+            click.echo(click.style("✓ Updated AI cost badges in README", fg='green'))
+        
+        # Optionally commit the badge update
+        if auto_commit:
+            from goal.git_ops import run_git
+            run_git('add', 'README.md')
+            run_git('commit', '-m', f'chore: update AI cost badges for v{version}')
                 
-    except ImportError as e:
-        click.echo(click.style(f"  DEBUG: ImportError: {e}", fg='magenta'))
+    except ImportError:
         # costs package not installed, skip silently
         pass
     except Exception as e:
-        click.echo(click.style(f"  DEBUG: Exception: {e}", fg='magenta'))
         # Non-critical feature, log error only in verbose mode
         if ctx_obj.get('verbose'):
             click.echo(click.style(f"⚠ Could not update cost badges: {e}", fg='yellow'))

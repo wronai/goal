@@ -1,5 +1,34 @@
 ## [Unreleased]
 
+## [2.1.146] - 2026-03-29
+
+### Docs
+- Update CHANGELOG.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Other
+- Update planfile.yaml
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/duplication.toon.yaml
+- Update project/evolution.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- ... and 5 more files
+
+## [0.1.10] - 2026-03-29
+
+### Fixed
+- Fix smart-return-type issues (ticket-ffff0750)
+- Fix magic-numbers issues (ticket-9fae4ec0)
+- Fix magic-numbers issues (ticket-95201114)
+
 ## [2.1.145] - 2026-03-29
 
 ## [2.1.144] - 2026-03-29
