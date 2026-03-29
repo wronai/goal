@@ -623,32 +623,41 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
     # Create .env template for API key if not exists
     env_ok = _ensure_env_template(project_dir)
     
-    # Generate initial badge in README
+    # Generate initial badge in README (append at end, not after first heading)
     click.echo(click.style(f"  Generating AI cost badge...", fg='cyan'))
     
-    # Find costs binary in venv or use python -c to call CLI directly
-    costs_bin = project_dir / '.venv' / 'bin' / 'costs'
-    if not costs_bin.exists():
-        costs_bin = Path(python_bin).parent / 'costs'
-    
-    if costs_bin.exists():
-        badge_result = subprocess.run(
-            [str(costs_bin), 'auto-badge', '--repo', str(project_dir), '--all'],
-            capture_output=True, text=True, cwd=str(project_dir)
-        )
-    else:
-        # Fallback: call via python -c
-        badge_result = subprocess.run(
-            [python_bin, '-c', 
-             f'from costs.cli import app; app(["auto-badge", "--repo", "{project_dir}", "--all"])'],
-            capture_output=True, text=True, cwd=str(project_dir)
-        )
-    
-    if badge_result.returncode == 0:
-        click.echo(click.style("  ✓ AI cost badge generated", fg='green'))
-    else:
-        # Show error for debugging
-        click.echo(click.style(f"  ⚠ Badge generation failed: {badge_result.stderr[:100]}", fg='yellow'))
+    try:
+        from costs.reports import update_readme_badge
+        from costs.tracker import CostTracker
+        
+        tracker = CostTracker()
+        results = tracker.analyze_repository(project_dir)
+        
+        if results and results.get("summary"):
+            # Custom placement: append at end of README instead of costs' default (after first heading)
+            readme_path = project_dir / "README.md"
+            if readme_path.exists():
+                content = readme_path.read_text(encoding='utf-8')
+                
+                # Check if already has AI Cost Tracking section
+                if "## AI Cost Tracking" not in content:
+                    summary = results["summary"]
+                    model = summary["model"]
+                    total_cost = summary["total_cost"]
+                    
+                    # Generate badge section
+                    badge_section = f"""\n## AI Cost Tracking\n\n![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-{summary.get('version', 'unknown')}-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)\n![AI Cost](https://img.shields.io/badge/AI%20Cost-${total_cost:.2f}-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-{summary.get('human_time', 'unknown')}h-blue) ![Model](https://img.shields.io/badge/Model-{model.replace('/', '%2F')}-lightgrey)\n\n- 🤖 **LLM usage:** ${summary['total_cost_formatted']} ({summary['total_commits']} commits)\n- 👤 **Human dev:** ~${summary.get('human_cost', 'unknown')} ({summary.get('human_time', 'unknown')}h @ $100/h, 30min dedup)\n\nGenerated on {__import__('datetime').datetime.now().strftime("%Y-%m-%d")} using [{model}](https://openrouter.ai/{model})\n\n---\n"""
+                    
+                    # Append at end of file
+                    readme_path.write_text(content + badge_section, encoding='utf-8')
+                    click.echo(click.style("  ✓ AI cost badge appended to README", fg='green'))
+                else:
+                    click.echo(click.style("  ✓ AI Cost Tracking section already exists", fg='green'))
+        else:
+            click.echo(click.style("  ⚠ No cost data to generate badge", fg='yellow'))
+            
+    except Exception as e:
+        click.echo(click.style(f"  ⚠ Badge generation failed: {str(e)[:100]}", fg='yellow'))
     
     return True
 
