@@ -1,17 +1,17 @@
-# vallm batch | 174f | 101✓ 20⚠ 28✗ | 2026-03-27
+# vallm batch | 176f | 101✓ 20⚠ 28✗ | 2026-03-29
 
 SUMMARY:
-  scanned: 174  passed: 101 (58.0%)  warnings: 20  errors: 28  unsupported: 45
+  scanned: 176  passed: 101 (57.4%)  warnings: 20  errors: 28  unsupported: 47
 
 WARNINGS[20]{path,score}:
   goal/validators/file_validator.py,0.90
     issues[6]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,detect_tokens_in_content has cyclomatic complexity 16 (max: 15),68
-      complexity.cyclomatic,warning,check_dot_folders has cyclomatic complexity 23 (max: 15),162
-      complexity.cyclomatic,warning,validate_files has cyclomatic complexity 18 (max: 15),285
-      complexity.lizard_cc,warning,detect_tokens_in_content: CC=16 exceeds limit 15,68
-      complexity.lizard_cc,warning,check_dot_folders: CC=23 exceeds limit 15,162
-      complexity.lizard_cc,warning,validate_files: CC=18 exceeds limit 15,285
+      complexity.cyclomatic,warning,detect_tokens_in_content has cyclomatic complexity 17 (max: 15),68
+      complexity.cyclomatic,warning,check_dot_folders has cyclomatic complexity 23 (max: 15),164
+      complexity.cyclomatic,warning,validate_files has cyclomatic complexity 18 (max: 15),287
+      complexity.lizard_cc,warning,detect_tokens_in_content: CC=17 exceeds limit 15,68
+      complexity.lizard_cc,warning,check_dot_folders: CC=23 exceeds limit 15,164
+      complexity.lizard_cc,warning,validate_files: CC=18 exceeds limit 15,287
   goal/generator/analyzer.py,0.93
     issues[5]{rule,severity,message,line}:
       complexity.cyclomatic,warning,ContentAnalyzer has cyclomatic complexity 33 (max: 15),274
@@ -55,8 +55,8 @@ WARNINGS[20]{path,score}:
       complexity.lizard_cc,warning,_build_summary: CC=16 exceeds limit 15,522
   goal/doctor/python.py,0.96
     issues[2]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,check_py011_version_consistency has cyclomatic complexity 17 (max: 15),320
-      complexity.maintainability,warning,Low maintainability index: 19.0 (threshold: 20),
+      complexity.cyclomatic,warning,check_py011_version_consistency has cyclomatic complexity 17 (max: 15),328
+      complexity.maintainability,warning,Low maintainability index: 16.4 (threshold: 20),
   goal/changelog.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,update_changelog has cyclomatic complexity 24 (max: 15),9
@@ -236,8 +236,8 @@ ERRORS[28]{path,score}:
       python.import.resolvable,error,Module 'exceptions' not found,11
 
 UNSUPPORTED[5]{bucket,count}:
-  *.md,29
+  *.md,30
   Dockerfile*,1
   *.txt,1
   *.yml,1
-  other,13
+  other,14

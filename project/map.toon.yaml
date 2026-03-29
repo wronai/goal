@@ -1,8 +1,8 @@
-# goal | 96f 17759L | python:93,shell:3 | 2026-03-27
-# stats: 598 func | 0 cls | 96 mod | CC̄=5.1 | critical:32 | cycles:0
+# goal | 96f 18032L | python:93,shell:3 | 2026-03-29
+# stats: 603 func | 0 cls | 96 mod | CC̄=5.2 | critical:33 | cycles:0
 # alerts[5]: CC ContentAnalyzer.short_action_summary=34; CC validate_project_versions=30; CC ContentAnalyzer.per_file_notes=29; CC format_enhanced_summary=29; fan-out QualityValidator.auto_fix=27
-# hotspots[5]: QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; execute_push_workflow fan=25; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; update_changelog fan=23
-# evolution: CC̄ 5.1→5.1 (flat 0.0)
+# hotspots[5]: execute_push_workflow fan=27; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; update_changelog fan=23
+# evolution: CC̄ 5.1→5.2 (regressed +0.1)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[96]:
   goal/__init__.py,3
@@ -29,7 +29,7 @@ M[96]:
   goal/cli/version.py,35
   goal/cli/version_sync.py,151
   goal/cli/version_types.py,113
-  goal/cli/version_utils.py,290
+  goal/cli/version_utils.py,310
   goal/cli/wizard_cmd.py,340
   goal/commit_generator.py,45
   goal/config/__init__.py,36
@@ -46,7 +46,7 @@ M[96]:
   goal/doctor/models.py,41
   goal/doctor/nodejs.py,77
   goal/doctor/php.py,45
-  goal/doctor/python.py,486
+  goal/doctor/python.py,536
   goal/doctor/ruby.py,25
   goal/doctor/rust.py,35
   goal/doctor/todo.py,127
@@ -67,11 +67,11 @@ M[96]:
   goal/postcommit/__init__.py,27
   goal/postcommit/actions.py,221
   goal/postcommit/manager.py,192
-  goal/project_bootstrap.py,589
+  goal/project_bootstrap.py,727
   goal/project_doctor.py,32
   goal/push/__init__.py,56
   goal/push/commands.py,40
-  goal/push/core.py,321
+  goal/push/core.py,382
   goal/push/stages/__init__.py,27
   goal/push/stages/changelog.py,30
   goal/push/stages/commit.py,220
@@ -96,7 +96,7 @@ M[96]:
   goal/validation/manager.py,190
   goal/validation/rules.py,220
   goal/validators/__init__.py,25
-  goal/validators/file_validator.py,495
+  goal/validators/file_validator.py,499
   goal/version_validation.py,301
   integration/run_docker_matrix.sh,5
   integration/run_matrix.sh,216
@@ -131,7 +131,7 @@ D:
     e: EnhancedSummaryGenerator
     EnhancedSummaryGenerator: __init__(1),map_entity_to_role(1),detect_capabilities(2),detect_file_relations(2),_infer_domain(1),_build_relation_chain(1),_render_relations_ascii(2),calculate_quality_metrics(2),generate_value_title(3),generate_enhanced_summary(4),_format_changes_section(2),_format_testing_section(1),_format_dependencies_section(1),_format_stats_section(2),_format_enhanced_body(7),validate_summary_quality(2)  # Generate business-value focused commit summaries...
   goal/project_bootstrap.py:
-    e: _match_marker,detect_project_types_deep,guess_package_name,_find_python_bin,ensure_project_environment,find_existing_tests,scaffold_test,bootstrap_project,bootstrap_all_projects
+    e: _match_marker,detect_project_types_deep,guess_package_name,_find_python_bin,ensure_project_environment,find_existing_tests,scaffold_test,bootstrap_project,bootstrap_all_projects,_ensure_costs_installed,_ensure_costs_config,_ensure_env_template
     _match_marker(base;pattern)
     detect_project_types_deep(root;max_depth)
     guess_package_name(project_dir;project_type)
@@ -141,6 +141,9 @@ D:
     scaffold_test(project_dir;project_type;yes)
     bootstrap_project(project_dir;project_type;yes)
     bootstrap_all_projects(root;yes)
+    _ensure_costs_installed(project_dir;python_bin)
+    _ensure_costs_config(project_dir)
+    _ensure_env_template(project_dir)
   goal/summary/quality_filter.py:
     e: SummaryQualityFilter
     SummaryQualityFilter: __init__(0),is_noise(2),filter_entities(1),has_banned_words(1),classify_intent(2),prioritize_capabilities(1),format_complexity_delta(2),dedupe_relations(1),dedupe_files(1),categorize_files(1),filter_generic_nodes(1),format_net_lines(2),classify_intent_smart(4),generate_architecture_title(2)  # Filter noise and improve summary quality...
@@ -236,7 +239,7 @@ D:
     validate(ctx;fix;cached)
   goal/doctor/python.py:
     e: PythonDiagnostics,diagnose_python
-    PythonDiagnostics: __init__(3),check_py001_missing_config(4),check_py002_build_system(0),check_py003_license_classifiers(0),check_py004_deprecated_backends(0),check_py005_license_table(0),check_py006_duplicate_authors(0),check_py007_requires_python(0),check_py008_empty_classifiers(0),check_py009_string_authors(0),check_py010_project_name_consistency(0),check_py011_version_consistency(0),check_py012_dist_cleanup(0),check_py013_goal_publish_pattern(0),write_fixes(1)  # Container for Python diagnostic checks with shared state...
+    PythonDiagnostics: __init__(3),check_py001_missing_config(4),check_py002_build_system(0),check_py003_license_classifiers(0),check_py004_deprecated_backends(0),check_py005_license_table(0),check_py006_duplicate_authors(0),check_py007_requires_python(0),check_py008_empty_classifiers(0),check_py009_string_authors(0),check_py010_project_name_consistency(0),check_py011_version_consistency(0),check_py012_dist_cleanup(0),check_py013_goal_publish_pattern(0),check_py014_pypi_token(0),write_fixes(1)  # Container for Python diagnostic checks with shared state...
     diagnose_python(project_dir;auto_fix)
   goal/deep_analyzer.py:
     e: CodeChangeAnalyzer
@@ -290,7 +293,7 @@ D:
     CommitMessageGenerator: __init__(1),get_diff_stats(1),get_name_status(2),get_numstat_map(2),get_changed_files(2),get_diff_content(2),classify_change_type(3),detect_scope(1),extract_functions_changed(1),_short_action_summary(2),_per_file_notes(2),generate_commit_message(3),generate_abstraction_message(2),generate_changelog_entry(2),generate_enhanced_summary(2),_try_enhanced_summary(2),_classify_files(2),_build_statistics_section(1),_build_summary_section(5),_build_file_lists(4),_build_per_file_notes(3),_build_implementation_notes(0),generate_detailed_message(2)  # Generate conventional commit messages using diff analysis an...
     generate_smart_commit_message(cached)
   goal/push/core.py:
-    e: PushContext,run_git_local,show_workflow_preview,output_final_summary,execute_push_workflow,_initialize_context,_detect_and_bootstrap_projects,_handle_no_changes,_validate_staged_files,_handle_commit_phase
+    e: PushContext,run_git_local,show_workflow_preview,output_final_summary,execute_push_workflow,_initialize_context,_detect_and_bootstrap_projects,_handle_no_changes,_validate_staged_files,_handle_commit_phase,_update_cost_badges
     PushContext: __init__(1),get(2)  # Context object wrapper for push command...
     run_git_local()
     show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
@@ -301,6 +304,7 @@ D:
     _handle_no_changes(ctx_obj;project_types;dry_run;markdown)
     _validate_staged_files(ctx_obj;dry_run;force)
     _handle_commit_phase(ctx_obj;split;message;commit_title;commit_body;commit_msg;files;ticket;new_version;current_version;no_version_sync;no_changelog)
+    _update_cost_badges(ctx_obj;version)
   goal/cli/doctor_cmd.py:
     e: doctor
     doctor(ctx;fix;path;todo)

@@ -6,7 +6,7 @@
 - **Primary Language**: python
 - **Languages**: python: 93, shell: 5
 - **Analysis Mode**: static
-- **Total Functions**: 598
+- **Total Functions**: 603
 - **Total Classes**: 59
 - **Modules**: 98
 - **Entry Points**: 437
@@ -47,6 +47,11 @@
 - **Classes**: 1
 - **File**: `generator.py`
 
+### goal.doctor.python
+- **Functions**: 17
+- **Classes**: 1
+- **File**: `python.py`
+
 ### goal.generator.analyzer
 - **Functions**: 16
 - **Classes**: 2
@@ -61,11 +66,6 @@
 - **Functions**: 16
 - **Classes**: 1
 - **File**: `generator.py`
-
-### goal.doctor.python
-- **Functions**: 16
-- **Classes**: 1
-- **File**: `python.py`
 
 ### goal.formatter
 - **Functions**: 14
@@ -106,10 +106,9 @@
 - **Classes**: 1
 - **File**: `user_config.py`
 
-### goal.validators.file_validator
+### goal.project_bootstrap
 - **Functions**: 12
-- **Classes**: 4
-- **File**: `file_validator.py`
+- **File**: `project_bootstrap.py`
 
 ## Key Entry Points
 
@@ -125,7 +124,7 @@ Main execution flows into the system:
 
 ### goal.cli.commit_cmd.validate
 > Validate commit summary against quality gates.
-- **Calls**: main.command, click.option, click.option, goal.git_ops.get_staged_files, goal.git_ops.get_diff_stats, ctx.obj.get, CommitMessageGenerator, generator.generate_detailed_message
+- **Calls**: main.command, click.option, click.option, goal.git_ops.get_staged_files, goal.generator.generator.CommitMessageGenerator.get_diff_stats, ctx.obj.get, CommitMessageGenerator, generator.generate_detailed_message
 
 ### goal.generator.analyzer.ContentAnalyzer.per_file_notes
 > Generate small descriptive notes for a file based on added lines heuristics.
@@ -137,7 +136,7 @@ Main execution flows into the system:
 
 ### goal.cli.commit_cmd.fix_summary
 > Auto-fix commit summary quality issues.
-- **Calls**: main.command, click.option, click.option, click.option, goal.git_ops.get_staged_files, goal.git_ops.get_diff_stats, ctx.obj.get, CommitMessageGenerator
+- **Calls**: main.command, click.option, click.option, click.option, goal.git_ops.get_staged_files, goal.generator.generator.CommitMessageGenerator.get_diff_stats, ctx.obj.get, CommitMessageGenerator
 
 ### goal.deep_analyzer.CodeChangeAnalyzer._analyze_python_diff
 > Analyze Python code changes using AST.
@@ -178,6 +177,10 @@ Returns:
     Tuple of (section_text, test_scenarios, has_changes)
 - **Calls**: self.quality_filter.categorize_files, fa.get, fa.get, fa.get, fa.get, categorized.items, change_lines.append, change_lines.append
 
+### goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency
+> PY010: Check for consistent project name across all config files.
+- **Calls**: re.search, name_match.group, setup_py.exists, goal_yaml.exists, Issue, self.issues.append, setup_py.read_text, re.search
+
 ### goal.config.validation.ConfigValidator._validate_advanced_section
 > Validate advanced configuration.
 - **Calls**: self.config.get, advanced.get, advanced.get, advanced.get, file_validation.get, file_validation.get, file_validation.get, tests.get
@@ -201,10 +204,6 @@ Returns:
 ### goal.smart_commit.abstraction.CodeAbstraction.extract_entities
 > Extract code entities (functions, classes, etc.) from diff.
 - **Calls**: self.get_language, self.code_parsers.get, parser.get, parser.get, parser.get, goal.user_config.UserConfig.set, None.strip, any
-
-### goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency
-> PY010: Check for consistent project name across all config files.
-- **Calls**: re.search, name_match.group, setup_py.exists, goal_yaml.exists, Issue, self.issues.append, setup_py.read_text, re.search
 
 ### goal.config.validation.ConfigValidator._validate_project_section
 > Validate project configuration.
@@ -235,13 +234,13 @@ git push failures including:
 > PY009: Check for authors in deprecated string format (PEP 621 requires objects).
 - **Calls**: re.search, authors_match.group, re.compile, None.splitlines, Issue, self.issues.append, line.strip, string_author_pattern.match
 
+### goal.doctor.python.diagnose_python
+> Run all Python-specific diagnostics.
+- **Calls**: pyproject.read_text, PythonDiagnostics, diag.check_py002_build_system, diag.check_py003_license_classifiers, diag.check_py004_deprecated_backends, diag.check_py005_license_table, diag.check_py006_duplicate_authors, diag.check_py007_requires_python
+
 ### goal.generator.generator.CommitMessageGenerator._build_summary_section
 > Build high-level summary section.
 - **Calls**: Counter, Counter, parts.append, parts.append, parts.append, parts.append, parts.append, parts.append
-
-### goal.recovery.strategies.AuthErrorStrategy.recover
-> Attempt to recover from authentication error.
-- **Calls**: click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.echo, click.style
 
 ## Process Flows
 
@@ -263,8 +262,6 @@ validate [goal.cli.commit_cmd]
   └─ →> get_staged_files
       └─> run_git
   └─ →> get_diff_stats
-      └─> run_git
-      └─> run_git
 ```
 
 ### Flow 4: per_file_notes
@@ -335,7 +332,7 @@ wizard [goal.cli.wizard_cmd]
 
 ### goal.doctor.python.PythonDiagnostics
 > Container for Python diagnostic checks with shared state.
-- **Methods**: 15
+- **Methods**: 16
 - **Key Methods**: goal.doctor.python.PythonDiagnostics.__init__, goal.doctor.python.PythonDiagnostics.check_py001_missing_config, goal.doctor.python.PythonDiagnostics.check_py002_build_system, goal.doctor.python.PythonDiagnostics.check_py003_license_classifiers, goal.doctor.python.PythonDiagnostics.check_py004_deprecated_backends, goal.doctor.python.PythonDiagnostics.check_py005_license_table, goal.doctor.python.PythonDiagnostics.check_py006_duplicate_authors, goal.doctor.python.PythonDiagnostics.check_py007_requires_python, goal.doctor.python.PythonDiagnostics.check_py008_empty_classifiers, goal.doctor.python.PythonDiagnostics.check_py009_string_authors
 
 ### goal.generator.analyzer.ChangeAnalyzer
@@ -459,15 +456,15 @@ This is a convenience function that extracts validation
 > Validate staged files for security issues.
 - **Output to**: goal.validators.file_validator.validate_staged_files, click.echo, ctx_obj.get, click.echo, click.echo
 
+### goal.cli.license_cmd.license_validate
+> Validate the LICENSE file.
+- **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
+
 ### goal.cli.config_validate_cmd.validate_cmd
 > Validate goal.yaml configuration file.
 
 Checks that the configuration file is valid, complete, and f
 - **Output to**: click.command, click.option, click.option, click.option, click.echo
-
-### goal.cli.license_cmd.license_validate
-> Validate the LICENSE file.
-- **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
 
 ### goal.cli.postcommit_cmd.postcommit_validate
 > Validate post-commit action configuration.
@@ -475,7 +472,7 @@ Checks that the configuration file is valid, complete, and f
 
 ### goal.cli.commit_cmd.validate
 > Validate commit summary against quality gates.
-- **Output to**: main.command, click.option, click.option, goal.git_ops.get_staged_files, goal.git_ops.get_diff_stats
+- **Output to**: main.command, click.option, click.option, goal.git_ops.get_staged_files, goal.generator.generator.CommitMessageGenerator.get_diff_stats
 
 ### goal.cli.validation_cmd.validation_validate
 > Validate rule configurations.
@@ -541,7 +538,7 @@ Functions exposed as public API (no underscore prefix):
 
 - `goal.git_ops.ensure_git_repository` - 83 calls
 - `goal.summary.validator.QualityValidator.auto_fix` - 59 calls
-- `goal.project_bootstrap.ensure_project_environment` - 56 calls
+- `goal.project_bootstrap.ensure_project_environment` - 57 calls
 - `goal.user_config.initialize_user_config` - 52 calls
 - `goal.cli.commit_cmd.commit` - 47 calls
 - `goal.cli.commit_cmd.validate` - 45 calls
@@ -558,10 +555,11 @@ Functions exposed as public API (no underscore prefix):
 - `goal.cli.wizard_cmd.wizard` - 34 calls
 - `goal.doctor.python.PythonDiagnostics.check_py011_version_consistency` - 34 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.analyze_changes` - 33 calls
+- `goal.push.core.execute_push_workflow` - 32 calls
 - `goal.user_config.show_user_config` - 31 calls
 - `goal.version_validation.validate_project_versions` - 28 calls
 - `goal.project_bootstrap.guess_package_name` - 28 calls
-- `goal.push.core.execute_push_workflow` - 27 calls
+- `goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency` - 28 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.generate_functional_body` - 27 calls
 - `goal.generator.analyzer.ContentAnalyzer.short_action_summary` - 26 calls
 - `goal.summary.generator.EnhancedSummaryGenerator.calculate_quality_metrics` - 26 calls
@@ -570,15 +568,14 @@ Functions exposed as public API (no underscore prefix):
 - `goal.cli.version_utils.update_project_metadata` - 25 calls
 - `goal.config.validation.validate_config_file` - 25 calls
 - `goal.smart_commit.abstraction.CodeAbstraction.extract_entities` - 25 calls
-- `goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency` - 25 calls
 - `goal.validators.file_validator.check_dot_folders` - 24 calls
 - `goal.cli.publish.publish_project` - 24 calls
 - `goal.git_ops.ensure_remote` - 23 calls
 - `goal.recovery.manager.RecoveryManager.recover_from_push_failure` - 23 calls
 - `goal.cli.recover_cmd.recover` - 23 calls
+- `goal.cli.version_utils.update_readme_metadata` - 23 calls
 - `goal.doctor.nodejs.diagnose_nodejs` - 23 calls
 - `goal.doctor.python.PythonDiagnostics.check_py009_string_authors` - 23 calls
-- `goal.push.core.show_workflow_preview` - 22 calls
 
 ## System Interactions
 

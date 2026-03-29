@@ -614,12 +614,14 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
             click.echo(click.style(f"  ⚠ Could not install costs package", fg='yellow'))
             return False
         click.echo(click.style("  ✓ Costs package installed", fg='green'))
+    else:
+        click.echo(click.style(f"  ✓ Costs package already installed ({result.stdout.strip()})", fg='green'))
     
     # Check/add costs config to pyproject.toml
-    _ensure_costs_config(project_dir)
+    config_ok = _ensure_costs_config(project_dir)
     
     # Create .env template for API key if not exists
-    _ensure_env_template(project_dir)
+    env_ok = _ensure_env_template(project_dir)
     
     # Generate initial badge in README
     click.echo(click.style(f"  Generating AI cost badge...", fg='cyan'))
@@ -630,8 +632,8 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
     if badge_result.returncode == 0:
         click.echo(click.style("  ✓ AI cost badge generated", fg='green'))
     else:
-        # Non-critical, show warning only
-        click.echo(click.style("  ⚠ Badge generation skipped (will retry on next run)", fg='yellow'))
+        # Show error for debugging
+        click.echo(click.style(f"  ⚠ Badge generation failed: {badge_result.stderr[:100]}", fg='yellow'))
     
     return True
 

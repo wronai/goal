@@ -3878,3 +3878,16 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-a4236fcf
+    name: Fix duplicate-imports issues
+    description: Resolve 1 duplicate-imports issues in goal/doctor/python.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/doctor/python.py
+    rule_id: duplicate-imports
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
