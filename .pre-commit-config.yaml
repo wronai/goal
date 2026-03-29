@@ -1,0 +1,38 @@
+repos:
+  # Standard hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+
+  # Python linting & formatting
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.3.0
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # Type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.8.0
+    hooks:
+      - id: mypy
+        additional_dependencies: [types-all]
+
+  # Check for outdated dependencies
+  - repo: https://github.com/pre-commit/pip-audit
+    rev: v0.1.0
+    hooks:
+      - id: pip-audit
+        args: ["--requirement", "requirements.txt"]
+        stages: [manual]
+
+  # Auto-update pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit
+    rev: v3.6.0
+    hooks:
+      - id: validate_manifest

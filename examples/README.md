@@ -13,40 +13,36 @@ examples/
 │   ├── 02_git_operations.py
 │   ├── 03_commit_generation.py
 │   ├── 04_version_validation.py
-│   └── 05_programmatic_workflow.py
+│   ├── 05_programmatic_workflow.py
+│   └── test_integration.py
 ├── advanced-workflows/         # Complex workflows
-│   ├── README.md
-│   ├── hotfix-workflow.md
-│   └── feature-branch.md
-├── monorepo/                   # Multi-package repos
-│   └── README.md
+├── configurations/             # Configuration examples
 ├── custom-hooks/               # Plugins and hooks
-│   └── README.md
-├── python-package/             # Python project example
-│   └── pyproject.toml
-├── nodejs-app/                 # Node.js project example
-│   └── package.json
-├── rust-crate/                 # Rust project example
-│   └── Cargo.toml
-├── makefile/                   # Makefile integration
-│   └── Makefile
-├── github-actions/             # CI/CD workflows
-│   └── .github/workflows/
-│       └── release.yml
+├── docker-integration/         # Docker examples
+├── dotnet-project/             # .NET project example
 ├── enhanced-summary/           # Commit message examples
-│   ├── README.md
-│   ├── before-after.md
-│   └── config-example.yaml
 ├── git-hooks/                  # Git hooks setup
-│   ├── install.sh
-│   └── prepare-commit-msg
+├── github-actions/             # CI/CD workflows
+├── gitlab-ci/                  # GitLab CI examples
+├── go-project/                 # Go project example
+├── java-project/               # Java project example
 ├── license-management/         # License handling
-│   └── README.md
+├── makefile/                   # Makefile integration
+├── monorepo/                   # Multi-package repos
 ├── multi-author/               # Team collaboration
-│   └── README.md
-├── wizard-setup/               # Interactive setup
-│   └── README.md
-└── markdown-demo.sh            # Demo script
+├── my-new-project/             # Template output example
+├── nodejs-app/                 # Node.js project example
+├── performance/                # Performance testing
+├── php-project/                # PHP project example
+├── python-package/             # Python project example
+├── ruby-project/               # Ruby project example
+├── rust-crate/                 # Rust project example
+├── template-generator/         # Project scaffolding
+├── testing/                    # Testing patterns
+├── testing-guide/              # Testing documentation
+├── validation/                 # Example validation tests
+├── webhooks/                   # Webhook integrations
+└── wizard-setup/               # Interactive setup
 ```
 
 ## Usage Examples
@@ -69,84 +65,70 @@ These examples demonstrate:
 - Version validation across registries
 - Full programmatic workflows
 
-### 2. Advanced Workflows
+### 2. Advanced Workflows & CI/CD
 
 ```bash
-# Hotfix workflow
-cat examples/advanced-workflows/hotfix-workflow.md
-
-# Feature branch workflow
-cat examples/advanced-workflows/feature-branch.md
+# Advanced workflows
+cat examples/advanced-workflows/README.md
 
 # Monorepo setup
 cat examples/monorepo/README.md
 
 # Custom hooks
 cat examples/custom-hooks/README.md
+
+# GitHub Actions
+cat examples/github-actions/.github/workflows/*.yml
+
+# GitLab CI
+cat examples/gitlab-ci/README.md
+
+# Docker
+cat examples/docker-integration/README.md
 ```
 
-### 3. Python Package
+### 3. Testing & Validation
 
 ```bash
+# Testing patterns
+cd examples/testing
+python 01_duplicate_call_detection.py
+
+# Example validation
+cd examples/validation
+python run_all_validation.py
+
+# Performance testing
+cat examples/performance/README.md
+```
+
+### 4. Project Type Examples
+
+```bash
+# Python
 cd examples/python-package
-goal init
-goal --all
-```
 
-This example shows a typical Python package structure with:
-- `pyproject.toml` for modern Python packaging
-- pytest configuration for testing
-- build and twine for publishing to PyPI
-
-### 4. Node.js Application
-
-```bash
+# Node.js
 cd examples/nodejs-app
-goal init
-goal push --yes --bump minor
-```
 
-This example demonstrates:
-- `package.json` with npm scripts
-- Jest for testing
-- npm publish for distribution
-
-### 5. Rust Crate
-
-```bash
+# Rust
 cd examples/rust-crate
-goal init
-goal --all
+
+# Go
+cd examples/go-project
+
+# Java
+cd examples/java-project
+
+# .NET
+cd examples/dotnet-project
+
+# PHP
+cd examples/php-project
+
+# Ruby
+cd examples/ruby-project
 ```
-
-Features shown:
-- `Cargo.toml` configuration
-- Cargo test for testing
-- Cargo publish for crates.io
-
-### 6. Makefile Integration
-
-```bash
-cd examples/makefile
-make help      # Show available targets
-make release   # Interactive release
-make patch     # Automatic patch release
-make all       # Full automation with goal --all
-```
-
-The Makefile example includes:
-- Development targets (test, lint, format)
-- Release targets (patch, minor, major)
-- CI/CD helper targets
-
-### 7. GitHub Actions
-
-The GitHub Actions workflow demonstrates:
-- Automated testing on multiple Python versions
-- Automatic releases on main branch push
-- Manual releases with workflow dispatch
-- Docker image building and publishing
-- PyPI publishing
 
 ## Common Patterns
 
@@ -206,24 +188,19 @@ ctx_obj = {'yes': True, 'markdown': False}
 execute_push_workflow(
     ctx_obj=ctx_obj,
     bump='patch',
-    dry_run=True,  # Safety first
+    dry_run=True,
     yes=True
 )
 ```
 
-### Custom Validators
+### Webhook Integration
 
-```python
-from goal.validators import validate_staged_files
+```bash
+# Discord webhook
+python examples/webhooks/discord-webhook.py "Release v1.0.0"
 
-# Add custom validation
-def my_validator():
-    try:
-        validate_staged_files(config)
-        return True
-    except Exception as e:
-        print(f"Validation failed: {e}")
-        return False
+# Slack webhook
+python examples/webhooks/slack-webhook.py "Release v1.0.0"
 ```
 
 ## Best Practices

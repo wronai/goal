@@ -1,5 +1,26 @@
 ## [Unreleased]
 
+## [2.1.157] - 2026-03-29
+
+### Docs
+- Update examples/README.md
+- Update examples/api-usage/README.md
+- Update examples/testing/README.md
+- Update examples/validation/README.md
+
+### Other
+- Update .pre-commit-config.yaml
+- Update Taskfile.yml
+- Update examples/api-usage/test_integration.py
+- Update examples/run_all_examples.py
+- Update examples/testing/01_duplicate_call_detection.py
+- Update examples/testing/02_project_detection_tests.py
+- Update examples/testing/03_advanced_mocking.py
+- Update examples/testing/04_debugging_diagnostics.py
+- Update examples/validation/run_all_validation.py
+- Update examples/validation/test_api_signatures.py
+- ... and 4 more files
+
 ## [2.1.156] - 2026-03-29
 
 ## [2.1.155] - 2026-03-29

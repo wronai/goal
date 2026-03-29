@@ -1,6 +1,5 @@
 version: "1"
 name: goal
-name: goal
 description: Goal - Automated git push with enterprise-grade commit intelligence
 default_env: local
 
@@ -66,6 +65,26 @@ tasks:
     cmds:
       - pip install -e ".[dev]"
       - echo "✅ Dependencies installed"
+
+  # ─── Dependency Updates ───────────────────────────────────────
+  deps-update:
+    desc: Update all dependencies to latest versions
+    cmds:
+      - pip install --upgrade -e ".[dev]"
+      - pip install --upgrade costs pfix click pyyaml clickmd
+      - echo "✅ Dependencies updated"
+
+  deps-check:
+    desc: Check for outdated dependencies
+    cmds:
+      - pip list --outdated
+      - echo "🔍 Run 'task deps-update' to upgrade"
+
+  deps-freeze:
+    desc: Generate requirements.txt from current environment
+    cmds:
+      - pip freeze > requirements.txt
+      - echo "✅ Generated requirements.txt"
 
   # ─── Testing & Quality ─────────────────────────────────────────
   test:
