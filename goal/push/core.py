@@ -344,8 +344,32 @@ def _update_cost_badges(ctx_obj: Dict[str, Any], version: str, model: Optional[s
     """Update AI cost badges in README using costs package."""
     try:
         # Lazy import to avoid hard dependency
-        from costs.reports.badge import update_readme_badge, calculate_human_time
-        from costs.git_parser import parse_commits, get_repo_stats
+        # Try new simplified API first (costs >= 0.1.21)
+        try:
+            from costs import calculate_human_time, update_readme_badge
+        except ImportError:
+            # Fallback to old API (costs <= 0.1.20)
+            from costs.reports import update_readme_badge
+            from datetime import datetime
+            from collections import defaultdict
+            
+            def calculate_human_time(commits):
+                """Calculate human hours from commit history."""
+                if not commits:
+                    return 0.0
+                daily_commits = defaultdict(lambda: defaultdict(list))
+                for commit in commits:
+                    date = commit.get('date', '')[:10]
+                    author = commit.get('author', 'Unknown')
+                    daily_commits[date][author].append(commit)
+                total_hours = 0.0
+                for date, authors in daily_commits.items():
+                    for author, author_commits in authors.items():
+                        hours = min(len(author_commits) * 0.5, 8.0)
+                        total_hours += hours
+                return total_hours
+        
+        from costs.git_parser import parse_commits, get_repo_stats, get_commit_diff
         from costs.calculator import ai_cost
         
         # Use provided model or default
@@ -398,7 +422,6 @@ def _update_cost_badges(ctx_obj: Dict[str, Any], version: str, model: Optional[s
         if ai_commits:
             for commit_obj, commit_data in ai_commits[:50]:
                 try:
-                    from costs.git_parser import get_commit_diff
                     diff = get_commit_diff(str(project_dir), commit_obj.hexsha)
                     if diff:
                         cost_result = ai_cost(diff, model=model, api_key=api_key)

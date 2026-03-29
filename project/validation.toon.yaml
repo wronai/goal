@@ -1,20 +1,21 @@
-# vallm batch | 176f | 101✓ 20⚠ 28✗ | 2026-03-29
+# vallm batch | 235f | 134✓ 23⚠ 28✗ | 2026-03-29
 
 SUMMARY:
-  scanned: 176  passed: 101 (57.4%)  warnings: 20  errors: 28  unsupported: 47
+  scanned: 235  passed: 134 (57.0%)  warnings: 23  errors: 28  unsupported: 73
 
-WARNINGS[20]{path,score}:
-  goal/project_bootstrap.py,0.87
-    issues[9]{rule,severity,message,line}:
+WARNINGS[23]{path,score}:
+  goal/project_bootstrap.py,0.83
+    issues[10]{rule,severity,message,line}:
       complexity.cyclomatic,warning,guess_package_name has cyclomatic complexity 20 (max: 15),253
       complexity.cyclomatic,warning,ensure_project_environment has cyclomatic complexity 25 (max: 15),340
-      complexity.cyclomatic,warning,_ensure_costs_installed has cyclomatic complexity 20 (max: 15),599
-      complexity.cyclomatic,warning,_ensure_costs_config has cyclomatic complexity 20 (max: 15),733
-      complexity.maintainability,warning,Low maintainability index: 19.1 (threshold: 20),
+      complexity.cyclomatic,warning,_ensure_costs_installed has cyclomatic complexity 21 (max: 15),600
+      complexity.cyclomatic,warning,_ensure_costs_config has cyclomatic complexity 20 (max: 15),769
+      complexity.maintainability,warning,Low maintainability index: 18.9 (threshold: 20),
       complexity.lizard_cc,warning,guess_package_name: CC=20 exceeds limit 15,253
       complexity.lizard_cc,warning,ensure_project_environment: CC=25 exceeds limit 15,340
-      complexity.lizard_cc,warning,_ensure_costs_installed: CC=20 exceeds limit 15,599
-      complexity.lizard_cc,warning,_ensure_costs_config: CC=20 exceeds limit 15,733
+      complexity.lizard_cc,warning,_ensure_costs_installed: CC=21 exceeds limit 15,600
+      complexity.lizard_length,warning,_ensure_costs_installed: 102 lines exceeds limit 100,600
+      complexity.lizard_cc,warning,_ensure_costs_config: CC=20 exceeds limit 15,769
   goal/validators/file_validator.py,0.90
     issues[6]{rule,severity,message,line}:
       complexity.cyclomatic,warning,detect_tokens_in_content has cyclomatic complexity 17 (max: 15),68
@@ -23,6 +24,12 @@ WARNINGS[20]{path,score}:
       complexity.lizard_cc,warning,detect_tokens_in_content: CC=17 exceeds limit 15,68
       complexity.lizard_cc,warning,check_dot_folders: CC=23 exceeds limit 15,164
       complexity.lizard_cc,warning,validate_files: CC=18 exceeds limit 15,287
+  examples/validation/test_api_signatures.py,0.93
+    issues[4]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,extract_function_calls has cyclomatic complexity 20 (max: 15),27
+      complexity.cyclomatic,warning,validate_call has cyclomatic complexity 20 (max: 15),123
+      complexity.lizard_cc,warning,extract_function_calls: CC=20 exceeds limit 15,27
+      complexity.lizard_cc,warning,validate_call: CC=20 exceeds limit 15,123
   goal/generator/analyzer.py,0.93
     issues[5]{rule,severity,message,line}:
       complexity.cyclomatic,warning,ContentAnalyzer has cyclomatic complexity 33 (max: 15),274
@@ -62,6 +69,10 @@ WARNINGS[20]{path,score}:
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,check_py011_version_consistency has cyclomatic complexity 17 (max: 15),328
       complexity.maintainability,warning,Low maintainability index: 16.4 (threshold: 20),
+  examples/validation/test_readme_consistency.py,0.97
+    issues[2]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,validate_readme has cyclomatic complexity 22 (max: 15),92
+      complexity.lizard_cc,warning,validate_readme: CC=22 exceeds limit 15,92
   goal/changelog.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,update_changelog has cyclomatic complexity 24 (max: 15),9
@@ -78,6 +89,10 @@ WARNINGS[20]{path,score}:
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,format_enhanced_summary has cyclomatic complexity 29 (max: 15),265
       complexity.lizard_cc,warning,format_enhanced_summary: CC=28 exceeds limit 15,265
+  goal/push/core.py,0.97
+    issues[2]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,_update_cost_badges has cyclomatic complexity 23 (max: 15),343
+      complexity.lizard_cc,warning,_update_cost_badges: CC=23 exceeds limit 15,343
   goal/push/stages/dry_run.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,handle_dry_run has cyclomatic complexity 19 (max: 15),12
@@ -200,16 +215,16 @@ ERRORS[28]{path,score}:
   goal/doctor/logging.py,0.79
     issues[1]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'models' not found,4
-  goal/cli/__init__.py,0.87
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'version' not found,195
-      python.import.resolvable,error,Module 'nfo' not found,10
-      python.import.resolvable,error,Module 'nfo.terminal' not found,11
   goal/push/stages/commit.py,0.88
     issues[3]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'core' not found,195
       python.import.resolvable,error,Module 'version' not found,199
       python.import.resolvable,error,Module 'changelog' not found,209
+  goal/cli/__init__.py,0.89
+    issues[3]{rule,severity,message,line}:
+      python.import.resolvable,error,Module 'version' not found,205
+      python.import.resolvable,error,Module 'nfo' not found,10
+      python.import.resolvable,error,Module 'nfo.terminal' not found,11
   goal/hooks/manager.py,0.89
     issues[2]{rule,severity,message,line}:
       python.import.resolvable,error,Module 'validators.file_validator' not found,14
@@ -241,8 +256,8 @@ ERRORS[28]{path,score}:
       python.import.resolvable,error,Module 'exceptions' not found,11
 
 UNSUPPORTED[5]{bucket,count}:
-  *.md,30
+  *.md,50
   Dockerfile*,1
   *.txt,1
   *.yml,1
-  other,14
+  other,20

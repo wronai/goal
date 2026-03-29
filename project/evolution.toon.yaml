@@ -2,8 +2,8 @@
 
 NEXT[10] (ranked by impact):
   [1] !! SPLIT           goal/project_bootstrap.py
-      WHY: 903L, 0 classes, max CC=25
-      EFFORT: ~4h  IMPACT: 22575
+      WHY: 1005L, 0 classes, max CC=25
+      EFFORT: ~4h  IMPACT: 25125
 
   [2] !! SPLIT           goal/summary/generator.py
       WHY: 675L, 1 classes, max CC=26
@@ -13,33 +13,33 @@ NEXT[10] (ranked by impact):
       WHY: 685L, 7 classes, max CC=11
       EFFORT: ~4h  IMPACT: 7535
 
-  [4] !  SPLIT-FUNC      SmartCommitGenerator.analyze_changes  CC=24  fan=27
+  [4] !  SPLIT-FUNC      _ensure_costs_installed  CC=21  fan=31
+      WHY: CC=21 exceeds 15
+      EFFORT: ~1h  IMPACT: 651
+
+  [5] !  SPLIT-FUNC      SmartCommitGenerator.analyze_changes  CC=24  fan=27
       WHY: CC=24 exceeds 15
       EFFORT: ~1h  IMPACT: 648
 
-  [5] !! SPLIT-FUNC      ContentAnalyzer.per_file_notes  CC=29  fan=20
+  [6] !! SPLIT-FUNC      ContentAnalyzer.per_file_notes  CC=29  fan=20
       WHY: CC=29 exceeds 15
       EFFORT: ~1h  IMPACT: 580
 
-  [6] !! SPLIT-FUNC      validate_project_versions  CC=30  fan=19
+  [7] !! SPLIT-FUNC      validate_project_versions  CC=30  fan=19
       WHY: CC=30 exceeds 15
       EFFORT: ~1h  IMPACT: 570
 
-  [7] !  SPLIT-FUNC      update_changelog  CC=24  fan=23
+  [8] !  SPLIT-FUNC      update_changelog  CC=24  fan=23
       WHY: CC=24 exceeds 15
       EFFORT: ~1h  IMPACT: 552
 
-  [8] !  SPLIT-FUNC      QualityValidator.auto_fix  CC=19  fan=27
+  [9] !  SPLIT-FUNC      QualityValidator.auto_fix  CC=19  fan=27
       WHY: CC=19 exceeds 15
       EFFORT: ~1h  IMPACT: 513
 
-  [9] !! SPLIT-FUNC      ensure_project_environment  CC=25  fan=20
+  [10] !! SPLIT-FUNC      ensure_project_environment  CC=25  fan=20
       WHY: CC=25 exceeds 15
       EFFORT: ~1h  IMPACT: 500
-
-  [10] !! SPLIT-FUNC      format_enhanced_summary  CC=29  fan=17
-      WHY: CC=29 exceeds 15
-      EFFORT: ~1h  IMPACT: 493
 
 
 RISKS[3]:
@@ -51,7 +51,7 @@ METRICS-TARGET:
   CC̄:          5.2 → ≤3.6
   max-CC:      34 → ≤17
   god-modules: 9 → 0
-  high-CC(≥15): 34 → ≤17
+  high-CC(≥15): 36 → ≤18
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):

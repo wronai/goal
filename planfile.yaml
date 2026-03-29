@@ -3943,3 +3943,1108 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-fead239f
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/api-usage/03_commit_generation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/03_commit_generation.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-26a7c4e2
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/api-usage/03_commit_generation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/03_commit_generation.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5e7fd1ad
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in examples/api-usage/03_commit_generation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/03_commit_generation.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0c0b01c1
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/api-usage/03_commit_generation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/03_commit_generation.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d8a5fd93
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/api-usage/01_basic_api.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/01_basic_api.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6ce598f4
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/api-usage/01_basic_api.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/01_basic_api.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-69da7e0f
+    name: Fix unused-imports issues
+    description: Resolve 4 unused-imports issues in examples/api-usage/01_basic_api.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/api-usage/01_basic_api.py
+    rule_id: unused-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b4a4f07a
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/api-usage/01_basic_api.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/01_basic_api.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3e3aeddf
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/api-usage/04_version_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/04_version_validation.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b4c77793
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/api-usage/04_version_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/04_version_validation.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-cd93bccd
+    name: Fix unused-imports issues
+    description: Resolve 4 unused-imports issues in examples/api-usage/04_version_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/api-usage/04_version_validation.py
+    rule_id: unused-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b8748b1a
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in examples/api-usage/04_version_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/04_version_validation.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-147a27ab
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/api-usage/04_version_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/04_version_validation.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e4700044
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in examples/api-usage/02_git_operations.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/02_git_operations.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c2e40204
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/api-usage/02_git_operations.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/02_git_operations.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5fd9a508
+    name: Fix unused-imports issues
+    description: Resolve 4 unused-imports issues in examples/api-usage/02_git_operations.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/api-usage/02_git_operations.py
+    rule_id: unused-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5161efdb
+    name: Fix magic-numbers issues
+    description: Resolve 1 magic-numbers issues in examples/api-usage/02_git_operations.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/02_git_operations.py
+    rule_id: magic-numbers
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-54d70962
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/api-usage/02_git_operations.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/02_git_operations.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-736906aa
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/api-usage/05_programmatic_workflow.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/05_programmatic_workflow.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e8219611
+    name: Fix string-concat issues
+    description: Resolve 2 string-concat issues in examples/api-usage/05_programmatic_workflow.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/05_programmatic_workflow.py
+    rule_id: string-concat
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6fdc6e8c
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in examples/api-usage/05_programmatic_workflow.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/05_programmatic_workflow.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c7eed05c
+    name: Fix smart-return-type issues
+    description: Resolve 5 smart-return-type issues in examples/custom-hooks/post-commit.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/custom-hooks/post-commit.py
+    rule_id: smart-return-type
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-251af8ff
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in examples/custom-hooks/post-commit.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/custom-hooks/post-commit.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-2f2b7a84
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/custom-hooks/post-commit.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/custom-hooks/post-commit.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e9b9f418
+    name: Fix smart-return-type issues
+    description: Resolve 4 smart-return-type issues in examples/custom-hooks/pre-commit.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/custom-hooks/pre-commit.py
+    rule_id: smart-return-type
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-905e7053
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/custom-hooks/pre-commit.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/custom-hooks/pre-commit.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-114501e4
+    name: Fix smart-return-type issues
+    description: Resolve 12 smart-return-type issues in examples/api-usage/test_integration.py
+    task_type: prefactor
+    priority: high
+    estimate: 3d
+    files:
+    - examples/api-usage/test_integration.py
+    rule_id: smart-return-type
+    count: 12
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-b70775c5
+    name: Fix unused-imports issues
+    description: Resolve 4 unused-imports issues in examples/api-usage/test_integration.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/api-usage/test_integration.py
+    rule_id: unused-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-56cf5f7d
+    name: Fix duplicate-imports issues
+    description: Resolve 3 duplicate-imports issues in examples/api-usage/test_integration.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/test_integration.py
+    rule_id: duplicate-imports
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0aa571a3
+    name: Fix llm-generated-code issues
+    description: Resolve 1 llm-generated-code issues in examples/api-usage/test_integration.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/test_integration.py
+    rule_id: llm-generated-code
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ae5a7772
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in examples/api-usage/test_integration.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/api-usage/test_integration.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c4a4e677
+    name: Fix smart-return-type issues
+    description: Resolve 5 smart-return-type issues in examples/custom-hooks/pre-publish.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/custom-hooks/pre-publish.py
+    rule_id: smart-return-type
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6ef1ccc3
+    name: Fix magic-numbers issues
+    description: Resolve 2 magic-numbers issues in examples/custom-hooks/pre-publish.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/custom-hooks/pre-publish.py
+    rule_id: magic-numbers
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c808f292
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/custom-hooks/pre-publish.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/custom-hooks/pre-publish.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-44afdd03
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/template-generator/generate.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/template-generator/generate.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c4ea6b78
+    name: Fix unused-imports issues
+    description: Resolve 4 unused-imports issues in examples/template-generator/generate.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/template-generator/generate.py
+    rule_id: unused-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-3a00d5f3
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/template-generator/generate.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/template-generator/generate.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9cfd9d22
+    name: Fix smart-return-type issues
+    description: Resolve 3 smart-return-type issues in examples/run_all_examples.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/run_all_examples.py
+    rule_id: smart-return-type
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-474c8384
+    name: Fix string-concat issues
+    description: Resolve 5 string-concat issues in examples/run_all_examples.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/run_all_examples.py
+    rule_id: string-concat
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-86634dce
+    name: Fix magic-numbers issues
+    description: Resolve 7 magic-numbers issues in examples/run_all_examples.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - examples/run_all_examples.py
+    rule_id: magic-numbers
+    count: 7
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ac153a97
+    name: Fix llm-generated-code issues
+    description: Resolve 1 llm-generated-code issues in examples/run_all_examples.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/run_all_examples.py
+    rule_id: llm-generated-code
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9376b731
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/run_all_examples.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/run_all_examples.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-74f626fa
+    name: Fix smart-return-type issues
+    description: Resolve 6 smart-return-type issues in examples/testing/01_duplicate_call_detection.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - examples/testing/01_duplicate_call_detection.py
+    rule_id: smart-return-type
+    count: 6
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e24f8933
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/testing/01_duplicate_call_detection.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/01_duplicate_call_detection.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-2bae89d4
+    name: Fix unused-imports issues
+    description: Resolve 4 unused-imports issues in examples/testing/01_duplicate_call_detection.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/testing/01_duplicate_call_detection.py
+    rule_id: unused-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-7839b691
+    name: Fix duplicate-imports issues
+    description: Resolve 2 duplicate-imports issues in examples/testing/01_duplicate_call_detection.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/01_duplicate_call_detection.py
+    rule_id: duplicate-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d1683d0d
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in examples/testing/01_duplicate_call_detection.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/01_duplicate_call_detection.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-45fe8f2a
+    name: Fix smart-return-type issues
+    description: Resolve 4 smart-return-type issues in examples/testing/02_project_detection_tests.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/testing/02_project_detection_tests.py
+    rule_id: smart-return-type
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-494249c6
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/testing/02_project_detection_tests.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/02_project_detection_tests.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-1047a7cd
+    name: Fix duplicate-imports issues
+    description: Resolve 2 duplicate-imports issues in examples/testing/02_project_detection_tests.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/02_project_detection_tests.py
+    rule_id: duplicate-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-66acbce1
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in examples/testing/02_project_detection_tests.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/02_project_detection_tests.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a112c847
+    name: Fix smart-return-type issues
+    description: Resolve 10 smart-return-type issues in examples/testing/03_advanced_mocking.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - examples/testing/03_advanced_mocking.py
+    rule_id: smart-return-type
+    count: 10
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a64e0ed4
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/testing/03_advanced_mocking.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/03_advanced_mocking.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-f0016308
+    name: Fix unused-imports issues
+    description: Resolve 2 unused-imports issues in examples/testing/03_advanced_mocking.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/03_advanced_mocking.py
+    rule_id: unused-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-8be42d9d
+    name: Fix duplicate-imports issues
+    description: Resolve 2 duplicate-imports issues in examples/testing/03_advanced_mocking.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/03_advanced_mocking.py
+    rule_id: duplicate-imports
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-c90887b4
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in examples/testing/03_advanced_mocking.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/03_advanced_mocking.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-f6719cf0
+    name: Fix smart-return-type issues
+    description: Resolve 9 smart-return-type issues in examples/testing/04_debugging_diagnostics.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - examples/testing/04_debugging_diagnostics.py
+    rule_id: smart-return-type
+    count: 9
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-51d3cb91
+    name: Fix string-concat issues
+    description: Resolve 2 string-concat issues in examples/testing/04_debugging_diagnostics.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/04_debugging_diagnostics.py
+    rule_id: string-concat
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-d449e6b7
+    name: Fix duplicate-imports issues
+    description: Resolve 4 duplicate-imports issues in examples/testing/04_debugging_diagnostics.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/testing/04_debugging_diagnostics.py
+    rule_id: duplicate-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ef24defc
+    name: Fix magic-numbers issues
+    description: Resolve 5 magic-numbers issues in examples/testing/04_debugging_diagnostics.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/testing/04_debugging_diagnostics.py
+    rule_id: magic-numbers
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-22ab3397
+    name: Fix ai-boilerplate issues
+    description: Resolve 1 ai-boilerplate issues in examples/testing/04_debugging_diagnostics.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/testing/04_debugging_diagnostics.py
+    rule_id: ai-boilerplate
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5fa9baf8
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/validation/run_all_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/run_all_validation.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-162db73c
+    name: Fix string-concat issues
+    description: Resolve 2 string-concat issues in examples/validation/run_all_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/run_all_validation.py
+    rule_id: string-concat
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-4b8132ef
+    name: Fix magic-numbers issues
+    description: Resolve 8 magic-numbers issues in examples/validation/run_all_validation.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - examples/validation/run_all_validation.py
+    rule_id: magic-numbers
+    count: 8
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-fc757004
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/validation/run_all_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/run_all_validation.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-4311914f
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/validation/test_api_signatures.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_api_signatures.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0cd1498e
+    name: Fix string-concat issues
+    description: Resolve 2 string-concat issues in examples/validation/test_api_signatures.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_api_signatures.py
+    rule_id: string-concat
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e9f8b389
+    name: Fix unused-imports issues
+    description: Resolve 8 unused-imports issues in examples/validation/test_api_signatures.py
+    task_type: prefactor
+    priority: high
+    estimate: 2d
+    files:
+    - examples/validation/test_api_signatures.py
+    rule_id: unused-imports
+    count: 8
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-5fb6f214
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/validation/test_api_signatures.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_api_signatures.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9a9f1285
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/validation/test_imports.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_imports.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0ea4b57d
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/validation/test_imports.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_imports.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-ade3d464
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/validation/test_imports.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_imports.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-8c6049ff
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/validation/test_readme_consistency.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_readme_consistency.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-70bde475
+    name: Fix string-concat issues
+    description: Resolve 5 string-concat issues in examples/validation/test_readme_consistency.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/validation/test_readme_consistency.py
+    rule_id: string-concat
+    count: 5
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-520bc420
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/validation/test_readme_consistency.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_readme_consistency.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-585fa109
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/validation/test_syntax_check.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_syntax_check.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-53069f77
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in examples/validation/test_syntax_check.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_syntax_check.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-8367cc7d
+    name: Fix unused-imports issues
+    description: Resolve 4 unused-imports issues in examples/validation/test_syntax_check.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/validation/test_syntax_check.py
+    rule_id: unused-imports
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-e51c67a5
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/validation/test_syntax_check.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/validation/test_syntax_check.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-956564dd
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/webhooks/discord-webhook.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/webhooks/discord-webhook.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-6babf634
+    name: Fix magic-numbers issues
+    description: Resolve 4 magic-numbers issues in examples/webhooks/discord-webhook.py
+    task_type: prefactor
+    priority: medium
+    estimate: 2d
+    files:
+    - examples/webhooks/discord-webhook.py
+    rule_id: magic-numbers
+    count: 4
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-99b1bd9a
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/webhooks/discord-webhook.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/webhooks/discord-webhook.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9fa46c37
+    name: Fix smart-return-type issues
+    description: Resolve 2 smart-return-type issues in examples/webhooks/slack-webhook.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/webhooks/slack-webhook.py
+    rule_id: smart-return-type
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-0add6e1d
+    name: Fix magic-numbers issues
+    description: Resolve 3 magic-numbers issues in examples/webhooks/slack-webhook.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/webhooks/slack-webhook.py
+    rule_id: magic-numbers
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-a2957074
+    name: Fix ai-boilerplate issues
+    description: Resolve 2 ai-boilerplate issues in examples/webhooks/slack-webhook.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - examples/webhooks/slack-webhook.py
+    rule_id: ai-boilerplate
+    count: 2
+    model_hints:
+      planning: balanced
+      implementation: balanced

@@ -1,4 +1,10 @@
 flowchart TD
+    examples__api_usage["examples.api-usage<br/>6 funcs"]
+    examples__custom_hooks["examples.custom-hooks<br/>14 funcs"]
+    examples__run_all_examples["examples.run_all_examples<br/>7 funcs"]
+    examples__template_generator["examples.template-generator<br/>2 funcs"]
+    examples__validation["examples.validation<br/>5 funcs"]
+    examples__webhooks["examples.webhooks<br/>4 funcs"]
     goal__authors["goal.authors<br/>21 funcs"]
     goal__changelog["goal.changelog<br/>1 funcs"]
     goal__cli["goal.cli<br/>95 funcs"]
@@ -20,23 +26,33 @@ flowchart TD
     goal__validation["goal.validation<br/>26 funcs"]
     goal__validators["goal.validators<br/>12 funcs"]
     goal__version_validation["goal.version_validation<br/>10 funcs"]
+    integration__run_matrix["integration.run_matrix<br/>4 funcs"]
+    examples__api_usage ==>|102| integration__run_matrix
+    examples__custom_hooks ==>|50| integration__run_matrix
+    examples__run_all_examples ==>|33| integration__run_matrix
     goal__push ==>|29| goal__git_ops
+    examples__validation ==>|20| integration__run_matrix
     goal__cli ==>|19| goal__git_ops
     goal__push ==>|17| goal__cli
     goal__cli ==>|13| goal__config
     goal__cli ==>|12| goal__user_config
     goal__deep_analyzer ==>|11| goal__user_config
+    examples__webhooks ==>|10| integration__run_matrix
     goal__validators ==>|9| goal__git_ops
+    examples__template_generator ==>|9| integration__run_matrix
     goal__cli ==>|7| goal__license
+    examples__api_usage ==>|7| goal__git_ops
     goal__summary ==>|6| goal__user_config
     goal__generator ==>|4| goal__user_config
+    goal__cli ==>|4| goal__version_validation
     goal__push ==>|4| goal__formatter
     goal__cli ==>|4| goal__package_managers
-    goal__cli -->|3| goal__version_validation
+    examples__api_usage ==>|4| goal__cli
     goal__cli -->|3| goal__hooks
     goal__cli -->|3| goal__project_bootstrap
     goal__cli -->|3| goal__authors
     goal__doctor -->|3| goal__user_config
+    examples__api_usage -->|3| goal__version_validation
     goal__validators -->|2| goal__user_config
     goal__push -->|2| goal__project_bootstrap
     goal__validation -->|2| goal__git_ops
@@ -54,3 +70,7 @@ flowchart TD
     goal__package_managers -->|1| goal__user_config
     goal__authors -->|1| goal__config
     goal__push -->|1| goal__changelog
+    examples__api_usage -->|1| goal__generator
+    examples__api_usage -->|1| goal__config
+    examples__api_usage -->|1| goal__user_config
+    examples__api_usage -->|1| goal__doctor

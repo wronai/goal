@@ -1,80 +1,80 @@
-# code2llm | 96f 18245L | python:93,shell:3 | 2026-03-29
-# CC̄=5.2 | critical:34/605 | dups:0 | cycles:0
+# code2llm | 96f 18405L | python:93,shell:3 | 2026-03-29
+# CC̄=5.2 | critical:36/653 | dups:0 | cycles:0
 
 HEALTH[20]:
   🔴 GOD   goal/recovery/strategies.py = 685L, 7 classes, 30m, max CC=11
   🟡 CC    update_changelog CC=24 (limit:15)
   🟡 CC    validate_project_versions CC=30 (limit:15)
+  🟡 CC    format_enhanced_summary CC=29 (limit:15)
   🟡 CC    guess_package_name CC=20 (limit:15)
   🟡 CC    ensure_project_environment CC=25 (limit:15)
   🟡 CC    scaffold_test CC=15 (limit:15)
+  🟡 CC    _ensure_costs_installed CC=21 (limit:15)
   🟡 CC    _ensure_costs_config CC=20 (limit:15)
-  🟡 CC    format_enhanced_summary CC=29 (limit:15)
   🟡 CC    _analyze_python_diff CC=15 (limit:15)
   🟡 CC    _build_summary CC=16 (limit:15)
+  🟡 CC    ensure_git_repository CC=23 (limit:15)
   🟡 CC    _score_by_signals CC=15 (limit:15)
   🟡 CC    short_action_summary CC=34 (limit:15)
   🟡 CC    per_file_notes CC=29 (limit:15)
-  🟡 CC    ensure_git_repository CC=23 (limit:15)
   🟡 CC    detect_tokens_in_content CC=17 (limit:15)
   🟡 CC    check_dot_folders CC=23 (limit:15)
   🟡 CC    validate_files CC=18 (limit:15)
+  🟡 CC    _update_cost_badges CC=23 (limit:15)
   🟡 CC    commit CC=17 (limit:15)
-  🟡 CC    update_project_metadata CC=18 (limit:15)
-  🟡 CC    _validate_advanced_section CC=21 (limit:15)
 
 REFACTOR[2]:
   1. split goal/recovery/strategies.py  (god module)
   2. split 19 high-CC methods  (CC>15)
 
-PIPELINES[392]:
-  [1] Src [__init__]: __init__
+PIPELINES[419]:
+  [1] Src [run_python_file]: run_python_file
       PURITY: 100% pure
-  [2] Src [_load]: _load
+  [2] Src [run_all]: run_all → print
       PURITY: 100% pure
-  [3] Src [_save]: _save
+  [3] Src [_run_example]: _run_example → print
       PURITY: 100% pure
-  [4] Src [get]: get
+  [4] Src [_run_with_args]: _run_with_args → print
       PURITY: 100% pure
-  [5] Src [get_registry_version]: get_registry_version
+  [5] Src [print_summary]: print_summary → print
       PURITY: 100% pure
 
 LAYERS:
-  goal/                           CC̄=5.2    ←in:118  →out:3
-  │ !! project_bootstrap          903L  0C   14m  CC=25     ←3
+  goal/                           CC̄=5.3    ←in:118  →out:3
+  │ !! project_bootstrap         1005L  0C   14m  CC=25     ←3
   │ !! strategies                 685L  7C   30m  CC=11     ←0
   │ !! generator                  675L  1C   16m  CC=26     ←0
   │ !! package_managers           628L  1C   12m  CC=11     ←1
   │ !! manager                    580L  1C    9m  CC=20     ←1
-  │ !! git_ops                    566L  0C   23m  CC=23     ←13
+  │ !! git_ops                    566L  0C   23m  CC=23     ←15
   │ !! deep_analyzer              554L  1C   22m  CC=16     ←0
   │ !! python                     536L  1C   17m  CC=17     ←0
   │ !! generator                  524L  1C   18m  CC=24     ←0
   │ !! file_validator             499L  4C   12m  CC=23     ←2
   │ !! validation                 483L  2C   13m  CC=21     ←2
-  │ manager                    457L  1C   25m  CC=10     ←6
+  │ manager                    457L  1C   25m  CC=10     ←7
+  │ !! core                       450L  1C   12m  CC=23     ←4
   │ constants                  436L  0C    0m  CC=0.0    ←0
-  │ core                       409L  1C   12m  CC=13     ←4
   │ !! formatter                  402L  1C   14m  CC=29     ←3
   │ !! analyzer                   395L  2C   16m  CC=34     ←0
-  │ generator                  382L  1C   24m  CC=12     ←0
+  │ generator                  382L  1C   24m  CC=12     ←1
   │ !! push_remote                377L  0C   14m  CC=16     ←1
   │ wizard_cmd                 340L  0C    7m  CC=12     ←0
   │ !! quality_filter             328L  1C   14m  CC=25     ←0
   │ manager                    315L  1C   14m  CC=6      ←0
   │ manager                    315L  1C   12m  CC=7      ←0
-  │ !! version_utils              310L  0C    9m  CC=18     ←5
+  │ !! version_utils              310L  0C    9m  CC=18     ←7
   │ !! validator                  310L  1C   13m  CC=19     ←0
   │ manager                    302L  1C   14m  CC=4      ←1
-  │ !! version_validation         301L  0C   10m  CC=30     ←2
+  │ !! version_validation         301L  0C   10m  CC=30     ←4
   │ !! abstraction                269L  1C    9m  CC=20     ←0
-  │ user_config                247L  1C   12m  CC=11     ←21
+  │ user_config                247L  1C   12m  CC=11     ←22
   │ spdx                       222L  0C    7m  CC=14     ←2
   │ actions                    221L  5C   16m  CC=7      ←0
+  │ __init__                   221L  1C    9m  CC=14     ←5
   │ rules                      220L  6C   19m  CC=11     ←0
   │ !! commit                     220L  0C    4m  CC=18     ←1
   │ utils                      212L  0C    9m  CC=5      ←2
-  │ __init__                   211L  1C    9m  CC=14     ←5
   │ utils_cmd                  207L  0C    8m  CC=10     ←0
   │ !! commit_cmd                 205L  0C    3m  CC=17     ←0
   │ license_cmd                198L  0C    8m  CC=7      ←0
@@ -89,11 +89,11 @@ LAYERS:
   │ !! changelog                  123L  0C    1m  CC=24     ←1
   │ authors_cmd                118L  0C   10m  CC=4      ←0
   │ version_types              113L  0C    0m  CC=0.0    ←0
+  │ push_cmd                   111L  0C    1m  CC=1      ←0
   │ config                     105L  0C    2m  CC=8      ←0
-  │ push_cmd                   104L  0C    1m  CC=1      ←0
   │ doctor_cmd                  99L  0C    1m  CC=12     ←0
   │ !! dry_run                     98L  0C    1m  CC=19     ←1
-  │ core                        87L  0C    2m  CC=8      ←2
+  │ core                        87L  0C    2m  CC=8      ←3
   │ validation_cmd              85L  0C    5m  CC=7      ←0
   │ postcommit_cmd              82L  0C    5m  CC=6      ←0
   │ nodejs                      77L  0C    1m  CC=13     ←0
@@ -136,7 +136,7 @@ LAYERS:
   │ __init__                     3L  0C    0m  CC=0.0    ←0
   │
   integration/                    CC̄=0.0    ←in:0  →out:0
-  │ run_matrix.sh              216L  1C    4m  CC=0.0    ←0
+  │ run_matrix.sh              216L  1C    4m  CC=0.0    ←13
   │ run_docker_matrix.sh         5L  0C    0m  CC=0.0    ←0
   │
   ./                              CC̄=0.0    ←in:0  →out:0
@@ -160,13 +160,13 @@ COUPLING:
     goal.validation                  2                                                                                                                                                                                                                                  ──                   
       goal.recovery                  1                                                                                                                                                                                                                                                     ──
   CYCLES: none
-  HUB: goal.config/ (fan-in=14)
-  HUB: goal/ (fan-in=118)
-  HUB: goal.cli/ (fan-in=7)
   HUB: goal.license/ (fan-in=7)
-  SMELL: goal.push/ fan-out=54 → split needed
-  SMELL: goal.validators/ fan-out=11 → split needed
+  HUB: goal/ (fan-in=118)
+  HUB: goal.config/ (fan-in=14)
+  HUB: goal.cli/ (fan-in=7)
   SMELL: goal.cli/ fan-out=65 → split needed
+  SMELL: goal.validators/ fan-out=11 → split needed
+  SMELL: goal.push/ fan-out=54 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

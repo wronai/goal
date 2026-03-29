@@ -927,8 +927,114 @@ LLM_MODEL=openrouter/qwen/qwen3-coder-next
         return False
 
 
+def _ensure_pfix_env(project_dir: Path) -> bool:
+    """Ensure .env file exists with pfix API key template.
+    
+    Returns True if .env exists or was created.
+    """
+    env_file = project_dir / '.env'
+    env_example = project_dir / '.env.example'
+    
+    # Template content for pfix .env
+    env_template = '''# pfix Configuration
+# Self-healing Python — auto-fixes runtime errors via LLM
+
+# Required: OpenRouter API key (https://openrouter.ai/keys)
+OPENROUTER_API_KEY=
+
+# Model (default: openrouter/qwen/qwen3-coder-next)
+PFIX_MODEL=openrouter/qwen/qwen3-coder-next
+
+# Behavior
+PFIX_AUTO_APPLY=true         # true = apply fixes without asking
+PFIX_AUTO_INSTALL_DEPS=true   # true = auto pip/uv install
+PFIX_AUTO_RESTART=false        # true = os.execv restart after fix
+PFIX_MAX_RETRIES=3
+PFIX_DRY_RUN=false
+PFIX_ENABLED=true
+
+# Git integration
+PFIX_GIT_COMMIT=false         # true = auto-commit fixes
+PFIX_GIT_PREFIX=pfix:         # commit message prefix
+
+# Backup
+PFIX_CREATE_BACKUPS=false     # false = disable .pfix_backups/ directory
+'''
+    
+    created = False
+    
+    try:
+        # Create .env from template if not exists
+        if not env_file.exists():
+            env_file.write_text(env_template, encoding='utf-8')
+            click.echo(click.style("  ✓ Created .env template (add your OPENROUTER_API_KEY)", fg='green'))
+            created = True
+        
+        # Also create .env.example (for git)
+        if not env_example.exists():
+            env_example.write_text(env_template, encoding='utf-8')
+        
+        # Ensure .env is in .gitignore
+        gitignore = project_dir / '.gitignore'
+        if gitignore.exists():
+            gitignore_content = gitignore.read_text(encoding='utf-8')
+            if '.env' not in gitignore_content:
+                with open(gitignore, 'a', encoding='utf-8') as f:
+                    f.write('\n# Environment variables\n.env\n')
+        else:
+            gitignore.write_text('.env\n.env.local\n', encoding='utf-8')
+        
+        return True
+    except Exception as e:
+        click.echo(click.style(f"  ⚠ Could not create pfix .env: {e}", fg='yellow'))
+        return False
+
+
+def _validate_pfix_env(project_dir: Path) -> bool:
+    """Validate that OPENROUTER_API_KEY is configured in .env.
+    
+    Shows error message if key is missing or empty.
+    Returns True if key is present, False otherwise.
+    """
+    env_file = project_dir / '.env'
+    
+    # Read API key directly from .env file
+    api_key = ''
+    if env_file.exists():
+        try:
+            content = env_file.read_text(encoding='utf-8')
+            for line in content.split('\n'):
+                if line.startswith('OPENROUTER_API_KEY='):
+                    api_key = line.split('=', 1)[1].strip()
+                    break
+        except Exception:
+            pass
+    
+    if not api_key:
+        click.echo(click.style("\n  ⚠️ OPENROUTER_API_KEY not configured!", fg='red', bold=True))
+        click.echo(click.style("  pfix requires an OpenRouter API key to fix errors.", fg='yellow'))
+        click.echo(click.style("\n  To fix this:", fg='cyan'))
+        click.echo(click.style("  1. Get your API key from: https://openrouter.ai/keys", fg='yellow'))
+        click.echo(click.style(f"  2. Add it to: {env_file}", fg='yellow'))
+        click.echo(click.style("  3. Restart goal -a\n", fg='yellow'))
+        return False
+    
+    # Check if key looks valid (starts with sk-or-v1-)
+    if not api_key.startswith('sk-or-v1-'):
+        click.echo(click.style("\n  ⚠️ OPENROUTER_API_KEY format appears invalid!", fg='red', bold=True))
+        click.echo(click.style("  Expected format: sk-or-v1-...", fg='yellow'))
+        click.echo(click.style("\n  Please verify your API key at: https://openrouter.ai/keys", fg='cyan'))
+        return False
+    
+    click.echo(click.style("  ✓ OPENROUTER_API_KEY configured", fg='green'))
+    return True
+
+
 def _ensure_pfix_installed(project_dir: Path, yes: bool = False) -> bool:
     """Ensure pfix package is installed for auto-fixing errors.
+    
+    Installs from local development path /home/tom/github/semcod/pfix
+    in editable mode for development workflow integration.
     
     Returns True if pfix is ready to use.
     """
@@ -942,22 +1048,31 @@ def _ensure_pfix_installed(project_dir: Path, yes: bool = False) -> bool:
         capture_output=True, text=True, cwd=str(project_dir)
     )
     
+    PFIX_LOCAL_PATH = "/home/tom/github/semcod/pfix"
+    
     if result.returncode != 0:
-        # Install pfix
-        click.echo(click.style(f"  Installing pfix package...", fg='cyan'))
+        # Install pfix from local path in editable mode
+        click.echo(click.style(f"  Installing pfix from local path...", fg='cyan'))
         install_result = subprocess.run(
-            [python_bin, '-m', 'pip', 'install', 'pfix>=0.1.60'],
+            [python_bin, '-m', 'pip', 'install', '-e', PFIX_LOCAL_PATH],
             capture_output=True, text=True, cwd=str(project_dir)
         )
         if install_result.returncode != 0:
             click.echo(click.style(f"  ⚠ Could not install pfix package", fg='yellow'))
             return False
-        click.echo(click.style("  ✓ Pfix package installed", fg='green'))
+        click.echo(click.style("  ✓ Pfix package installed (editable)", fg='green'))
     else:
         click.echo(click.style(f"  ✓ Pfix package already installed ({result.stdout.strip()})", fg='green'))
     
     # Check/add pfix config to pyproject.toml
     _ensure_pfix_config(project_dir, yes=yes)
+    
+    # Create .env template for API key if not exists
+    env_ok = _ensure_pfix_env(project_dir)
+    
+    # Validate API key is configured
+    if env_ok:
+        _validate_pfix_env(project_dir)
     
     return True
 

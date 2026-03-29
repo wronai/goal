@@ -1,7 +1,7 @@
-# goal | 96f 18245L | python:93,shell:3 | 2026-03-29
-# stats: 605 func | 0 cls | 96 mod | CC̄=5.2 | critical:34 | cycles:0
-# alerts[5]: CC ContentAnalyzer.short_action_summary=34; CC validate_project_versions=30; CC ContentAnalyzer.per_file_notes=29; CC format_enhanced_summary=29; fan-out QualityValidator.auto_fix=27
-# hotspots[5]: execute_push_workflow fan=27; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; update_changelog fan=23
+# goal | 96f 18405L | python:93,shell:3 | 2026-03-29
+# stats: 605 func | 0 cls | 96 mod | CC̄=5.2 | critical:36 | cycles:0
+# alerts[5]: CC ContentAnalyzer.short_action_summary=34; fan-out _ensure_costs_installed=31; CC validate_project_versions=30; CC ContentAnalyzer.per_file_notes=29; CC format_enhanced_summary=29
+# hotspots[5]: _ensure_costs_installed fan=31; execute_push_workflow fan=27; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; EnhancedSummaryGenerator.generate_enhanced_summary fan=24
 # evolution: CC̄ 5.2→5.2 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[96]:
@@ -11,7 +11,7 @@ M[96]:
   goal/authors/manager.py,315
   goal/authors/utils.py,212
   goal/changelog.py,123
-  goal/cli/__init__.py,211
+  goal/cli/__init__.py,221
   goal/cli/authors_cmd.py,118
   goal/cli/commit_cmd.py,205
   goal/cli/config_cmd.py,129
@@ -22,7 +22,7 @@ M[96]:
   goal/cli/postcommit_cmd.py,82
   goal/cli/publish.py,135
   goal/cli/publish_cmd.py,36
-  goal/cli/push_cmd.py,104
+  goal/cli/push_cmd.py,111
   goal/cli/recover_cmd.py,125
   goal/cli/utils_cmd.py,207
   goal/cli/validation_cmd.py,85
@@ -67,11 +67,11 @@ M[96]:
   goal/postcommit/__init__.py,27
   goal/postcommit/actions.py,221
   goal/postcommit/manager.py,192
-  goal/project_bootstrap.py,903
+  goal/project_bootstrap.py,1005
   goal/project_doctor.py,32
   goal/push/__init__.py,56
   goal/push/commands.py,40
-  goal/push/core.py,409
+  goal/push/core.py,450
   goal/push/stages/__init__.py,27
   goal/push/stages/changelog.py,30
   goal/push/stages/commit.py,220
@@ -196,6 +196,19 @@ D:
     validate_files(files;max_size_mb;block_large_files;token_patterns;detect_tokens;exclude_patterns;auto_handle_large)
     handle_large_files(large_files)
     validate_staged_files(config)
+  goal/push/core.py:
+    e: PushContext,run_git_local,show_workflow_preview,output_final_summary,execute_push_workflow,_initialize_context,_detect_and_bootstrap_projects,_handle_no_changes,_validate_staged_files,_handle_commit_phase,_update_cost_badges
+    PushContext: __init__(1),get(2)  # Context object wrapper for push command...
+    run_git_local()
+    show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
+    output_final_summary(ctx_obj;markdown;project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_exit_code;publish_success;no_tag)
+    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo;force;model;api_key)
+    _initialize_context(ctx_obj;bump;message;yes;markdown)
+    _detect_and_bootstrap_projects(ctx_obj;dry_run;yes)
+    _handle_no_changes(ctx_obj;project_types;dry_run;markdown)
+    _validate_staged_files(ctx_obj;dry_run;force)
+    _handle_commit_phase(ctx_obj;split;message;commit_title;commit_body;commit_msg;files;ticket;new_version;current_version;no_version_sync;no_changelog)
+    _update_cost_badges(ctx_obj;version;model;api_key)
   goal/config/validation.py:
     e: ConfigValidationError,ConfigValidator,validate_config_file,validate_config_interactive,_auto_fix_config
     ConfigValidationError(Exception): __init__(2)  # Error raised when configuration validation fails...
@@ -281,19 +294,6 @@ D:
     get_compatible_licenses(license_id)
     is_copyleft(license_id)
     is_permissive(license_id)
-  goal/push/core.py:
-    e: PushContext,run_git_local,show_workflow_preview,output_final_summary,execute_push_workflow,_initialize_context,_detect_and_bootstrap_projects,_handle_no_changes,_validate_staged_files,_handle_commit_phase,_update_cost_badges
-    PushContext: __init__(1),get(2)  # Context object wrapper for push command...
-    run_git_local()
-    show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
-    output_final_summary(ctx_obj;markdown;project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_exit_code;publish_success;no_tag)
-    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo;force)
-    _initialize_context(ctx_obj;bump;message;yes;markdown)
-    _detect_and_bootstrap_projects(ctx_obj;dry_run;yes)
-    _handle_no_changes(ctx_obj;project_types;dry_run;markdown)
-    _validate_staged_files(ctx_obj;dry_run;force)
-    _handle_commit_phase(ctx_obj;split;message;commit_title;commit_body;commit_msg;files;ticket;new_version;current_version;no_version_sync;no_changelog)
-    _update_cost_badges(ctx_obj;version)
   goal/cli/publish.py:
     e: makefile_has_target,_get_python_bin,_ensure_publish_deps,publish_project
     makefile_has_target(target)
@@ -340,14 +340,6 @@ D:
     CorruptedObjectStrategy(RecoveryStrategy): can_handle(1),recover(1)  # Handles corrupted git objects...
     LFSIssueStrategy(RecoveryStrategy): can_handle(1),recover(1)  # Handles Git LFS issues...
     ForcePushStrategy(RecoveryStrategy): can_handle(1),recover(1)  # Handles force push recovery scenarios...
-  goal/validation/rules.py:
-    e: ValidationRule,MessagePatternRule,FilePatternRule,ScriptRule,CommitSizeRule,MessageLengthRule
-    ValidationRule(ABC): __init__(1),validate(1),get_name(0),validate_config(0)  # Base class for custom validation rules...
-    MessagePatternRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit message against pattern...
-    FilePatternRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate files against pattern rules...
-    ScriptRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Run custom validation script...
-    CommitSizeRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit size (lines changed)...
-    MessageLengthRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit message length...
   goal/package_managers.py:
     e: PackageManager,detect_package_managers,get_package_manager,get_package_managers_by_language,is_package_manager_available,get_available_package_managers,get_preferred_package_manager,format_package_manager_command,get_package_manager_info,list_all_package_managers,detect_project_language,suggest_package_managers
     PackageManager: __post_init__(0)  # Package manager configuration and capabilities...
@@ -362,6 +354,14 @@ D:
     list_all_package_managers()
     detect_project_language(project_path)
     suggest_package_managers(project_path)
+  goal/validation/rules.py:
+    e: ValidationRule,MessagePatternRule,FilePatternRule,ScriptRule,CommitSizeRule,MessageLengthRule
+    ValidationRule(ABC): __init__(1),validate(1),get_name(0),validate_config(0)  # Base class for custom validation rules...
+    MessagePatternRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit message against pattern...
+    FilePatternRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate files against pattern rules...
+    ScriptRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Run custom validation script...
+    CommitSizeRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit size (lines changed)...
+    MessageLengthRule(ValidationRule): get_name(0),validate_config(0),validate(1)  # Validate commit message length...
   goal/cli/utils_cmd.py:
     e: status,init,info,version,package_managers,check_versions,clone,bootstrap
     status(ctx;markdown)
@@ -414,6 +414,9 @@ D:
     license_check(license1;license2)
     license_list(custom)
     license_template(license_id;file)
+  goal/cli/publish_cmd.py:
+    e: publish
+    publish(ctx;use_make;target;version_arg)
   goal/cli/validation_cmd.py:
     e: validation,validation_run,validation_list,validation_validate,validation_info
     validation()
@@ -421,9 +424,6 @@ D:
     validation_list()
     validation_validate()
     validation_info()
-  goal/cli/publish_cmd.py:
-    e: publish
-    publish(ctx;use_make;target;version_arg)
   goal/postcommit/actions.py:
     e: PostCommitAction,NotificationAction,WebhookAction,ScriptAction,GitPushAction
     PostCommitAction(ABC): __init__(1),execute(1),get_name(0),validate_config(0)  # Base class for post-commit actions...
@@ -565,10 +565,10 @@ D:
     push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
   goal/cli/push_cmd.py:
     e: push
-    push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;markdown;split;ticket;abstraction;todo)
+    push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;markdown;split;ticket;abstraction;todo;model;api_key)
   goal/config/__init__.py:
-  goal/commit_generator.py:
   goal/enhanced_summary.py:
+  goal/commit_generator.py:
   goal/__init__.py:
   goal/__main__.py:
   goal/smart_commit/__init__.py:
@@ -584,15 +584,11 @@ D:
   goal/config/constants.py:
   goal/validation/__init__.py:
   goal/doctor/__init__.py:
-  goal/doctor/models.py:
-    e: Issue,DoctorReport
-    Issue:  # A single diagnosed issue...
-    DoctorReport:  # Aggregated report from a doctor run...
   goal/authors/__init__.py:
   goal/license/__init__.py:
   goal/push/stages/__init__.py:
-  project.sh:
   integration/run_docker_matrix.sh:
+  project.sh:
   integration/run_matrix.sh:
     e: App,run_case,print,main,self
     App:
@@ -600,3 +596,7 @@ D:
     print()
     main()
     self()
+  goal/doctor/models.py:
+    e: Issue,DoctorReport
+    Issue:  # A single diagnosed issue...
+    DoctorReport:  # Aggregated report from a doctor run...

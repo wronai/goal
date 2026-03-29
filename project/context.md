@@ -4,12 +4,12 @@
 
 - **Project**: /home/tom/github/wronai/goal
 - **Primary Language**: python
-- **Languages**: python: 93, shell: 5
+- **Languages**: python: 107, shell: 5, go: 1, java: 1, csharp: 1
 - **Analysis Mode**: static
-- **Total Functions**: 605
-- **Total Classes**: 59
-- **Modules**: 98
-- **Entry Points**: 438
+- **Total Functions**: 653
+- **Total Classes**: 66
+- **Modules**: 117
+- **Entry Points**: 472
 
 ## Architecture by Module
 
@@ -67,14 +67,14 @@
 - **Classes**: 1
 - **File**: `generator.py`
 
-### goal.project_bootstrap
-- **Functions**: 14
-- **File**: `project_bootstrap.py`
-
 ### goal.formatter
 - **Functions**: 14
 - **Classes**: 1
 - **File**: `formatter.py`
+
+### goal.project_bootstrap
+- **Functions**: 14
+- **File**: `project_bootstrap.py`
 
 ### goal.hooks.manager
 - **Functions**: 14
@@ -130,13 +130,21 @@ Main execution flows into the system:
 > Generate small descriptive notes for a file based on added lines heuristics.
 - **Calls**: cmd.extend, path.endswith, path.endswith, path.endswith, cmd.append, None.strip, re.findall, re.findall
 
-### goal.recovery.strategies.LargeFileStrategy.recover
-> Attempt to recover from large file error.
-- **Calls**: click.echo, self._extract_file_paths, click.echo, click.echo, click.echo, click.echo, click.echo, click.prompt
+### examples.run_all_examples.ExampleRunner.run_all
+> Find and run all Python examples.
+- **Calls**: integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, sorted
 
 ### goal.cli.commit_cmd.fix_summary
 > Auto-fix commit summary quality issues.
 - **Calls**: main.command, click.option, click.option, click.option, goal.git_ops.get_staged_files, goal.git_ops.get_diff_stats, ctx.obj.get, CommitMessageGenerator
+
+### goal.recovery.strategies.LargeFileStrategy.recover
+> Attempt to recover from large file error.
+- **Calls**: click.echo, self._extract_file_paths, click.echo, click.echo, click.echo, click.echo, click.echo, click.prompt
+
+### examples.api-usage.02_git_operations.main
+> Demonstrate git operations.
+- **Calls**: integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, goal.git_ops.get_staged_files, integration.run_matrix.print
 
 ### goal.deep_analyzer.CodeChangeAnalyzer._analyze_python_diff
 > Analyze Python code changes using AST.
@@ -153,6 +161,10 @@ Main execution flows into the system:
 ### goal.cli.wizard_cmd.wizard
 > Interactive wizard for complete Goal setup.
 - **Calls**: main.command, click.option, click.option, click.option, click.option, click.echo, click.echo, click.echo
+
+### examples.api-usage.01_basic_api.main
+> Run basic API examples.
+- **Calls**: integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, goal.cli.version_utils.detect_project_types, integration.run_matrix.print, integration.run_matrix.print, goal.cli.version_utils.get_current_version
 
 ### goal.doctor.python.PythonDiagnostics.check_py011_version_consistency
 > PY011: Check for consistent version across all config files.
@@ -176,6 +188,10 @@ Main execution flows into the system:
 Returns:
     Tuple of (section_text, test_scenarios, has_changes)
 - **Calls**: self.quality_filter.categorize_files, fa.get, fa.get, fa.get, fa.get, categorized.items, change_lines.append, change_lines.append
+
+### examples.api-usage.04_version_validation.main
+> Demonstrate version validation.
+- **Calls**: integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, integration.run_matrix.print, goal.cli.version_utils.get_current_version, integration.run_matrix.print, integration.run_matrix.print, goal.version_validation.get_pypi_version
 
 ### goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency
 > PY010: Check for consistent project name across all config files.
@@ -226,22 +242,6 @@ git push failures including:
 - Authentication
 - **Calls**: main.command, click.option, click.option, click.option, click.option, click.option, os.getcwd, goal.cli.recover_cmd._get_error_output
 
-### goal.doctor.nodejs.diagnose_nodejs
-> Run all Node.js-specific diagnostics.
-- **Calls**: json.dumps, data.get, json.dumps, pkg_json.exists, json.loads, data.get, issues.append, data.get
-
-### goal.doctor.python.PythonDiagnostics.check_py009_string_authors
-> PY009: Check for authors in deprecated string format (PEP 621 requires objects).
-- **Calls**: re.search, authors_match.group, re.compile, None.splitlines, Issue, self.issues.append, line.strip, string_author_pattern.match
-
-### goal.doctor.python.diagnose_python
-> Run all Python-specific diagnostics.
-- **Calls**: pyproject.read_text, PythonDiagnostics, diag.check_py002_build_system, diag.check_py003_license_classifiers, diag.check_py004_deprecated_backends, diag.check_py005_license_table, diag.check_py006_duplicate_authors, diag.check_py007_requires_python
-
-### goal.generator.generator.CommitMessageGenerator._build_summary_section
-> Build high-level summary section.
-- **Calls**: Counter, Counter, parts.append, parts.append, parts.append, parts.append, parts.append, parts.append
-
 ## Process Flows
 
 Key execution flows identified:
@@ -271,9 +271,11 @@ validate [goal.cli.commit_cmd]
 per_file_notes [goal.generator.analyzer.ContentAnalyzer]
 ```
 
-### Flow 5: recover
+### Flow 5: run_all
 ```
-recover [goal.recovery.strategies.LargeFileStrategy]
+run_all [examples.run_all_examples.ExampleRunner]
+  └─ →> print
+  └─ →> print
 ```
 
 ### Flow 6: fix_summary
@@ -283,26 +285,28 @@ fix_summary [goal.cli.commit_cmd]
       └─> run_git
 ```
 
-### Flow 7: _analyze_python_diff
+### Flow 7: recover
+```
+recover [goal.recovery.strategies.LargeFileStrategy]
+```
+
+### Flow 8: main
+```
+main [examples.api-usage.02_git_operations]
+  └─ →> print
+  └─ →> print
+```
+
+### Flow 9: _analyze_python_diff
 ```
 _analyze_python_diff [goal.deep_analyzer.CodeChangeAnalyzer]
   └─ →> set
   └─ →> set
 ```
 
-### Flow 8: doctor
+### Flow 10: doctor
 ```
 doctor [goal.cli.doctor_cmd]
-```
-
-### Flow 9: generate_enhanced_summary
-```
-generate_enhanced_summary [goal.summary.generator.EnhancedSummaryGenerator]
-```
-
-### Flow 10: wizard
-```
-wizard [goal.cli.wizard_cmd]
 ```
 
 ## Key Classes
@@ -398,16 +402,15 @@ wizard [goal.cli.wizard_cmd]
 - **Methods**: 7
 - **Key Methods**: goal.license.manager.LicenseManager.__init__, goal.license.manager.LicenseManager.get_available_licenses, goal.license.manager.LicenseManager.get_license_template, goal.license.manager.LicenseManager.add_custom_template, goal.license.manager.LicenseManager.create_license_file, goal.license.manager.LicenseManager.update_license_file, goal.license.manager.LicenseManager.validate_license_file
 
+### examples.run_all_examples.ExampleRunner
+> Runs all examples and collects results.
+- **Methods**: 6
+- **Key Methods**: examples.run_all_examples.ExampleRunner.__init__, examples.run_all_examples.ExampleRunner.run_python_file, examples.run_all_examples.ExampleRunner.run_all, examples.run_all_examples.ExampleRunner._run_example, examples.run_all_examples.ExampleRunner._run_with_args, examples.run_all_examples.ExampleRunner.print_summary
+
 ### goal.user_config.UserConfig
 > Manages user-specific configuration stored in ~/.goal
 - **Methods**: 6
 - **Key Methods**: goal.user_config.UserConfig.__init__, goal.user_config.UserConfig._load, goal.user_config.UserConfig._save, goal.user_config.UserConfig.get, goal.user_config.UserConfig.set, goal.user_config.UserConfig.is_initialized
-
-### goal.recovery.strategies.DivergentHistoryStrategy
-> Handles divergent history errors.
-- **Methods**: 6
-- **Key Methods**: goal.recovery.strategies.DivergentHistoryStrategy.can_handle, goal.recovery.strategies.DivergentHistoryStrategy.recover, goal.recovery.strategies.DivergentHistoryStrategy._rebase_changes, goal.recovery.strategies.DivergentHistoryStrategy._merge_changes, goal.recovery.strategies.DivergentHistoryStrategy._pull_changes, goal.recovery.strategies.DivergentHistoryStrategy._force_push
-- **Inherits**: RecoveryStrategy
 
 ## Data Transformation Functions
 
@@ -454,13 +457,13 @@ Args:
 This is a convenience function that extracts validation 
 - **Output to**: goal.git_ops.get_staged_files, goal.validators.file_validator.manage_dot_folders, goal.git_ops.get_staged_files, goal.validators.file_validator.validate_files, config.get
 
-### goal.cli.license_cmd.license_validate
-> Validate the LICENSE file.
-- **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
-
 ### goal.push.core._validate_staged_files
 > Validate staged files for security issues.
 - **Output to**: goal.validators.file_validator.validate_staged_files, click.echo, ctx_obj.get, click.echo, click.echo
+
+### goal.cli.license_cmd.license_validate
+> Validate the LICENSE file.
+- **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
 
 ### goal.cli.config_validate_cmd.validate_cmd
 > Validate goal.yaml configuration file.
@@ -548,17 +551,21 @@ Functions exposed as public API (no underscore prefix):
 - `goal.push.stages.commit.handle_split_commits` - 41 calls
 - `goal.push.stages.push_remote.push_to_remote` - 41 calls
 - `goal.formatter.format_enhanced_summary` - 39 calls
-- `goal.recovery.strategies.LargeFileStrategy.recover` - 38 calls
+- `examples.run_all_examples.ExampleRunner.run_all` - 38 calls
 - `goal.cli.commit_cmd.fix_summary` - 38 calls
+- `goal.recovery.strategies.LargeFileStrategy.recover` - 38 calls
+- `examples.api-usage.02_git_operations.main` - 38 calls
 - `goal.cli.doctor_cmd.doctor` - 36 calls
 - `goal.summary.generator.EnhancedSummaryGenerator.generate_enhanced_summary` - 36 calls
 - `goal.push.stages.dry_run.handle_dry_run` - 36 calls
 - `goal.changelog.update_changelog` - 35 calls
 - `goal.cli.wizard_cmd.wizard` - 34 calls
+- `examples.api-usage.01_basic_api.main` - 34 calls
 - `goal.doctor.python.PythonDiagnostics.check_py011_version_consistency` - 34 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.analyze_changes` - 33 calls
 - `goal.push.core.execute_push_workflow` - 32 calls
 - `goal.user_config.show_user_config` - 31 calls
+- `examples.api-usage.04_version_validation.main` - 30 calls
 - `goal.version_validation.validate_project_versions` - 28 calls
 - `goal.project_bootstrap.guess_package_name` - 28 calls
 - `goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency` - 28 calls
@@ -574,10 +581,6 @@ Functions exposed as public API (no underscore prefix):
 - `goal.cli.publish.publish_project` - 24 calls
 - `goal.git_ops.ensure_remote` - 23 calls
 - `goal.recovery.manager.RecoveryManager.recover_from_push_failure` - 23 calls
-- `goal.cli.recover_cmd.recover` - 23 calls
-- `goal.cli.version_utils.update_readme_metadata` - 23 calls
-- `goal.doctor.nodejs.diagnose_nodejs` - 23 calls
-- `goal.doctor.python.PythonDiagnostics.check_py009_string_authors` - 23 calls
 
 ## System Interactions
 
@@ -598,11 +601,13 @@ graph TD
     per_file_notes --> extend
     per_file_notes --> endswith
     per_file_notes --> append
-    recover --> echo
-    recover --> _extract_file_paths
+    run_all --> print
     fix_summary --> command
     fix_summary --> option
     fix_summary --> get_staged_files
+    recover --> echo
+    recover --> _extract_file_paths
+    main --> print
     _analyze_python_diff --> _extract_python_enti
     _analyze_python_diff --> set
     _analyze_python_diff --> sum
@@ -613,8 +618,6 @@ graph TD
     generate_enhanced_su --> generate_functional_
     generate_enhanced_su --> detect_capabilities
     generate_enhanced_su --> prioritize_capabilit
-    generate_enhanced_su --> detect_file_relation
-    wizard --> command
 ```
 
 ## Reverse Engineering Guidelines

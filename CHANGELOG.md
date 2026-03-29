@@ -1,5 +1,116 @@
 ## [Unreleased]
 
+## [2.1.158] - 2026-03-29
+
+### Docs
+- Update CHANGELOG.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Other
+- Update planfile.yaml
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/duplication.toon.yaml
+- Update project/evolution.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- ... and 5 more files
+
+## [0.1.10] - 2026-03-29
+
+### Fixed
+- Fix smart-return-type issues (ticket-fead239f)
+- Fix string-concat issues (ticket-26a7c4e2)
+- Fix magic-numbers issues (ticket-5e7fd1ad)
+- Fix ai-boilerplate issues (ticket-0c0b01c1)
+- Fix smart-return-type issues (ticket-d8a5fd93)
+- Fix string-concat issues (ticket-6ce598f4)
+- Fix unused-imports issues (ticket-69da7e0f)
+- Fix ai-boilerplate issues (ticket-b4a4f07a)
+- Fix smart-return-type issues (ticket-3e3aeddf)
+- Fix string-concat issues (ticket-b4c77793)
+- Fix unused-imports issues (ticket-cd93bccd)
+- Fix magic-numbers issues (ticket-b8748b1a)
+- Fix ai-boilerplate issues (ticket-147a27ab)
+- Fix smart-return-type issues (ticket-e4700044)
+- Fix string-concat issues (ticket-c2e40204)
+- Fix unused-imports issues (ticket-5fd9a508)
+- Fix magic-numbers issues (ticket-5161efdb)
+- Fix ai-boilerplate issues (ticket-54d70962)
+- Fix smart-return-type issues (ticket-736906aa)
+- Fix string-concat issues (ticket-e8219611)
+- Fix ai-boilerplate issues (ticket-6fdc6e8c)
+- Fix smart-return-type issues (ticket-c7eed05c)
+- Fix magic-numbers issues (ticket-251af8ff)
+- Fix ai-boilerplate issues (ticket-2f2b7a84)
+- Fix smart-return-type issues (ticket-e9b9f418)
+- Fix ai-boilerplate issues (ticket-905e7053)
+- Fix smart-return-type issues (ticket-114501e4)
+- Fix unused-imports issues (ticket-b70775c5)
+- Fix duplicate-imports issues (ticket-56cf5f7d)
+- Fix llm-generated-code issues (ticket-0aa571a3)
+- Fix ai-boilerplate issues (ticket-ae5a7772)
+- Fix smart-return-type issues (ticket-c4a4e677)
+- Fix magic-numbers issues (ticket-6ef1ccc3)
+- Fix ai-boilerplate issues (ticket-c808f292)
+- Fix smart-return-type issues (ticket-44afdd03)
+- Fix unused-imports issues (ticket-c4ea6b78)
+- Fix ai-boilerplate issues (ticket-3a00d5f3)
+- Fix smart-return-type issues (ticket-9cfd9d22)
+- Fix string-concat issues (ticket-474c8384)
+- Fix magic-numbers issues (ticket-86634dce)
+- Fix llm-generated-code issues (ticket-ac153a97)
+- Fix ai-boilerplate issues (ticket-9376b731)
+- Fix smart-return-type issues (ticket-74f626fa)
+- Fix string-concat issues (ticket-e24f8933)
+- Fix unused-imports issues (ticket-2bae89d4)
+- Fix duplicate-imports issues (ticket-7839b691)
+- Fix ai-boilerplate issues (ticket-d1683d0d)
+- Fix smart-return-type issues (ticket-45fe8f2a)
+- Fix string-concat issues (ticket-494249c6)
+- Fix duplicate-imports issues (ticket-1047a7cd)
+- Fix ai-boilerplate issues (ticket-66acbce1)
+- Fix smart-return-type issues (ticket-a112c847)
+- Fix string-concat issues (ticket-a64e0ed4)
+- Fix unused-imports issues (ticket-f0016308)
+- Fix duplicate-imports issues (ticket-8be42d9d)
+- Fix ai-boilerplate issues (ticket-c90887b4)
+- Fix smart-return-type issues (ticket-f6719cf0)
+- Fix string-concat issues (ticket-51d3cb91)
+- Fix duplicate-imports issues (ticket-d449e6b7)
+- Fix magic-numbers issues (ticket-ef24defc)
+- Fix ai-boilerplate issues (ticket-22ab3397)
+- Fix smart-return-type issues (ticket-5fa9baf8)
+- Fix string-concat issues (ticket-162db73c)
+- Fix magic-numbers issues (ticket-4b8132ef)
+- Fix ai-boilerplate issues (ticket-fc757004)
+- Fix smart-return-type issues (ticket-4311914f)
+- Fix string-concat issues (ticket-0cd1498e)
+- Fix unused-imports issues (ticket-e9f8b389)
+- Fix ai-boilerplate issues (ticket-5fb6f214)
+- Fix smart-return-type issues (ticket-9a9f1285)
+- Fix string-concat issues (ticket-0ea4b57d)
+- Fix ai-boilerplate issues (ticket-ade3d464)
+- Fix smart-return-type issues (ticket-8c6049ff)
+- Fix string-concat issues (ticket-70bde475)
+- Fix ai-boilerplate issues (ticket-520bc420)
+- Fix smart-return-type issues (ticket-585fa109)
+- Fix string-concat issues (ticket-53069f77)
+- Fix unused-imports issues (ticket-8367cc7d)
+- Fix ai-boilerplate issues (ticket-e51c67a5)
+- Fix smart-return-type issues (ticket-956564dd)
+- Fix magic-numbers issues (ticket-6babf634)
+- Fix ai-boilerplate issues (ticket-99b1bd9a)
+- Fix smart-return-type issues (ticket-9fa46c37)
+- Fix magic-numbers issues (ticket-0add6e1d)
+- Fix ai-boilerplate issues (ticket-a2957074)
+
 ## [2.1.157] - 2026-03-29
 
 ### Docs
