@@ -378,6 +378,9 @@ def ensure_project_environment(project_dir: Path, project_type: str, yes: bool =
         subprocess.run([python_bin, '-m', 'pip', 'install', '--upgrade', 'pip'],
                        capture_output=True, text=True, cwd=str(project_dir))
 
+        # Install costs package for AI tracking
+        _ensure_costs_installed(project_dir, python_bin)
+
         # Install deps
         for dep_cfg in cfg['dep_install_commands']:
             condition_file = dep_cfg['condition']
@@ -587,3 +590,72 @@ def bootstrap_all_projects(root: Optional[Path] = None, yes: bool = False) -> Li
             results.append(res)
 
     return results
+
+
+def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
+    """Ensure costs package is installed and configured for AI tracking.
+    
+    Returns True if costs is ready to use.
+    """
+    # Check if costs is already installed
+    result = subprocess.run(
+        [python_bin, '-c', 'import costs; print(costs.__version__)'],
+        capture_output=True, text=True, cwd=str(project_dir)
+    )
+    
+    if result.returncode != 0:
+        # Install costs
+        click.echo(click.style(f"  Installing costs package...", fg='cyan'))
+        install_result = subprocess.run(
+            [python_bin, '-m', 'pip', 'install', 'costs>=0.1.20'],
+            capture_output=True, text=True, cwd=str(project_dir)
+        )
+        if install_result.returncode != 0:
+            click.echo(click.style(f"  ⚠ Could not install costs package", fg='yellow'))
+            return False
+        click.echo(click.style("  ✓ Costs package installed", fg='green'))
+    
+    # Check/add costs config to pyproject.toml
+    _ensure_costs_config(project_dir)
+    
+    return True
+
+
+def _ensure_costs_config(project_dir: Path) -> bool:
+    """Ensure [tool.costs] section exists in pyproject.toml.
+    
+    Returns True if config was added or already exists.
+    """
+    pyproject = project_dir / 'pyproject.toml'
+    if not pyproject.exists():
+        return False
+    
+    content = pyproject.read_text(encoding='utf-8')
+    
+    # Check if already configured
+    if '[tool.costs]' in content:
+        return True
+    
+    # Add costs configuration
+    costs_config = '''\n[tool.costs]
+# AI Cost tracking configuration
+badge = true
+update_readme = true
+readme_path = "README.md"
+default_model = "openrouter/qwen/qwen3-coder-next"
+analysis_mode = "byok"
+full_history = true
+max_commits = 500
+
+# Cost thresholds for badge colors (USD)
+badge_color_thresholds = { low = 1.0, medium = 5.0, high = 10.0, critical = 50.0 }
+'''
+    
+    try:
+        with open(pyproject, 'a', encoding='utf-8') as f:
+            f.write(costs_config)
+        click.echo(click.style("  ✓ Added [tool.costs] to pyproject.toml", fg='green'))
+        return True
+    except Exception as e:
+        click.echo(click.style(f"  ⚠ Could not add costs config: {e}", fg='yellow'))
+        return False
