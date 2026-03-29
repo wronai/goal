@@ -625,10 +625,25 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
     
     # Generate initial badge in README
     click.echo(click.style(f"  Generating AI cost badge...", fg='cyan'))
-    badge_result = subprocess.run(
-        [python_bin, '-m', 'costs', 'auto-badge', '--repo', str(project_dir), '--all'],
-        capture_output=True, text=True, cwd=str(project_dir)
-    )
+    
+    # Find costs binary in venv or use python -c to call CLI directly
+    costs_bin = project_dir / '.venv' / 'bin' / 'costs'
+    if not costs_bin.exists():
+        costs_bin = Path(python_bin).parent / 'costs'
+    
+    if costs_bin.exists():
+        badge_result = subprocess.run(
+            [str(costs_bin), 'auto-badge', '--repo', str(project_dir), '--all'],
+            capture_output=True, text=True, cwd=str(project_dir)
+        )
+    else:
+        # Fallback: call via python -c
+        badge_result = subprocess.run(
+            [python_bin, '-c', 
+             f'from costs.cli import app; app(["auto-badge", "--repo", "{project_dir}", "--all"])'],
+            capture_output=True, text=True, cwd=str(project_dir)
+        )
+    
     if badge_result.returncode == 0:
         click.echo(click.style("  ✓ AI cost badge generated", fg='green'))
     else:
