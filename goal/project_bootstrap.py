@@ -618,6 +618,9 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
     # Check/add costs config to pyproject.toml
     _ensure_costs_config(project_dir)
     
+    # Create .env template for API key if not exists
+    _ensure_env_template(project_dir)
+    
     return True
 
 
@@ -658,4 +661,55 @@ badge_color_thresholds = { low = 1.0, medium = 5.0, high = 10.0, critical = 50.0
         return True
     except Exception as e:
         click.echo(click.style(f"  ⚠ Could not add costs config: {e}", fg='yellow'))
+        return False
+
+
+def _ensure_env_template(project_dir: Path) -> bool:
+    """Ensure .env file exists with API key template.
+    
+    Returns True if .env was created or already exists.
+    """
+    env_file = project_dir / '.env'
+    env_example = project_dir / '.env.example'
+    
+    # If .env already exists, don't modify it
+    if env_file.exists():
+        return True
+    
+    # Template content for .env
+    env_template = '''# AI Cost Tracking Configuration
+# Get your API key from: https://openrouter.ai/keys
+
+# OpenRouter API Key (required for real cost calculation)
+OPENROUTER_API_KEY=sk-or-v1-...
+
+# Default AI model for cost analysis
+PFIX_MODEL=openrouter/qwen/qwen3-coder-next
+
+# Optional: SaaS token for managed billing
+# SAAS_TOKEN=your-saas-token
+'''
+    
+    try:
+        # Create .env from template
+        env_file.write_text(env_template, encoding='utf-8')
+        
+        # Also create .env.example (for git)
+        if not env_example.exists():
+            env_example.write_text(env_template, encoding='utf-8')
+        
+        # Ensure .env is in .gitignore
+        gitignore = project_dir / '.gitignore'
+        if gitignore.exists():
+            gitignore_content = gitignore.read_text(encoding='utf-8')
+            if '.env' not in gitignore_content:
+                with open(gitignore, 'a', encoding='utf-8') as f:
+                    f.write('\n# Environment variables\n.env\n')
+        else:
+            gitignore.write_text('.env\n.env.local\n', encoding='utf-8')
+        
+        click.echo(click.style("  ✓ Created .env template (add your OPENROUTER_API_KEY)", fg='green'))
+        return True
+    except Exception as e:
+        click.echo(click.style(f"  ⚠ Could not create .env: {e}", fg='yellow'))
         return False
