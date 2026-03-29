@@ -4,7 +4,7 @@
 # Goal
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.129-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1.130-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/pypi-goal-orange.svg" alt="PyPI">
@@ -18,6 +18,7 @@
   <a href="http://mypy-lang.org/"><img src="https://img.shields.io/badge/type%20checking-mypy-blue.svg" alt="Type Checking"></a>
   <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey" alt="Platform"></a>
   <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/dependencies-git%20%7C%20click-blue" alt="Dependencies"></a>
+  <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/AI%20Cost-Analyze%20with%20costs-blue" alt="AI Cost"></a>
 </p>
 
 Goal is your **release autopilot**: a CLI that runs tests, writes conventional commits, updates changelogs, bumps versions, and publishes packages for you—while keeping you in control with clear prompts or full automation.
@@ -268,6 +269,25 @@ What would you like to do?
 ```
 
 📖 [Full Documentation](docs/enhanced-summary.md) | 📂 [Examples](examples/enhanced-summary/)
+
+---
+
+## 📊 AI Cost Tracking for This Project
+
+This project tracks its own AI development costs.
+
+**Development Stats:**
+- 📝 **Active development** with AI-assisted commits
+- 💰 **AI Cost:** Analyze with `aicost auto-badge --repo .`
+
+```bash
+pip install costs
+aicost auto-badge --repo .
+```
+
+![AI Cost for goal](https://img.shields.io/badge/AI%20Cost-Analyze%20with%20costs-blue)
+
+---
 
 ## Features
 

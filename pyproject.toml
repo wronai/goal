@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "goal"
-version = "2.1.129"
+version = "2.1.130"
 description = "Goal - Automated git push with enterprise-grade commit intelligence, smart conventional commit generation based on deep code analysis, and interactive release workflow management."
 readme = "README.md"
 license = "Apache-2.0"
@@ -21,6 +21,7 @@ dependencies = [
     "click>=8.0.0",
     "PyYAML>=6.0",
     "clickmd>=0.1.0",
+    "costs>=0.1.12",
 ]
 
 [project.optional-dependencies]
@@ -44,6 +45,19 @@ Issues = "https://github.com/wronai/goal/issues"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["goal*"]
+
+[tool.costs]
+# AI Cost tracking configuration
+badge = true
+update_readme = true
+readme_path = "README.md"
+default_model = "anthropic/claude-4-sonnet"
+analysis_mode = "byok"
+full_history = true
+max_commits = 500
+
+# Cost thresholds for badge colors (USD)
+badge_color_thresholds = { low = 1.0, medium = 5.0, high = 10.0, critical = 50.0 }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
