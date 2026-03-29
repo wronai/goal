@@ -4,7 +4,7 @@
 # Goal
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.132-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1.133-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/pypi-goal-orange.svg" alt="PyPI">
@@ -18,7 +18,9 @@
   <a href="http://mypy-lang.org/"><img src="https://img.shields.io/badge/type%20checking-mypy-blue.svg" alt="Type Checking"></a>
   <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey" alt="Platform"></a>
   <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/dependencies-git%20%7C%20click-blue" alt="Dependencies"></a>
-  <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/AI%20Cost-Analyze%20with%20costs-blue" alt="AI Cost"></a>
+  <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/AI%20Cost-%240.84-orange" alt="AI Cost"></a>
+  <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/Human%20Time-1.5h-blue" alt="Human Time"></a>
+  <a href="https://github.com/wronai/goal"><img src="https://img.shields.io/badge/Model-qwen3--coder--next-lightgrey" alt="Model"></a>
 </p>
 
 Goal is your **release autopilot**: a CLI that runs tests, writes conventional commits, updates changelogs, bumps versions, and publishes packages for you—while keeping you in control with clear prompts or full automation.
