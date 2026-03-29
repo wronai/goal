@@ -193,7 +193,7 @@ DEFAULT_CONFIG = {
         'python': {
             'test': 'pytest tests/ -v',
             'build': 'python -m build',
-            'publish': 'twine upload dist/goal-{version}*',
+            'publish': 'twine upload dist/{project_name}-{version}*',  # placeholder, replaced on init
             'publish_enabled': True,
             'dependencies': {
                 'file': 'requirements.txt',

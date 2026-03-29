@@ -348,14 +348,25 @@ def _update_cost_badges(ctx_obj: Dict[str, Any], version: str) -> None:
         # Check if costs tracking is enabled in pyproject.toml
         import tomllib
         config_path = Path("pyproject.toml")
-        if not config_path.exists():
-            return
-            
-        with open(config_path, "rb") as f:
-            config = tomllib.load(f)
         
-        tool_costs = config.get("tool", {}).get("costs", {})
-        if not tool_costs.get("badge", False) and not tool_costs.get("update_readme", False):
+        # Default to enabled unless explicitly disabled
+        badge_enabled = True
+        update_readme_enabled = True
+        auto_commit = False
+        
+        if config_path.exists():
+            with open(config_path, "rb") as f:
+                config = tomllib.load(f)
+            
+            tool_costs = config.get("tool", {}).get("costs", {})
+            # Only disable if explicitly set to False
+            if tool_costs.get("badge") is False:
+                badge_enabled = False
+            if tool_costs.get("update_readme") is False:
+                update_readme_enabled = False
+            auto_commit = tool_costs.get("auto_commit", False)
+        
+        if not badge_enabled and not update_readme_enabled:
             return
         
         # Get analysis results from cost tracker
@@ -368,7 +379,7 @@ def _update_cost_badges(ctx_obj: Dict[str, Any], version: str) -> None:
                 click.echo(click.style("✓ Updated AI cost badges in README", fg='green'))
             
             # Optionally commit the badge update
-            if tool_costs.get("auto_commit", False):
+            if auto_commit:
                 from goal.git_ops import run_git
                 run_git('add', 'README.md')
                 run_git('commit', '-m', f'chore: update AI cost badges for v{version}')

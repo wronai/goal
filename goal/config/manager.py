@@ -96,6 +96,15 @@ class GoalConfig:
         # Auto-detect version files
         config['versioning']['files'] = self._detect_version_files()
         
+        # Update publish pattern with detected project name
+        project_name = config['project']['name']
+        if project_name:
+            python_strategy = config.get('strategies', {}).get('python', {})
+            if 'publish' in python_strategy:
+                python_strategy['publish'] = python_strategy['publish'].replace(
+                    '{project_name}', project_name
+                )
+        
         return config
     
     def _deep_copy(self, obj: Any) -> Any:

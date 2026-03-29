@@ -17,16 +17,17 @@ from goal.push.core import execute_push_workflow
 @click.option('--no-version-sync', is_flag=True, help='Skip syncing version to all files')
 @click.option('--message', '-m', default=None, help='Custom commit message')
 @click.option('--dry-run', is_flag=True, help='Show what would be done without executing')
-@click.option('--yes', '-y', is_flag=True, help='Auto-confirm all prompts')
 @click.option('--markdown/--ascii', default=False, help='Output format')
 @click.option('--split', is_flag=True, help='Split commits by file type')
 @click.option('--ticket', default=None, help='Ticket ID for commit prefix')
 @click.option('--abstraction', default=None, help='Abstraction level for commit message')
 @click.option('--todo', '-t', is_flag=True, help='Create TODO.md with detected issues')
 @click.pass_context
-def push(ctx, bump, no_tag, no_changelog, no_version_sync, message, dry_run, yes, 
+def push(ctx, bump, no_tag, no_changelog, no_version_sync, message, dry_run,
          markdown, split, ticket, abstraction, todo) -> None:
     """Add, commit, tag, and push changes to remote."""
+    # Use yes from ctx.obj (set by -a/--all or -y/--yes global flags)
+    yes = ctx.obj.get('yes', False)
     execute_push_workflow(
         ctx_obj=ctx.obj,
         bump=bump,
