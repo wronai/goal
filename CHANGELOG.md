@@ -1,5 +1,41 @@
 ## [Unreleased]
 
+## [2.1.165] - 2026-03-29
+
+### Docs
+- Update CHANGELOG.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Test
+- Update tests/test_project_bootstrap.py
+- Update tests/test_push_e2e.py
+- Update tests/test_version_sync.py
+
+### Other
+- Update planfile.yaml
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/duplication.toon.yaml
+- Update project/evolution.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- ... and 4 more files
+
+## [0.1.10] - 2026-03-29
+
+### Fixed
+- Fix string-concat issues (ticket-9f353b29)
+- Fix llm-generated-code issues (ticket-2bc855c2)
+- Fix smart-return-type issues (ticket-cb167f51)
+- Fix duplicate-imports issues (ticket-9009a38a)
+- Fix llm-generated-code issues (ticket-bbf26324)
+
 ## [2.1.164] - 2026-03-29
 
 ## [2.1.163] - 2026-03-29

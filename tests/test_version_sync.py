@@ -28,6 +28,12 @@ def test_sync_updates_init_py(tmp_path):
         venv_dir.mkdir(parents=True)
         venv_init = venv_dir / "__init__.py"
         venv_init.write_text('__version__ = "0.1.0"\n')
+
+        # Create a test venv dir (should also be ignored)
+        test_venv_dir = tmp_path / ".venv_test" / "lib" / "site-packages" / "another"
+        test_venv_dir.mkdir(parents=True)
+        test_venv_init = test_venv_dir / "__init__.py"
+        test_venv_init.write_text('__version__ = "0.1.0"\n')
         
         # Create VERSION file required by sync_all_versions
         (tmp_path / "VERSION").write_text("0.1.0\n")
@@ -50,6 +56,7 @@ def test_sync_updates_init_py(tmp_path):
         
         # Verify venv ignored
         assert '__version__ = "0.1.0"' in venv_init.read_text()
+        assert '__version__ = "0.1.0"' in test_venv_init.read_text()
         
     finally:
         os.chdir(old_cwd)

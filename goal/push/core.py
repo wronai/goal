@@ -208,6 +208,10 @@ def execute_push_workflow(
         project_types, ctx_obj['yes'], markdown, ctx_obj, files, stats,
         current_version, new_version, commit_msg, commit_body
     )
+
+    if test_exit_code != 0 and ctx_obj['yes']:
+        click.echo(click.style("Aborting workflow because tests failed.", fg='red', bold=True))
+        sys.exit(1)
     
     # Commit changes
     _handle_commit_phase(ctx_obj, split, message, commit_title, commit_body, commit_msg,

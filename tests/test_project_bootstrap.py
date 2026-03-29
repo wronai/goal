@@ -24,6 +24,7 @@ from goal.project_bootstrap import (
     _find_openrouter_api_key,
     _find_git_root,
     _ensure_costs_installed,
+    _ensure_python_test_dependency,
     _validate_pfix_env,
     _ensure_pfix_env,
 )
@@ -334,6 +335,24 @@ class TestOpenRouterEnvDiscovery:
             assert _ensure_pfix_env(sub) is True
 
         assert not (sub / ".env").exists()
+
+
+# ---------------------------------------------------------------------------
+# Python test dependency installation
+# ---------------------------------------------------------------------------
+
+class TestPythonTestDependency:
+    def test_installs_missing_pytest(self, tmp_path):
+        with mock.patch('subprocess.run') as mock_run:
+            mock_run.side_effect = [
+                mock.MagicMock(returncode=1, stdout='', stderr='ModuleNotFoundError'),
+                mock.MagicMock(returncode=0, stdout='', stderr=''),
+            ]
+
+            assert _ensure_python_test_dependency(tmp_path, '/usr/bin/python3', 'pytest') is True
+
+        assert mock_run.call_args_list[0].args[0] == ['/usr/bin/python3', '-c', 'import pytest; print(pytest.__version__)']
+        assert mock_run.call_args_list[1].args[0] == ['/usr/bin/python3', '-m', 'pip', 'install', 'pytest']
 
 
 # ---------------------------------------------------------------------------

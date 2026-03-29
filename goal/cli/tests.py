@@ -4,10 +4,11 @@ import subprocess
 import os
 import shutil
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from goal.git_ops import run_command
 from goal.cli.version import PROJECT_TYPES
+from goal.project_bootstrap import _find_python_bin
 
 
 def _has_usable_test_script(project_dir: Path, project_type: str) -> bool:
@@ -29,6 +30,28 @@ def _has_usable_test_script(project_dir: Path, project_type: str) -> bool:
     return False
 
 
+def _has_project_marker(project_dir: Path, marker: str) -> bool:
+    """Check whether a marker file or glob exists in a directory."""
+    if '*' in marker:
+        return any(project_dir.glob(marker))
+    return (project_dir / marker).exists()
+
+
+def _find_project_root(path: Path, project_type: str) -> Optional[Path]:
+    """Find the nearest ancestor that looks like a project root."""
+    markers = PROJECT_TYPES.get(project_type, {}).get('files', [])
+    current = path
+
+    while True:
+        if any(_has_project_marker(current, marker) for marker in markers):
+            return current
+
+        if current.parent == current:
+            return None
+
+        current = current.parent
+
+
 def _run_tests_in_subdirs(project_type: str, base_cmd: List[str]) -> bool:
     """Run tests in subdirectories (monorepo support)."""
     test_dirs = []
@@ -41,6 +64,9 @@ def _run_tests_in_subdirs(project_type: str, base_cmd: List[str]) -> bool:
             
             if any(f.startswith('test_') and f.endswith('.py') for f in files):
                 if root != '.':
+                    project_root = _find_project_root(Path(root), project_type)
+                    if project_root is None or project_root == Path('.'):
+                        continue
                     test_dirs.append(root)
     
     elif project_type == 'nodejs':
@@ -65,13 +91,23 @@ def _run_tests_in_subdirs(project_type: str, base_cmd: List[str]) -> bool:
     all_passed = True
     for test_dir in test_dirs[:5]:  # Limit to 5 subdirs to avoid runaway
         try:
-            result = subprocess.run(
-                base_cmd,
-                cwd=test_dir,
-                capture_output=True,
-                text=True,
-                timeout=120
-            )
+            if project_type == 'python':
+                if Path(test_dir).parent == Path('.'):
+                    continue
+                result = subprocess.run(
+                    base_cmd + [test_dir],
+                    capture_output=True,
+                    text=True,
+                    timeout=120
+                )
+            else:
+                result = subprocess.run(
+                    base_cmd,
+                    cwd=test_dir,
+                    capture_output=True,
+                    text=True,
+                    timeout=120
+                )
             if result.returncode != 0:
                 all_passed = False
         except Exception:
@@ -90,8 +126,11 @@ def run_tests(project_types: List[str]) -> bool:
         
         if not test_cmd_str:
             continue
-        
-        test_cmd = test_cmd_str.split()
+
+        if ptype == 'python':
+            test_cmd = [_find_python_bin(Path.cwd()), '-m', 'pytest']
+        else:
+            test_cmd = test_cmd_str.split()
         
         # Special handling for Node.js to check if tests are configured
         if ptype == 'nodejs':
@@ -99,7 +138,14 @@ def run_tests(project_types: List[str]) -> bool:
                 continue
         
         try:
-            result = run_command(test_cmd_str, capture=False)
+            if ptype == 'python':
+                result = subprocess.run(
+                    test_cmd,
+                    capture_output=False,
+                    text=True,
+                )
+            else:
+                result = run_command(test_cmd_str, capture=False)
             if result.returncode != 0:
                 success = False
             

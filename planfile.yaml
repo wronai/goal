@@ -5048,3 +5048,68 @@ sprints:
     model_hints:
       planning: balanced
       implementation: balanced
+  - id: ticket-9f353b29
+    name: Fix string-concat issues
+    description: Resolve 1 string-concat issues in goal/cli/tests.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/cli/tests.py
+    rule_id: string-concat
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-2bc855c2
+    name: Fix llm-generated-code issues
+    description: Resolve 1 llm-generated-code issues in goal/doctor/python.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/doctor/python.py
+    rule_id: llm-generated-code
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-cb167f51
+    name: Fix smart-return-type issues
+    description: Resolve 1 smart-return-type issues in goal/toml_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/toml_validation.py
+    rule_id: smart-return-type
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-9009a38a
+    name: Fix duplicate-imports issues
+    description: Resolve 1 duplicate-imports issues in goal/toml_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/toml_validation.py
+    rule_id: duplicate-imports
+    count: 1
+    model_hints:
+      planning: balanced
+      implementation: balanced
+  - id: ticket-bbf26324
+    name: Fix llm-generated-code issues
+    description: Resolve 3 llm-generated-code issues in goal/toml_validation.py
+    task_type: prefactor
+    priority: medium
+    estimate: 1d
+    files:
+    - goal/toml_validation.py
+    rule_id: llm-generated-code
+    count: 3
+    model_hints:
+      planning: balanced
+      implementation: balanced

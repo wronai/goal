@@ -112,7 +112,7 @@ def _update_readme_metadata(user_config, new_version: str, updated: List[str]) -
 
 def _update_init_py_versions(new_version: str, updated: List[str]) -> None:
     """Update __version__ in __init__.py files."""
-    skip_dirs = ('venv', '.venv', 'build', 'dist', 'node_modules')
+    skip_dirs = ('venv', '.venv', '.venv_test', 'site-packages', 'build', 'dist', 'node_modules')
     
     for init_file in Path('.').rglob('__init__.py'):
         parts = init_file.parts

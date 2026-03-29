@@ -1,55 +1,55 @@
-# goal | 605 func | 72f | 21537L | python | 2026-03-29
+# goal | 615 func | 73f | 22100L | python | 2026-03-29
 
 HEALTH:
-  CC̄=5.2  critical=92 (limit:10)  dup=0  cycles=0
+  CC̄=5.3  critical=94 (limit:10)  dup=0  cycles=0
 
 ALERTS[20]:
   !!! cc_exceeded      ContentAnalyzer.short_action_summary = 34 (limit:15)
-  !!! high_fan_out     _ensure_costs_installed = 31 (limit:10)
+  !!! high_fan_out     _ensure_costs_installed = 32 (limit:10)
   !!! cc_exceeded      validate_project_versions = 30 (limit:15)
   !!! cc_exceeded      format_enhanced_summary = 29 (limit:15)
   !!! cc_exceeded      ContentAnalyzer.per_file_notes = 29 (limit:15)
-  !!! high_fan_out     execute_push_workflow = 27 (limit:10)
+  !!! high_fan_out     execute_push_workflow = 29 (limit:10)
+  !!! high_fan_out     _update_cost_badges = 27 (limit:10)
   !!! high_fan_out     QualityValidator.auto_fix = 27 (limit:10)
   !!! high_fan_out     SmartCommitGenerator.analyze_changes = 27 (limit:10)
-  !!! cc_exceeded      EnhancedSummaryGenerator._format_changes_section = 26 (limit:15)
-  !!! cc_exceeded      ensure_project_environment = 25 (limit:15)
+  !!! cc_exceeded      ensure_project_environment = 26 (limit:15)
 
-MODULES[96] (top by size):
-  M[goal/project_bootstrap.py] 1005L C:0 F:14 CC↑25 D:3 (python)
+MODULES[97] (top by size):
+  M[goal/project_bootstrap.py] 1207L C:0 F:20 CC↑26 D:3 (python)
   M[goal/recovery/strategies.py] 685L C:7 F:30 CC↑11 D:0 (python)
   M[goal/summary/generator.py] 675L C:1 F:16 CC↑26 D:0 (python)
   M[goal/package_managers.py] 628L C:1 F:12 CC↑11 D:1 (python)
   M[goal/license/manager.py] 580L C:1 F:9 CC↑20 D:1 (python)
   M[goal/git_ops.py] 566L C:0 F:23 CC↑23 D:15 (python)
   M[goal/deep_analyzer.py] 554L C:1 F:22 CC↑16 D:0 (python)
-  M[goal/doctor/python.py] 536L C:1 F:17 CC↑17 D:0 (python)
+  M[goal/doctor/python.py] 545L C:1 F:17 CC↑17 D:0 (python)
   M[goal/smart_commit/generator.py] 524L C:1 F:18 CC↑24 D:0 (python)
   M[goal/validators/file_validator.py] 499L C:4 F:12 CC↑23 D:2 (python)
+  M[goal/push/core.py] 486L C:1 F:12 CC↑24 D:4 (python)
   M[goal/config/validation.py] 483L C:2 F:13 CC↑21 D:2 (python)
   M[goal/config/manager.py] 457L C:1 F:25 CC↑10 D:7 (python)
-  M[goal/push/core.py] 450L C:1 F:12 CC↑23 D:4 (python)
   M[goal/config/constants.py] 436L C:0 F:0 CC↑0 D:0 (python)
   M[goal/formatter.py] 402L C:1 F:14 CC↑29 D:3 (python)
-  LANGS: python:93/shell:3
+  LANGS: python:94/shell:3
 
 HOTSPOTS[10]:
-  ★ _ensure_costs_installed fan=31  // Ensure costs package is installed and configured for AI tracking.
+  ★ _ensure_costs_installed fan=32  // Ensure costs package is installed and configured for AI tracking.
 
 Returns True 
-  ★ execute_push_workflow fan=27  // Execute the complete push workflow.
+  ★ execute_push_workflow fan=29  // Execute the complete push workflow.
+  ★ _update_cost_badges fan=27  // Update AI cost badges in README using costs package.
   ★ QualityValidator.auto_fix fan=27  // Auto-fix summary issues and return corrected summary.
   ★ SmartCommitGenerator.analyze_changes fan=27  // Analysis pipeline, 27 stages
-  ★ EnhancedSummaryGenerator.generate_enhanced_summary fan=24  // Generate complete enhanced summary with business value focus.
 
 REFACTOR[15]:
   [1] H/L Split validate_project_versions (CC=30 → target CC<10)
   [2] H/L Split format_enhanced_summary (CC=29 → target CC<10)
-  [3] H/L Split ensure_project_environment (CC=25 → target CC<10)
+  [3] H/L Split ensure_project_environment (CC=26 → target CC<10)
   [4] H/L Split ContentAnalyzer.short_action_summary (CC=34 → target CC<10)
   [5] H/L Split ContentAnalyzer.per_file_notes (CC=29 → target CC<10)
 
 EVOLUTION:
   2026-03-08 CC̄=6.0 crit=66 12955L // Automated analysis
   2026-03-15 CC̄=6.0 crit=68 13352L // Automated analysis
-  2026-03-29 CC̄=5.2 crit=92 21537L // Automated analysis
+  2026-03-29 CC̄=5.3 crit=94 22100L // Automated analysis

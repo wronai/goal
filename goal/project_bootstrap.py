@@ -394,6 +394,36 @@ def _find_git_root(project_dir: Path) -> Optional[Path]:
     return None
 
 
+def _ensure_python_test_dependency(project_dir: Path, python_bin: str, test_dep: Optional[str]) -> bool:
+    """Ensure the Python test runner dependency is available in the project venv."""
+    if not test_dep:
+        return True
+
+    check_result = subprocess.run(
+        [python_bin, '-c', f'import {test_dep}; print({test_dep}.__version__)'],
+        capture_output=True, text=True, cwd=str(project_dir)
+    )
+    if check_result.returncode == 0:
+        version = check_result.stdout.strip()
+        if version:
+            click.echo(click.style(f"  ✓ {test_dep} already installed ({version})", fg='green'))
+        else:
+            click.echo(click.style(f"  ✓ {test_dep} already installed", fg='green'))
+        return True
+
+    click.echo(click.style(f"  Installing test dependency: {test_dep}", fg='cyan'))
+    install_result = subprocess.run(
+        [python_bin, '-m', 'pip', 'install', test_dep],
+        capture_output=True, text=True, cwd=str(project_dir)
+    )
+    if install_result.returncode != 0:
+        click.echo(click.style(f"  ⚠ Could not install test dependency: {test_dep}", fg='yellow'))
+        return False
+
+    click.echo(click.style(f"  ✓ Test dependency installed ({test_dep})", fg='green'))
+    return True
+
+
 def ensure_project_environment(project_dir: Path, project_type: str, yes: bool = False) -> bool:
     """Ensure the project environment is properly set up.
 
@@ -464,6 +494,10 @@ def ensure_project_environment(project_dir: Path, project_type: str, yes: bool =
                 else:
                     click.echo(click.style("  ✓ Dependencies installed", fg='green'))
                 break  # Only run the first matching dep install
+
+        test_dep = cfg.get('test_dep')
+        if not _ensure_python_test_dependency(project_dir, python_bin, test_dep):
+            return False
         return True
 
     # --- Generic handling for other project types ---

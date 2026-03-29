@@ -1,9 +1,9 @@
-# code2llm/evolution | 605 func | 72f | 2026-03-29
+# code2llm/evolution | 615 func | 73f | 2026-03-29
 
 NEXT[10] (ranked by impact):
   [1] !! SPLIT           goal/project_bootstrap.py
-      WHY: 1005L, 0 classes, max CC=25
-      EFFORT: ~4h  IMPACT: 25125
+      WHY: 1207L, 0 classes, max CC=26
+      EFFORT: ~4h  IMPACT: 31382
 
   [2] !! SPLIT           goal/summary/generator.py
       WHY: 675L, 1 classes, max CC=26
@@ -13,45 +13,45 @@ NEXT[10] (ranked by impact):
       WHY: 685L, 7 classes, max CC=11
       EFFORT: ~4h  IMPACT: 7535
 
-  [4] !  SPLIT-FUNC      _ensure_costs_installed  CC=21  fan=31
-      WHY: CC=21 exceeds 15
-      EFFORT: ~1h  IMPACT: 651
+  [4] !  SPLIT-FUNC      _ensure_costs_installed  CC=22  fan=32
+      WHY: CC=22 exceeds 15
+      EFFORT: ~1h  IMPACT: 704
 
-  [5] !  SPLIT-FUNC      SmartCommitGenerator.analyze_changes  CC=24  fan=27
+  [5] !  SPLIT-FUNC      _update_cost_badges  CC=24  fan=27
       WHY: CC=24 exceeds 15
       EFFORT: ~1h  IMPACT: 648
 
-  [6] !! SPLIT-FUNC      ContentAnalyzer.per_file_notes  CC=29  fan=20
+  [6] !  SPLIT-FUNC      SmartCommitGenerator.analyze_changes  CC=24  fan=27
+      WHY: CC=24 exceeds 15
+      EFFORT: ~1h  IMPACT: 648
+
+  [7] !! SPLIT-FUNC      ContentAnalyzer.per_file_notes  CC=29  fan=20
       WHY: CC=29 exceeds 15
       EFFORT: ~1h  IMPACT: 580
 
-  [7] !! SPLIT-FUNC      validate_project_versions  CC=30  fan=19
+  [8] !! SPLIT-FUNC      validate_project_versions  CC=30  fan=19
       WHY: CC=30 exceeds 15
       EFFORT: ~1h  IMPACT: 570
 
-  [8] !  SPLIT-FUNC      update_changelog  CC=24  fan=23
+  [9] !  SPLIT-FUNC      update_changelog  CC=24  fan=23
       WHY: CC=24 exceeds 15
       EFFORT: ~1h  IMPACT: 552
 
-  [9] !  SPLIT-FUNC      QualityValidator.auto_fix  CC=19  fan=27
-      WHY: CC=19 exceeds 15
-      EFFORT: ~1h  IMPACT: 513
-
-  [10] !! SPLIT-FUNC      ensure_project_environment  CC=25  fan=20
-      WHY: CC=25 exceeds 15
-      EFFORT: ~1h  IMPACT: 500
+  [10] !! SPLIT-FUNC      ensure_project_environment  CC=26  fan=21
+      WHY: CC=26 exceeds 15
+      EFFORT: ~1h  IMPACT: 546
 
 
 RISKS[3]:
-  ⚠ Splitting goal/project_bootstrap.py may break 14 import paths
+  ⚠ Splitting goal/project_bootstrap.py may break 20 import paths
   ⚠ Splitting goal/recovery/strategies.py may break 30 import paths
   ⚠ Splitting goal/summary/generator.py may break 16 import paths
 
 METRICS-TARGET:
-  CC̄:          5.2 → ≤3.6
+  CC̄:          5.3 → ≤3.7
   max-CC:      34 → ≤17
   god-modules: 9 → 0
-  high-CC(≥15): 36 → ≤18
+  high-CC(≥15): 38 → ≤19
   hub-types:   0 → ≤0
 
 PATTERNS (language parser shared logic):
@@ -79,4 +79,4 @@ PATTERNS (language parser shared logic):
     - Standardized FunctionInfo/ClassInfo models
 
 HISTORY:
-  prev CC̄=5.2 → now CC̄=5.2
+  prev CC̄=5.2 → now CC̄=5.3

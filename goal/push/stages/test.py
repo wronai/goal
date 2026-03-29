@@ -58,8 +58,8 @@ def run_test_stage(
             test_success = run_tests(project_types)
             if not test_success:
                 test_exit_code = 1
-                test_result = "Tests failed - continuing anyway"
-                click.echo(click.style("⚠️  Tests failed, but continuing due to --all/--yes mode.", fg='yellow', bold=True))
+                test_result = "Tests failed"
+                click.echo(click.style("⚠️  Tests failed.", fg='red', bold=True))
             else:
                 test_exit_code = 0
                 test_result = "Tests passed"
@@ -67,6 +67,6 @@ def run_test_stage(
         except Exception as e:
             test_exit_code = 1
             test_result = f"Test execution error: {str(e)}"
-            click.echo(click.style(f"⚠️  Error running tests: {str(e)}. Continuing...", fg='yellow', bold=True))
+            click.echo(click.style(f"⚠️  Error running tests: {str(e)}", fg='red', bold=True))
     
     return test_result, test_exit_code

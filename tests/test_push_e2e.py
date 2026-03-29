@@ -7,6 +7,8 @@ import subprocess
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
+import pytest
+
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -197,6 +199,104 @@ class TestPushWorkflowE2E:
         # These should not raise import errors
         assert create_tag is not None
         assert handle_publish is not None
+
+    def test_push_workflow_aborts_on_auto_test_failure(self):
+        """Test that --all workflow stops when tests fail."""
+        from goal.push.core import execute_push_workflow
+
+        ctx_obj = {
+            'yes': True,
+            'markdown': False,
+            'config': {},
+            'user_config': {},
+        }
+
+        with patch('goal.push.core.check_pyproject_toml', return_value=None), \
+             patch('goal.push.core._initialize_context'), \
+             patch('goal.push.core._detect_and_bootstrap_projects', return_value=['python']), \
+             patch('goal.push.core.run_git'), \
+             patch('goal.push.core.get_staged_files', return_value=['test.txt']), \
+             patch('goal.push.core._validate_staged_files'), \
+             patch('goal.push.core.get_diff_content', return_value='diff'), \
+             patch('goal.push.core.get_diff_stats', return_value={'test.txt': (1, 0)}), \
+             patch('goal.push.core.get_commit_message', return_value=('feat: test', None, {})), \
+             patch('goal.push.core.get_version_info', return_value=('0.1.0', '0.1.1')), \
+             patch('goal.push.core.run_test_stage', return_value=('Tests failed', 1)), \
+             patch('goal.push.core._handle_commit_phase') as mock_commit_phase, \
+             patch('goal.push.core.create_tag') as mock_create_tag, \
+             patch('goal.push.core.push_to_remote') as mock_push_remote, \
+             patch('goal.push.core.handle_publish') as mock_publish:
+            with pytest.raises(SystemExit) as exc:
+                execute_push_workflow(
+                    ctx_obj=ctx_obj,
+                    bump='patch',
+                    no_tag=False,
+                    no_changelog=False,
+                    no_version_sync=False,
+                    message=None,
+                    dry_run=False,
+                    yes=True,
+                    markdown=False,
+                    split=False,
+                    ticket=None,
+                    abstraction=None,
+                    todo=False,
+                )
+
+        assert exc.value.code == 1
+        mock_commit_phase.assert_not_called()
+        mock_create_tag.assert_not_called()
+        mock_push_remote.assert_not_called()
+        mock_publish.assert_not_called()
+
+    def test_run_tests_ignores_top_level_tests_dir_as_subdir(self):
+        """Test that the canonical top-level tests dir is not rerun as a subdir scan."""
+        from goal.cli.tests import run_tests
+
+        def fake_walk(_):
+            yield ('.', ['tests'], [])
+            yield ('./tests', [], ['test_example.py'])
+
+        with patch('goal.cli.tests.os.walk', side_effect=fake_walk), \
+             patch('goal.cli.tests._find_python_bin', return_value='/tmp/project/.venv/bin/python') as mock_find_python_bin, \
+             patch('goal.cli.tests.subprocess.run') as mock_subprocess_run:
+            mock_subprocess_run.return_value = MagicMock(returncode=0)
+
+            assert run_tests(['python']) is True
+
+        mock_find_python_bin.assert_called_once()
+        mock_subprocess_run.assert_called_once_with(
+            ['/tmp/project/.venv/bin/python', '-m', 'pytest'],
+            capture_output=False,
+            text=True,
+        )
+
+    def test_run_tests_skips_non_project_example_validation_tests(self):
+        """Test that example validation tests without their own project marker are ignored."""
+        from goal.cli.tests import run_tests
+
+        def fake_walk(_):
+            yield ('.', ['examples'], [])
+            yield ('./examples', ['validation', 'my-new-project'], [])
+            yield ('./examples/validation', [], ['test_readme_consistency.py'])
+            yield ('./examples/my-new-project', ['tests'], ['pyproject.toml'])
+            yield ('./examples/my-new-project/tests', [], ['test_example.py'])
+
+        with patch('goal.cli.tests.os.walk', side_effect=fake_walk), \
+             patch('goal.cli.tests._find_python_bin', return_value='/tmp/project/.venv/bin/python') as mock_find_python_bin, \
+             patch('goal.cli.tests.subprocess.run') as mock_subprocess_run:
+            mock_subprocess_run.return_value = MagicMock(returncode=0)
+
+            assert run_tests(['python']) is True
+
+        assert mock_find_python_bin.call_count == 1
+        assert mock_subprocess_run.call_count == 2
+        assert mock_subprocess_run.call_args_list[0].args[0] == [
+            '/tmp/project/.venv/bin/python', '-m', 'pytest'
+        ]
+        assert mock_subprocess_run.call_args_list[1].args[0] == [
+            '/tmp/project/.venv/bin/python', '-m', 'pytest', './examples/my-new-project/tests'
+        ]
 
 
 if __name__ == '__main__':

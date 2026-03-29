@@ -1,7 +1,6 @@
 flowchart TD
     examples__api_usage["examples.api-usage<br/>6 funcs"]
     examples__custom_hooks["examples.custom-hooks<br/>14 funcs"]
-    examples__run_all_examples["examples.run_all_examples<br/>7 funcs"]
     examples__template_generator["examples.template-generator<br/>2 funcs"]
     examples__validation["examples.validation<br/>5 funcs"]
     examples__webhooks["examples.webhooks<br/>4 funcs"]
@@ -17,11 +16,12 @@ flowchart TD
     goal__hooks["goal.hooks<br/>16 funcs"]
     goal__license["goal.license<br/>16 funcs"]
     goal__package_managers["goal.package_managers<br/>12 funcs"]
-    goal__project_bootstrap["goal.project_bootstrap<br/>14 funcs"]
+    goal__project_bootstrap["goal.project_bootstrap<br/>20 funcs"]
     goal__push["goal.push<br/>40 funcs"]
     goal__recovery["goal.recovery<br/>53 funcs"]
     goal__smart_commit["goal.smart_commit<br/>27 funcs"]
     goal__summary["goal.summary<br/>46 funcs"]
+    goal__toml_validation["goal.toml_validation<br/>4 funcs"]
     goal__user_config["goal.user_config<br/>12 funcs"]
     goal__validation["goal.validation<br/>26 funcs"]
     goal__validators["goal.validators<br/>12 funcs"]
@@ -29,7 +29,6 @@ flowchart TD
     integration__run_matrix["integration.run_matrix<br/>4 funcs"]
     examples__api_usage ==>|102| integration__run_matrix
     examples__custom_hooks ==>|50| integration__run_matrix
-    examples__run_all_examples ==>|33| integration__run_matrix
     goal__push ==>|29| goal__git_ops
     examples__validation ==>|20| integration__run_matrix
     goal__cli ==>|19| goal__git_ops
@@ -61,10 +60,12 @@ flowchart TD
     goal__project_bootstrap -->|1| goal__doctor
     goal__hooks -->|1| goal__git_ops
     goal__hooks -->|1| goal__validators
+    goal__push -->|1| goal__toml_validation
     goal__push -->|1| goal__validators
-    goal__cli -->|1| goal__doctor
     goal__recovery -->|1| goal__user_config
+    goal__cli -->|1| goal__doctor
     goal__cli -->|1| goal__formatter
+    goal__cli -->|1| goal__toml_validation
     goal__cli -->|1| goal__push
     goal__config -->|1| goal__user_config
     goal__package_managers -->|1| goal__user_config
