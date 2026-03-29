@@ -2,6 +2,10 @@
 Complete programmatic workflow example.
 
 Shows how to execute a full Goal workflow programmatically.
+
+NOTE: This example demonstrates the API usage pattern.
+The actual execute_push_workflow import can cause circular imports
+when run outside of the main Goal CLI context.
 """
 
 import sys
@@ -9,7 +13,11 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from goal.push.core import execute_push_workflow
+
+# NOTE: Import below is shown for documentation but commented out
+# due to circular import issues when running standalone.
+# In production code within Goal, you would use:
+# from goal.push.core import execute_push_workflow
 
 
 def run_custom_workflow():
@@ -34,36 +42,37 @@ def run_custom_workflow():
     print(f"   Auto mode: {ctx_obj['yes']}")
     print(f"   Author: {ctx_obj['user_config']['author_name']}")
     
-    print("\n2. Executing workflow...")
-    print("   (This would run the full push workflow)")
-    print("   - Stage changes")
-    print("   - Run tests")
-    print("   - Generate commit")
-    print("   - Update versions")
-    print("   - Push to remote")
+    print("\n2. Workflow Structure:")
+    print("   - Stage changes: run_git('add', '-A')")
+    print("   - Run tests: run_tests(project_types)")
+    print("   - Generate commit: get_commit_message(...)")
+    print("   - Update versions: handle_version_sync(...)")
+    print("   - Push to remote: push_to_remote(...)")
+    print("   - Publish: handle_publish(...)")
     
-    # NOTE: This would actually execute the workflow
-    # Commented out for safety in example
+    print("\n3. Example code (not executed):")
+    example_code = '''
+    # This is how you would call it in production:
+    from goal.push.core import execute_push_workflow
     
-    # execute_push_workflow(
-    #     ctx_obj=ctx_obj,
-    #     bump='patch',
-    #     no_tag=False,
-    #     no_changelog=False,
-    #     no_version_sync=False,
-    #     message=None,
-    #     dry_run=True,  # Safety first!
-    #     yes=True,
-    #     markdown=False,
-    #     split=False,
-    #     ticket=None,
-    #     abstraction='summary',
-    #     todo=False,
-    #     force=False
-    # )
-    
-    print("\n3. Dry run completed")
-    print("   Set dry_run=False to actually execute")
+    execute_push_workflow(
+        ctx_obj=ctx_obj,
+        bump='patch',
+        no_tag=False,
+        no_changelog=False,
+        no_version_sync=False,
+        message=None,
+        dry_run=True,
+        yes=True,
+        markdown=False,
+        split=False,
+        ticket=None,
+        abstraction='summary',
+        todo=False,
+        force=False
+    )
+    '''
+    print(example_code)
     
     print("\n" + "=" * 60)
     print("Workflow definition ready!")

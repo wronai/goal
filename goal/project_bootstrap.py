@@ -657,7 +657,12 @@ def _ensure_costs_installed(project_dir: Path, python_bin: str) -> bool:
         )
         
         # Calculate costs for AI commits
-        ai_commits = [c for c in all_commits_data if c[1].get('is_ai', False)]
+        # parse_commits returns List[Tuple[Commit, str]] where str is commit message
+        ai_indicators = ['🤖', 'AI:', '[AI]', '(AI)', 'automat', 'cascade', 'claude', 'gpt', 'llm']
+        ai_commits = [
+            c for c in all_commits_data 
+            if any(ind in c[1].lower() for ind in ai_indicators)
+        ]
         
         # Calculate total cost from AI commits
         total_cost = 0.0
@@ -902,6 +907,8 @@ def _ensure_pfix_installed(project_dir: Path, yes: bool = False) -> bool:
     
     Returns True if pfix is ready to use.
     """
+    import subprocess
+    
     python_bin = _find_python_bin(project_dir)
     
     # Check if pfix is already installed

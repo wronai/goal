@@ -71,7 +71,7 @@ def check_file_sizes(max_size_mb=10):
 def run_tests():
     """Run quick tests before commit."""
     result = subprocess.run(
-        ["python", "-m", "pytest", "-x", "-q"],
+        ["python3", "-m", "pytest", "-x", "-q"],
         capture_output=True, text=True, timeout=60
     )
     

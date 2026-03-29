@@ -1,5 +1,11 @@
 ## [Unreleased]
 
+## [2.1.150] - 2026-03-29
+
+### Other
+- Update examples/api-usage/05_programmatic_workflow.py
+- Update examples/custom-hooks/pre-commit.py
+
 ## [2.1.149] - 2026-03-29
 
 ### Docs
