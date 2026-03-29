@@ -1,0 +1,15 @@
+{
+  "name": "php-example",
+  "description": "Example PHP project with Goal",
+  "type": "project",
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "scripts": {
+    "test": "phpunit tests/",
+    "serve": "php -S localhost:8000"
+  }
+}

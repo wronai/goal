@@ -1,28 +1,91 @@
 # Goal Examples
 
-This directory contains example configurations and workflows for using Goal with different project types.
+This directory contains example configurations, workflows, and API usage for Goal.
 
 ## Directory Structure
 
 ```
 examples/
-├── README.md              # This file
-├── python-package/        # Python package example
-│   └── pyproject.toml     # Python project configuration
-├── nodejs-app/           # Node.js application example
-│   └── package.json      # Node.js project configuration
-├── rust-crate/           # Rust crate example
-│   └── Cargo.toml        # Rust project configuration
-├── makefile/             # Makefile integration example
-│   └── Makefile          # Makefile with Goal targets
-└── github-actions/       # CI/CD integration example
-    └── .github/workflows/
-        └── release.yml   # GitHub Actions workflow
+├── README.md                    # This file
+├── api-usage/                   # Python API examples
+│   ├── README.md
+│   ├── 01_basic_api.py
+│   ├── 02_git_operations.py
+│   ├── 03_commit_generation.py
+│   ├── 04_version_validation.py
+│   └── 05_programmatic_workflow.py
+├── advanced-workflows/         # Complex workflows
+│   ├── README.md
+│   ├── hotfix-workflow.md
+│   └── feature-branch.md
+├── monorepo/                   # Multi-package repos
+│   └── README.md
+├── custom-hooks/               # Plugins and hooks
+│   └── README.md
+├── python-package/             # Python project example
+│   └── pyproject.toml
+├── nodejs-app/                 # Node.js project example
+│   └── package.json
+├── rust-crate/                 # Rust project example
+│   └── Cargo.toml
+├── makefile/                   # Makefile integration
+│   └── Makefile
+├── github-actions/             # CI/CD workflows
+│   └── .github/workflows/
+│       └── release.yml
+├── enhanced-summary/           # Commit message examples
+│   ├── README.md
+│   ├── before-after.md
+│   └── config-example.yaml
+├── git-hooks/                  # Git hooks setup
+│   ├── install.sh
+│   └── prepare-commit-msg
+├── license-management/         # License handling
+│   └── README.md
+├── multi-author/               # Team collaboration
+│   └── README.md
+├── wizard-setup/               # Interactive setup
+│   └── README.md
+└── markdown-demo.sh            # Demo script
 ```
 
 ## Usage Examples
 
-### 1. Python Package
+### 1. Python API Usage
+
+```bash
+cd examples/api-usage
+python 01_basic_api.py
+python 02_git_operations.py
+python 03_commit_generation.py
+python 04_version_validation.py
+python 05_programmatic_workflow.py
+```
+
+These examples demonstrate:
+- Project detection and configuration
+- Git operations (staging, diff, stats)
+- Smart commit message generation
+- Version validation across registries
+- Full programmatic workflows
+
+### 2. Advanced Workflows
+
+```bash
+# Hotfix workflow
+cat examples/advanced-workflows/hotfix-workflow.md
+
+# Feature branch workflow
+cat examples/advanced-workflows/feature-branch.md
+
+# Monorepo setup
+cat examples/monorepo/README.md
+
+# Custom hooks
+cat examples/custom-hooks/README.md
+```
+
+### 3. Python Package
 
 ```bash
 cd examples/python-package
@@ -35,7 +98,7 @@ This example shows a typical Python package structure with:
 - pytest configuration for testing
 - build and twine for publishing to PyPI
 
-### 2. Node.js Application
+### 4. Node.js Application
 
 ```bash
 cd examples/nodejs-app
@@ -48,7 +111,7 @@ This example demonstrates:
 - Jest for testing
 - npm publish for distribution
 
-### 3. Rust Crate
+### 5. Rust Crate
 
 ```bash
 cd examples/rust-crate
@@ -61,7 +124,7 @@ Features shown:
 - Cargo test for testing
 - Cargo publish for crates.io
 
-### 4. Makefile Integration
+### 6. Makefile Integration
 
 ```bash
 cd examples/makefile
@@ -76,7 +139,7 @@ The Makefile example includes:
 - Release targets (patch, minor, major)
 - CI/CD helper targets
 
-### 5. GitHub Actions
+### 7. GitHub Actions
 
 The GitHub Actions workflow demonstrates:
 - Automated testing on multiple Python versions
@@ -129,6 +192,38 @@ goal push --dry-run
 
 # Custom commit message
 goal push -m "feat: add new feature"
+
+# Split commits by type
+goal push --split --yes
+```
+
+### API Integration
+
+```python
+from goal.push.core import execute_push_workflow
+
+ctx_obj = {'yes': True, 'markdown': False}
+execute_push_workflow(
+    ctx_obj=ctx_obj,
+    bump='patch',
+    dry_run=True,  # Safety first
+    yes=True
+)
+```
+
+### Custom Validators
+
+```python
+from goal.validators import validate_staged_files
+
+# Add custom validation
+def my_validator():
+    try:
+        validate_staged_files(config)
+        return True
+    except Exception as e:
+        print(f"Validation failed: {e}")
+        return False
 ```
 
 ## Best Practices
@@ -139,6 +234,8 @@ goal push -m "feat: add new feature"
 4. **Use semantic versioning** with appropriate bump types
 5. **Keep tests fast** so they don't block releases
 6. **Authenticate before publishing** to package registries
+7. **Use conventional commits** with scopes for clarity
+8. **Document with examples** in your project's examples/ directory
 
 ## Troubleshooting
 
@@ -176,3 +273,39 @@ goal status
 git add .
 goal push
 ```
+
+### API Import Errors
+
+```bash
+# Set PYTHONPATH
+export PYTHONPATH="/path/to/goal:$PYTHONPATH"
+
+# Or install in dev mode
+pip install -e /path/to/goal
+```
+
+### Hook Not Running
+
+```bash
+# Check permissions
+chmod +x .goal/hooks/*.py
+
+# Verify path in goal.yaml
+goal config show
+```
+
+## Contributing
+
+To add new examples:
+
+1. Create directory: `examples/my-example/`
+2. Add README.md with description
+3. Add working code/config files
+4. Update this README
+5. Test all commands work
+
+## See Also
+
+- [Main Documentation](../docs/README.md)
+- [API Reference](../docs/api.md)
+- [Configuration Guide](../docs/configuration.md)

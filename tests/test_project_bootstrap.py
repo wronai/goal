@@ -243,17 +243,28 @@ class TestEnsureProjectEnvironmentPython:
         (tmp_path / "pyproject.toml").write_text(
             '[project]\nname = "testpkg"\nversion = "0.1.0"'
         )
-        result = ensure_project_environment(tmp_path, "python", yes=True)
-        assert result is True
-        assert (tmp_path / ".venv").exists()
-        assert (tmp_path / ".venv" / "bin" / "python").exists()
+        # Mock subprocess to avoid slow venv creation and pip installs
+        with mock.patch('subprocess.run') as mock_run:
+            mock_run.return_value = mock.MagicMock(returncode=0, stdout='3.9.0', stderr='')
+            result = ensure_project_environment(tmp_path, "python", yes=True)
+            assert result is True
+            # Verify venv creation was attempted
+            venv_calls = [call for call in mock_run.call_args_list 
+                         if '-m' in str(call) and 'venv' in str(call)]
+            assert len(venv_calls) >= 1
 
     def test_skips_if_venv_exists(self, tmp_path):
         (tmp_path / ".venv" / "bin").mkdir(parents=True)
         (tmp_path / ".venv" / "bin" / "python").write_text("#!/bin/sh")
         (tmp_path / ".venv" / "bin" / "python").chmod(0o755)
-        result = ensure_project_environment(tmp_path, "python", yes=True)
-        assert result is True
+        with mock.patch('subprocess.run') as mock_run:
+            mock_run.return_value = mock.MagicMock(returncode=0, stdout='3.9.0', stderr='')
+            result = ensure_project_environment(tmp_path, "python", yes=True)
+            assert result is True
+            # Should not create venv (no call with -m venv), but pip upgrade is still called
+            calls_args = [call.args[0] for call in mock_run.call_args_list if call.args]
+            venv_module_calls = [args for args in calls_args if '-m' in args and 'venv' in args]
+            assert len(venv_module_calls) == 0, "venv creation should be skipped when .venv exists"
 
     def test_interactive_decline(self, tmp_path):
         (tmp_path / "pyproject.toml").write_text('[project]\nname = "x"')
@@ -287,13 +298,20 @@ class TestBootstrapProject:
         (tmp_path / "pyproject.toml").write_text(
             '[project]\nname = "testpkg"\nversion = "0.1.0"'
         )
-        result = bootstrap_project(tmp_path, "python", yes=True)
-        assert result["env_ok"] is True
-        assert result["project_type"] == "python"
-        # Should have created a scaffold test since none existed
-        assert result["test_created"] is not None
-        assert result["test_created"].exists()
-        assert len(result["tests_found"]) >= 1
+        # Mock expensive operations
+        with mock.patch('subprocess.run') as mock_run, \
+             mock.patch('goal.project_bootstrap._ensure_costs_installed') as mock_costs, \
+             mock.patch('goal.project_bootstrap._ensure_pfix_installed') as mock_pfix:
+            mock_run.return_value = mock.MagicMock(returncode=0, stdout='3.9.0', stderr='')
+            mock_costs.return_value = True
+            mock_pfix.return_value = True
+            result = bootstrap_project(tmp_path, "python", yes=True)
+            assert result["env_ok"] is True
+            assert result["project_type"] == "python"
+            # Should have created a scaffold test since none existed
+            assert result["test_created"] is not None
+            assert result["test_created"].exists()
+            assert len(result["tests_found"]) >= 1
 
     def test_bootstrap_with_existing_tests(self, tmp_path):
         (tmp_path / "pyproject.toml").write_text(
@@ -302,9 +320,16 @@ class TestBootstrapProject:
         tests_dir = tmp_path / "tests"
         tests_dir.mkdir()
         (tests_dir / "test_existing.py").write_text("def test_x(): pass")
-        result = bootstrap_project(tmp_path, "python", yes=True)
-        assert result["test_created"] is None
-        assert len(result["tests_found"]) == 1
+        # Mock expensive operations
+        with mock.patch('subprocess.run') as mock_run, \
+             mock.patch('goal.project_bootstrap._ensure_costs_installed') as mock_costs, \
+             mock.patch('goal.project_bootstrap._ensure_pfix_installed') as mock_pfix:
+            mock_run.return_value = mock.MagicMock(returncode=0, stdout='3.9.0', stderr='')
+            mock_costs.return_value = True
+            mock_pfix.return_value = True
+            result = bootstrap_project(tmp_path, "python", yes=True)
+            assert result["test_created"] is None
+            assert len(result["tests_found"]) == 1
 
 
 # ---------------------------------------------------------------------------
@@ -323,7 +348,16 @@ class TestBootstrapAllProjects:
         old = os.getcwd()
         try:
             os.chdir(tmp_path)
-            results = bootstrap_all_projects(tmp_path, yes=True)
+            # Mock expensive operations
+            with mock.patch('subprocess.run') as mock_run, \
+                 mock.patch('goal.project_bootstrap._ensure_costs_installed') as mock_costs, \
+                 mock.patch('goal.project_bootstrap._ensure_pfix_installed') as mock_pfix, \
+                 mock.patch('shutil.which') as mock_which:
+                mock_run.return_value = mock.MagicMock(returncode=0)
+                mock_costs.return_value = True
+                mock_pfix.return_value = True
+                mock_which.return_value = '/usr/bin/npm'
+                results = bootstrap_all_projects(tmp_path, yes=True)
         finally:
             os.chdir(old)
 
@@ -364,7 +398,14 @@ class TestBootstrapCommand:
             '[project]\nname = "testpkg"\nversion = "0.1.0"'
         )
         runner = CliRunner()
-        result = runner.invoke(main, ["bootstrap", "-y", "--path", str(tmp_path)])
+        # Mock subprocess to avoid slow venv/pip operations
+        with mock.patch('subprocess.run') as mock_run, \
+             mock.patch('goal.project_bootstrap._ensure_costs_installed') as mock_costs, \
+             mock.patch('goal.project_bootstrap._ensure_pfix_installed') as mock_pfix:
+            mock_run.return_value = mock.MagicMock(returncode=0, stdout='3.9.0', stderr='')
+            mock_costs.return_value = True
+            mock_pfix.return_value = True
+            result = runner.invoke(main, ["bootstrap", "-y", "--path", str(tmp_path)])
         assert result.exit_code == 0
         assert "Bootstrap complete" in result.output
         assert "python" in result.output

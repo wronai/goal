@@ -1,5 +1,36 @@
 ## [Unreleased]
 
+## [2.1.149] - 2026-03-29
+
+### Docs
+- Update examples/README.md
+- Update examples/advanced-workflows/README.md
+- Update examples/advanced-workflows/feature-branch.md
+- Update examples/advanced-workflows/hotfix-workflow.md
+- Update examples/api-usage/README.md
+- Update examples/configurations/goal-yaml-examples.md
+- Update examples/custom-hooks/README.md
+- Update examples/docker-integration/README.md
+- Update examples/dotnet-project/README.md
+- Update examples/gitlab-ci/README.md
+- ... and 9 more files
+
+### Test
+- Update tests/test_project_bootstrap.py
+
+### Other
+- Update examples/api-usage/01_basic_api.py
+- Update examples/api-usage/02_git_operations.py
+- Update examples/api-usage/03_commit_generation.py
+- Update examples/api-usage/04_version_validation.py
+- Update examples/api-usage/05_programmatic_workflow.py
+- Update examples/api-usage/test_integration.py
+- Update examples/custom-hooks/post-commit.py
+- Update examples/custom-hooks/pre-commit.py
+- Update examples/custom-hooks/pre-publish.py
+- Update examples/dotnet-project/Calculator.cs
+- ... and 13 more files
+
 ## [2.1.148] - 2026-03-29
 
 ### Test
