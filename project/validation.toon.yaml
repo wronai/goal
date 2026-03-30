@@ -1,4 +1,4 @@
-# vallm batch | 232f | 131✓ 24⚠ 29✗ | 2026-03-29
+# vallm batch | 232f | 131✓ 24⚠ 29✗ | 2026-03-30
 
 SUMMARY:
   scanned: 232  passed: 131 (56.5%)  warnings: 24  errors: 29  unsupported: 72
@@ -50,10 +50,10 @@ WARNINGS[24]{path,score}:
       complexity.lizard_cc,warning,validate_license_file: CC=20 exceeds limit 15,494
   goal/push/core.py,0.93
     issues[4]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,execute_push_workflow has cyclomatic complexity 16 (max: 15),114
-      complexity.cyclomatic,warning,_update_cost_badges has cyclomatic complexity 24 (max: 15),356
-      complexity.lizard_cc,warning,execute_push_workflow: CC=16 exceeds limit 15,114
-      complexity.lizard_cc,warning,_update_cost_badges: CC=24 exceeds limit 15,356
+      complexity.cyclomatic,warning,execute_push_workflow has cyclomatic complexity 17 (max: 15),114
+      complexity.cyclomatic,warning,_update_cost_badges has cyclomatic complexity 24 (max: 15),363
+      complexity.lizard_cc,warning,execute_push_workflow: CC=17 exceeds limit 15,114
+      complexity.lizard_cc,warning,_update_cost_badges: CC=24 exceeds limit 15,363
   goal/smart_commit/generator.py,0.93
     issues[4]{rule,severity,message,line}:
       complexity.cyclomatic,warning,analyze_changes has cyclomatic complexity 24 (max: 15),32
@@ -85,8 +85,8 @@ WARNINGS[24]{path,score}:
       complexity.lizard_cc,warning,update_changelog: CC=24 exceeds limit 15,9
   goal/cli/tests.py,0.97
     issues[2]{rule,severity,message,line}:
-      complexity.cyclomatic,warning,_run_tests_in_subdirs has cyclomatic complexity 22 (max: 15),32
-      complexity.lizard_cc,warning,_run_tests_in_subdirs: CC=22 exceeds limit 15,32
+      complexity.cyclomatic,warning,_run_tests_in_subdirs has cyclomatic complexity 24 (max: 15),55
+      complexity.lizard_cc,warning,_run_tests_in_subdirs: CC=24 exceeds limit 15,55
   goal/config/validation.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,_validate_advanced_section has cyclomatic complexity 21 (max: 15),261
@@ -227,7 +227,7 @@ ERRORS[29]{path,score}:
       python.import.resolvable,error,Module 'changelog' not found,209
   goal/cli/__init__.py,0.89
     issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'version' not found,205
+      python.import.resolvable,error,Module 'version' not found,207
       python.import.resolvable,error,Module 'nfo' not found,10
       python.import.resolvable,error,Module 'nfo.terminal' not found,11
   goal/hooks/manager.py,0.89

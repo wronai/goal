@@ -9,9 +9,15 @@ from goal.cli import confirm
 def handle_publish(
     project_types: list,
     new_version: str,
-    yes: bool
+    yes: bool,
+    no_publish: bool = False,
+    config=None,
 ) -> bool:
     """Publish to package registries."""
+    if no_publish:
+        click.echo(click.style("  🤖 AUTO: Skipping publish (--no-publish)", fg='yellow'))
+        return False
+
     if not yes:
         if not confirm(f"Publish version {new_version}?"):
             click.echo(click.style("  🤖 AUTO: Skipping publish (user chose N)", fg='yellow'))
@@ -20,7 +26,7 @@ def handle_publish(
         click.echo(click.style(f"\n🤖 AUTO: Publishing version {new_version} (--all mode)", fg='cyan'))
     
     try:
-        publish_success = publish_project(project_types, new_version, yes)
+        publish_success = publish_project(project_types, new_version, yes, config=config)
         if publish_success:
             click.echo(click.style(f"\n✓ Published version {new_version}", fg='green', bold=True))
         else:

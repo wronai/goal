@@ -200,6 +200,30 @@ class TestPushWorkflowE2E:
         assert create_tag is not None
         assert handle_publish is not None
 
+    def test_handle_publish_skips_when_no_publish_flag_is_set(self):
+        """Test that the publish stage respects --no-publish."""
+        from goal.push.stages.publish import handle_publish
+
+        with patch('goal.push.stages.publish.publish_project') as mock_publish_project:
+            result = handle_publish(['python'], '1.2.3', yes=True, no_publish=True)
+
+        assert result is False
+        mock_publish_project.assert_not_called()
+
+    def test_push_command_forwards_no_publish_flag(self):
+        """Test that the CLI push command forwards --no-publish to the workflow."""
+        from click.testing import CliRunner
+        from goal.push.commands import push
+
+        runner = CliRunner()
+
+        with patch('goal.push.commands.execute_push_workflow') as mock_execute:
+            result = runner.invoke(push, ['--no-publish'], obj={'yes': False})
+
+        assert result.exit_code == 0
+        mock_execute.assert_called_once()
+        assert mock_execute.call_args.kwargs['no_publish'] is True
+
     def test_push_workflow_aborts_on_auto_test_failure(self):
         """Test that --all workflow stops when tests fail."""
         from goal.push.core import execute_push_workflow
@@ -233,6 +257,7 @@ class TestPushWorkflowE2E:
                     no_tag=False,
                     no_changelog=False,
                     no_version_sync=False,
+                    no_publish=False,
                     message=None,
                     dry_run=False,
                     yes=True,

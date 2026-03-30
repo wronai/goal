@@ -205,7 +205,7 @@ strategies:
   nodejs:
     test: npm test
     build: npm run build
-    publish: twine upload dist/goal-{version}*
+    publish: npm publish
     publish_enabled: true
     dependencies:
       file: package-lock.json
@@ -213,7 +213,7 @@ strategies:
   rust:
     test: cargo test
     build: cargo build --release
-    publish: twine upload dist/goal-{version}*
+    publish: cargo publish
     publish_enabled: true
     dependencies:
       file: Cargo.lock

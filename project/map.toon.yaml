@@ -1,8 +1,8 @@
-# goal | 97f 18773L | python:94,shell:3 | 2026-03-29
+# goal | 97f 18784L | python:94,shell:3 | 2026-03-30
 # stats: 615 func | 0 cls | 97 mod | CC̄=5.3 | critical:38 | cycles:0
 # alerts[5]: CC ContentAnalyzer.short_action_summary=34; fan-out _ensure_costs_installed=32; CC validate_project_versions=30; CC ContentAnalyzer.per_file_notes=29; CC format_enhanced_summary=29
 # hotspots[5]: _ensure_costs_installed fan=32; execute_push_workflow fan=29; _update_cost_badges fan=27; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27
-# evolution: CC̄ 5.2→5.3 (regressed +0.1)
+# evolution: CC̄ 5.3→5.3 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[97]:
   goal/__init__.py,3
@@ -11,7 +11,7 @@ M[97]:
   goal/authors/manager.py,315
   goal/authors/utils.py,212
   goal/changelog.py,123
-  goal/cli/__init__.py,221
+  goal/cli/__init__.py,223
   goal/cli/authors_cmd.py,118
   goal/cli/commit_cmd.py,205
   goal/cli/config_cmd.py,129
@@ -70,8 +70,8 @@ M[97]:
   goal/project_bootstrap.py,1207
   goal/project_doctor.py,32
   goal/push/__init__.py,56
-  goal/push/commands.py,40
-  goal/push/core.py,486
+  goal/push/commands.py,43
+  goal/push/core.py,492
   goal/push/stages/__init__.py,27
   goal/push/stages/changelog.py,30
   goal/push/stages/commit.py,220
@@ -165,7 +165,7 @@ D:
     run_git_local()
     show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
     output_final_summary(ctx_obj;markdown;project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_exit_code;publish_success;no_tag)
-    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo;force;model;api_key)
+    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;no_publish;message;dry_run;yes;markdown;split;ticket;abstraction;todo;force;model;api_key)
     _initialize_context(ctx_obj;bump;message;yes;markdown)
     _detect_and_bootstrap_projects(ctx_obj;dry_run;yes)
     _handle_no_changes(ctx_obj;project_types;dry_run;markdown)
@@ -297,7 +297,7 @@ D:
     split_paths_by_type(paths)
     stage_paths(paths)
     confirm(prompt;default)
-    main(ctx;bump;version;yes;all_flags;todo;markdown;dry_run;config_path;abstraction;nfo_format;nfo_sink)
+    main(ctx;bump;version;yes;all_flags;no_publish;todo;markdown;dry_run;config_path;abstraction;nfo_format;nfo_sink)
   goal/license/spdx.py:
     e: _load_spdx_data,validate_spdx_id,get_license_info,check_compatibility,get_compatible_licenses,is_copyleft,is_permissive
     _load_spdx_data()
@@ -427,9 +427,6 @@ D:
     license_check(license1;license2)
     license_list(custom)
     license_template(license_id;file)
-  goal/cli/publish_cmd.py:
-    e: publish
-    publish(ctx;use_make;target;version_arg)
   goal/cli/validation_cmd.py:
     e: validation,validation_run,validation_list,validation_validate,validation_info
     validation()
@@ -437,6 +434,9 @@ D:
     validation_list()
     validation_validate()
     validation_info()
+  goal/cli/publish_cmd.py:
+    e: publish
+    publish(ctx;use_make;target;version_arg)
   goal/postcommit/actions.py:
     e: PostCommitAction,NotificationAction,WebhookAction,ScriptAction,GitPushAction
     PostCommitAction(ABC): __init__(1),execute(1),get_name(0),validate_config(0)  # Base class for post-commit actions...
@@ -557,6 +557,9 @@ D:
     sync_all_versions_wrapper(new_version;user_config)
     handle_version_sync(new_version;no_version_sync;user_config;yes)
     get_version_info(current_version;bump)
+  goal/push/commands.py:
+    e: push
+    push(ctx;bump;no_tag;no_changelog;no_version_sync;no_publish;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
   goal/cli/hooks_cmd.py:
     e: hooks,hooks_install,hooks_uninstall,hooks_run,hooks_status
     hooks()
@@ -573,9 +576,6 @@ D:
     e: handle_changelog,update_changelog_stage
     handle_changelog(new_version;files;commit_msg;config;no_changelog)
     update_changelog_stage(new_version;files;commit_msg;config)
-  goal/push/commands.py:
-    e: push
-    push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
   goal/cli/push_cmd.py:
     e: push
     push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;markdown;split;ticket;abstraction;todo;model;api_key)

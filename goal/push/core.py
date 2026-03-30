@@ -127,7 +127,8 @@ def execute_push_workflow(
     todo: bool,
     force: bool = False,
     model: Optional[str] = None,
-    api_key: Optional[str] = None
+    api_key: Optional[str] = None,
+    no_publish: bool = False,
 ) -> None:
     """Execute the complete push workflow."""
     
@@ -147,6 +148,7 @@ def execute_push_workflow(
     
     # Get updated yes value from context (includes -a flag)
     yes = ctx_obj['yes']
+    no_publish = no_publish or ctx_obj.get('no_publish', False)
     
     # Detect and bootstrap projects
     project_types = _detect_and_bootstrap_projects(ctx_obj, dry_run, yes)
@@ -227,7 +229,13 @@ def execute_push_workflow(
     push_to_remote(branch, tag_name, no_tag, ctx_obj['yes'])
     
     # Publish
-    publish_success = handle_publish(project_types, new_version, ctx_obj['yes'])
+    publish_success = handle_publish(
+        project_types,
+        new_version,
+        ctx_obj['yes'],
+        no_publish=no_publish,
+        config=ctx_obj.get('config'),
+    )
     
     # Calculate elapsed time
     elapsed = time.time() - start_time

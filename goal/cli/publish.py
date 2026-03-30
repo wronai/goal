@@ -2,7 +2,7 @@
 
 import subprocess
 from pathlib import Path
-from typing import List
+from typing import Any, List
 
 import click
 
@@ -22,6 +22,23 @@ def makefile_has_target(target: str) -> bool:
         return False
     import re
     return re.search(rf'^\s*{re.escape(target)}\s*:', content, re.MULTILINE) is not None
+
+
+def _get_project_strategy(config: Any, project_type: str) -> dict:
+    """Get the configured strategy for a project type, if available."""
+    if config is None:
+        return {}
+
+    if hasattr(config, 'get_strategy'):
+        try:
+            return config.get_strategy(project_type) or {}
+        except Exception:
+            return {}
+
+    if isinstance(config, dict):
+        return config.get('strategies', {}).get(project_type, {}) or {}
+
+    return {}
 
 
 def _get_python_bin() -> str:
@@ -75,7 +92,12 @@ def _ensure_publish_deps(python_bin: str) -> bool:
     return True
 
 
-def publish_project(project_types: List[str], version: str, yes: bool = False) -> bool:
+def publish_project(
+    project_types: List[str],
+    version: str,
+    yes: bool = False,
+    config: Any = None,
+) -> bool:
     """Publish project to appropriate package registries."""
     # Early TOML validation for clear error messages
     all_valid, errors = validate_project_toml_files()
@@ -88,8 +110,12 @@ def publish_project(project_types: List[str], version: str, yes: bool = False) -
     success = True
 
     for ptype in project_types:
-        config = PROJECT_TYPES.get(ptype, {})
-        publish_cmd = config.get('publish_command', '')
+        strategy = _get_project_strategy(config, ptype)
+        if strategy.get('publish_enabled') is False:
+            click.echo(click.style(f"  Skipping {ptype} publish (disabled in config)", fg='yellow'))
+            continue
+
+        publish_cmd = strategy.get('publish', '') or PROJECT_TYPES.get(ptype, {}).get('publish_command', '')
 
         if not publish_cmd:
             continue

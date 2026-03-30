@@ -15,7 +15,13 @@ from goal.cli.publish import makefile_has_target, publish_project
 @click.pass_context
 def publish(ctx, use_make, target, version_arg) -> None:
     """Publish the current project (optionally using Makefile)."""
+    ctx_obj = ctx.obj or {}
+    if ctx_obj.get('no_publish', False):
+        click.echo(click.style("Publishing skipped (--no-publish)", fg='yellow'))
+        return
+
     project_types = detect_project_types()
+    config = ctx_obj.get('config')
 
     if use_make and shutil.which('make') and makefile_has_target(target):
         cmd = f"make {target}"
@@ -29,7 +35,7 @@ def publish(ctx, use_make, target, version_arg) -> None:
     if version_arg is None:
         version_arg = get_current_version()
 
-    if not publish_project(project_types, version_arg, False):
+    if not publish_project(project_types, version_arg, False, config=config):
         click.echo(click.style("Publish failed. Continuing.", fg='yellow'))
 
 

@@ -432,6 +432,12 @@ Args:
     
 - **Output to**: Path, toml_file.exists, goal.toml_validation.validate_toml_file, errors.append
 
+### goal.project_bootstrap._validate_pfix_env
+> Validate that OPENROUTER_API_KEY is configured in .env.
+
+Shows error message if key is missing or em
+- **Output to**: goal.project_bootstrap._find_openrouter_api_key, click.echo, click.echo, click.echo, click.echo
+
 ### goal.version_validation.validate_project_versions
 > Validate versions across different registries.
 
@@ -454,12 +460,6 @@ Returns:
 ### goal.formatter.format_status_output
 > Format status command output as markdown.
 - **Output to**: MarkdownFormatter, formatter.add_header, None.strip, formatter.add_section, formatter.add_list
-
-### goal.project_bootstrap._validate_pfix_env
-> Validate that OPENROUTER_API_KEY is configured in .env.
-
-Shows error message if key is missing or em
-- **Output to**: goal.project_bootstrap._find_openrouter_api_key, click.echo, click.echo, click.echo, click.echo
 
 ### goal.git_ops.validate_repo_url
 > Validate that a URL looks like a git repository (HTTP/HTTPS/SSH/file).
@@ -571,8 +571,8 @@ Functions exposed as public API (no underscore prefix):
 - `goal.user_config.show_user_config` - 31 calls
 - `examples.api-usage.04_version_validation.main` - 30 calls
 - `goal.cli.publish.publish_project` - 29 calls
-- `goal.version_validation.validate_project_versions` - 28 calls
 - `goal.project_bootstrap.guess_package_name` - 28 calls
+- `goal.version_validation.validate_project_versions` - 28 calls
 - `goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency` - 28 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.generate_functional_body` - 27 calls
 - `goal.generator.analyzer.ContentAnalyzer.short_action_summary` - 26 calls

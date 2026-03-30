@@ -146,6 +146,7 @@ class GoalGroup(click.Group):
 @click.option('--version', default=None, help='Explicit version to use')
 @click.option('--yes', '-y', is_flag=True, help='Auto-confirm all prompts')
 @click.option('--all', '-a', 'all_flags', is_flag=True, help='Run full workflow (tests, push, publish)')
+@click.option('--no-publish', is_flag=True, help='Skip publishing to registry')
 @click.option('--todo', '-t', is_flag=True, help='Create TODO.md file with detected issues')
 @click.option('--markdown/--ascii', default=False, help='Output format')
 @click.option('--dry-run', is_flag=True, help='Show what would be done without executing')
@@ -154,7 +155,7 @@ class GoalGroup(click.Group):
 @click.option('--nfo-format', default='markdown', help='nfo log format')
 @click.option('--nfo-sink', default='', help='Additional nfo sink')
 @click.pass_context
-def main(ctx, bump, version, yes, all_flags, todo, markdown, dry_run, config_path, abstraction, nfo_format, nfo_sink) -> None:
+def main(ctx, bump, version, yes, all_flags, no_publish, todo, markdown, dry_run, config_path, abstraction, nfo_format, nfo_sink) -> None:
     """Goal - Automated git push with smart commit messages."""
     # Display version info at startup with update check
     from goal import __version__
@@ -172,6 +173,7 @@ def main(ctx, bump, version, yes, all_flags, todo, markdown, dry_run, config_pat
     ctx.obj['bump'] = bump
     ctx.obj['version'] = version
     ctx.obj['yes'] = yes or all_flags
+    ctx.obj['no_publish'] = no_publish
     ctx.obj['todo'] = todo
     ctx.obj['markdown'] = markdown
     ctx.obj['dry_run'] = dry_run

@@ -15,6 +15,7 @@ from goal.push.core import execute_push_workflow
 @click.option('--no-tag', is_flag=True, help='Skip creating git tag')
 @click.option('--no-changelog', is_flag=True, help='Skip updating CHANGELOG.md')
 @click.option('--no-version-sync', is_flag=True, help='Skip syncing version to all files')
+@click.option('--no-publish', is_flag=True, help='Skip publishing to registry')
 @click.option('--message', '-m', default=None, help='Custom commit message')
 @click.option('--dry-run', is_flag=True, help='Show what would be done without executing')
 @click.option('--markdown/--ascii', default=False, help='Output format')
@@ -25,11 +26,12 @@ from goal.push.core import execute_push_workflow
 @click.option('--model', default=None, help='AI model for cost tracking (e.g., openrouter/qwen/qwen3-coder-next)')
 @click.option('--api-key', default=None, help='API key for cost tracking service')
 @click.pass_context
-def push(ctx, bump, no_tag, no_changelog, no_version_sync, message, dry_run,
+def push(ctx, bump, no_tag, no_changelog, no_version_sync, no_publish, message, dry_run,
          markdown, split, ticket, abstraction, todo, model, api_key) -> None:
     """Add, commit, tag, and push changes to remote."""
     # Use yes from ctx.obj (set by -a/--all or -y/--yes global flags)
     yes = ctx.obj.get('yes', False)
+    no_publish = no_publish or ctx.obj.get('no_publish', False)
     # Store model and api_key in ctx.obj for downstream use
     ctx.obj['cost_model'] = model
     ctx.obj['cost_api_key'] = api_key
@@ -39,6 +41,7 @@ def push(ctx, bump, no_tag, no_changelog, no_version_sync, message, dry_run,
         no_tag=no_tag,
         no_changelog=no_changelog,
         no_version_sync=no_version_sync,
+        no_publish=no_publish,
         message=message,
         dry_run=dry_run,
         yes=yes,
