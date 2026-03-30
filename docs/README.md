@@ -1,7 +1,7 @@
 <!-- code2docs:start --># goal
 
-![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.8-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-655-green)
-> **655** functions | **64** classes | **119** files | CC̄ = 5.2
+![version](https://img.shields.io/badge/version-0.1.0-blue) ![python](https://img.shields.io/badge/python-%3E%3D3.8-blue) ![coverage](https://img.shields.io/badge/coverage-unknown-lightgrey) ![functions](https://img.shields.io/badge/functions-656-green)
+> **656** functions | **64** classes | **119** files | CC̄ = 5.2
 
 > Auto-generated project documentation from source code analysis.
 
@@ -147,20 +147,20 @@ Content outside the markers is preserved when regenerating. Enable this with `sy
 
 ```
 goal/
-    ├── toml_validation    ├── cli/    ├── user_config    ├── enhanced_summary    ├── commit_generator    ├── config/    ├── changelog├── goal/    ├── version_validation    ├── __main__    ├── smart_commit/    ├── project_bootstrap    ├── deep_analyzer    ├── formatter    ├── project_doctor    ├── git_ops    ├── generator/        ├── generator        ├── config        ├── git_ops        ├── analyzer    ├── hooks/    ├── validators/        ├── manager        ├── exceptions        ├── file_validator    ├── recovery/        ├── commands    ├── push/        ├── manager        ├── version_sync        ├── recover_cmd        ├── version        ├── core        ├── license_cmd        ├── config_validate_cmd        ├── strategies        ├── hooks_cmd        ├── doctor_cmd        ├── authors_cmd        ├── postcommit_cmd        ├── commit_cmd        ├── utils_cmd        ├── version_utils        ├── publish        ├── wizard_cmd        ├── version_types        ├── publish_cmd        ├── validation_cmd        ├── push_cmd        ├── config_cmd        ├── manager    ├── postcommit/        ├── actions        ├── manager        ├── validation        ├── constants        ├── validator    ├── summary/        ├── generator        ├── manager    ├── validation/        ├── rules        ├── rust        ├── ruby    ├── package_managers        ├── quality_filter        ├── dotnet    ├── doctor/        ├── go        ├── todo        ├── logging        ├── php        ├── nodejs        ├── java        ├── abstraction        ├── generator        ├── manager    ├── authors/        ├── utils        ├── manager        ├── spdx    ├── license/            ├── version            ├── changelog            ├── commit            ├── dry_run            ├── tag        ├── stages/            ├── push_remote            ├── publish        ├── slack-webhook        ├── discord-webhook        ├── post-commit        ├── pre-publish        ├── pre-commit        ├── 04_version_validation        ├── 05_programmatic_workflow        ├── 01_basic_api        ├── 03_commit_generation        ├── models        ├── 02_git_operations        ├── run_all_validation            ├── my-new-project/        ├── main                            ├── Main        ├── Calculator        ├── generate            ├── Example├── project    ├── run_docker_matrix    ├── run_matrix        ├── install    ├── markdown-demo        ├── python        ├── core```
+    ├── config/    ├── cli/    ├── enhanced_summary    ├── toml_validation    ├── commit_generator    ├── user_config    ├── version_validation├── goal/    ├── changelog    ├── __main__    ├── smart_commit/    ├── formatter    ├── deep_analyzer    ├── project_doctor    ├── project_bootstrap    ├── git_ops    ├── generator/        ├── generator        ├── analyzer        ├── config    ├── hooks/    ├── validators/        ├── manager        ├── git_ops        ├── exceptions        ├── file_validator        ├── manager    ├── recovery/    ├── push/        ├── commands        ├── version_sync        ├── recover_cmd        ├── version        ├── core        ├── license_cmd        ├── hooks_cmd        ├── config_validate_cmd        ├── authors_cmd        ├── doctor_cmd        ├── strategies        ├── postcommit_cmd        ├── commit_cmd        ├── utils_cmd        ├── version_utils        ├── wizard_cmd        ├── publish        ├── version_types        ├── validation_cmd        ├── publish_cmd        ├── push_cmd        ├── config_cmd        ├── manager    ├── postcommit/        ├── actions        ├── manager        ├── constants        ├── validation        ├── generator    ├── summary/        ├── validator        ├── manager    ├── validation/        ├── quality_filter        ├── rust        ├── ruby        ├── rules    ├── package_managers        ├── dotnet    ├── doctor/        ├── go        ├── todo        ├── logging        ├── php        ├── models        ├── core        ├── java        ├── abstraction        ├── manager    ├── authors/        ├── generator        ├── utils        ├── spdx    ├── license/            ├── version            ├── changelog            ├── commit            ├── dry_run            ├── tag        ├── stages/            ├── push_remote            ├── publish        ├── slack-webhook        ├── discord-webhook        ├── manager        ├── post-commit        ├── pre-publish        ├── pre-commit        ├── 04_version_validation        ├── 05_programmatic_workflow        ├── 01_basic_api        ├── 03_commit_generation        ├── 02_git_operations        ├── generate            ├── my-new-project/        ├── main                            ├── Main        ├── Calculator        ├── run_all_validation├── project            ├── Example    ├── markdown-demo    ├── run_docker_matrix    ├── run_matrix        ├── install        ├── nodejs        ├── python```
 
 ## API Overview
 
 ### Classes
 
 - **`UserConfig`** — Manages user-specific configuration stored in ~/.goal
-- **`CodeChangeAnalyzer`** — Analyzes code changes to extract functional meaning.
 - **`MarkdownFormatter`** — Formats Goal output as structured markdown for LLM consumption.
+- **`CodeChangeAnalyzer`** — Analyzes code changes to extract functional meaning.
 - **`CommitMessageGenerator`** — Generate conventional commit messages using diff analysis and lightweight classification.
-- **`GitDiffOperations`** — Git diff operations with caching.
 - **`ChangeAnalyzer`** — Analyze git changes to classify type, detect scope, and extract functions.
 - **`ContentAnalyzer`** — Analyze content for short summaries and per-file notes.
 - **`HooksManager`** — Manages pre-commit hooks for Goal.
+- **`GitDiffOperations`** — Git diff operations with caching.
 - **`RecoveryError`** — Base exception for all recovery operations.
 - **`AuthError`** — Raised when authentication fails.
 - **`LargeFileError`** — Raised when large files block the push.
@@ -192,9 +192,10 @@ goal/
 - **`GoalConfig`** — Manages goal.yaml configuration file.
 - **`ConfigValidationError`** — Error raised when configuration validation fails.
 - **`ConfigValidator`** — Validates Goal configuration files.
-- **`QualityValidator`** — Validate commit summary against quality gates.
 - **`EnhancedSummaryGenerator`** — Generate business-value focused commit summaries.
+- **`QualityValidator`** — Validate commit summary against quality gates.
 - **`ValidationRuleManager`** — Manages custom validation rules for Goal.
+- **`SummaryQualityFilter`** — Filter noise and improve summary quality.
 - **`ValidationRule`** — Base class for custom validation rules.
 - **`MessagePatternRule`** — Validate commit message against pattern.
 - **`FilePatternRule`** — Validate files against pattern rules.
@@ -202,18 +203,17 @@ goal/
 - **`CommitSizeRule`** — Validate commit size (lines changed).
 - **`MessageLengthRule`** — Validate commit message length.
 - **`PackageManager`** — Package manager configuration and capabilities.
-- **`SummaryQualityFilter`** — Filter noise and improve summary quality.
-- **`GoalGroup`** — Custom Click Group that shows docs URL for unknown commands (like Poetry),
-- **`CodeAbstraction`** — Extracts meaningful abstractions from code changes.
-- **`SmartCommitGenerator`** — Generates smart commit messages using code abstraction.
-- **`AuthorsManager`** — Manages project authors and team members.
-- **`LicenseManager`** — Manages license operations including template handling and file creation.
 - **`Issue`** — A single diagnosed issue.
 - **`DoctorReport`** — Aggregated report from a doctor run.
-- **`ValidationRunner`** — Runs all validation tests and aggregates results.
+- **`GoalGroup`** — Custom Click Group that shows docs URL for unknown commands (like Poetry),
+- **`CodeAbstraction`** — Extracts meaningful abstractions from code changes.
+- **`AuthorsManager`** — Manages project authors and team members.
+- **`SmartCommitGenerator`** — Generates smart commit messages using code abstraction.
+- **`LicenseManager`** — Manages license operations including template handling and file creation.
 - **`Main`** — —
 - **`Calculator`** — —
 - **`Program`** — —
+- **`ValidationRunner`** — Runs all validation tests and aggregates results.
 - **`Example`** — —
 - **`App`** — —
 - **`PythonDiagnostics`** — Container for Python diagnostic checks with shared state.
@@ -230,7 +230,6 @@ goal/
 - `initialize_user_config(force)` — Initialize user configuration interactively if not already done.
 - `get_user_config()` — Get user configuration, initializing if necessary.
 - `show_user_config()` — Display current user configuration.
-- `update_changelog(version, files, commit_msg, config)` — Update CHANGELOG.md with new version and changes.
 - `get_pypi_version(package_name)` — Get latest version of a package from PyPI.
 - `get_npm_version(package_name)` — Get latest version of a package from npm registry.
 - `get_cargo_version(package_name)` — Get latest version of a crate from crates.io.
@@ -241,6 +240,10 @@ goal/
 - `validate_project_versions(project_types, current_version)` — Validate versions across different registries.
 - `check_readme_badges(current_version)` — Check if README badges are up to date with current version.
 - `format_validation_results(results)` — Format validation results for display.
+- `update_changelog(version, files, commit_msg, config)` — Update CHANGELOG.md with new version and changes.
+- `format_push_result(project_types, files, stats, current_version)` — Format push command result as markdown.
+- `format_enhanced_summary(commit_title, commit_body, capabilities, roles)` — Format enhanced business-value summary as markdown.
+- `format_status_output(version, branch, staged_files, unstaged_files)` — Format status command output as markdown.
 - `detect_project_types_deep(root, max_depth)` — Detect project types in *root* and up to *max_depth* subfolder levels.
 - `guess_package_name(project_dir, project_type)` — Best-effort guess of the package/module name for scaffold templates.
 - `ensure_project_environment(project_dir, project_type, yes)` — Ensure the project environment is properly set up.
@@ -248,9 +251,6 @@ goal/
 - `scaffold_test(project_dir, project_type, yes)` — Create a sample test file if no tests exist.
 - `bootstrap_project(project_dir, project_type, yes)` — Full bootstrap: diagnose & fix config, ensure environment, scaffold tests.
 - `bootstrap_all_projects(root, yes)` — Detect all project types (root + 1-level subfolders) and bootstrap each.
-- `format_push_result(project_types, files, stats, current_version)` — Format push command result as markdown.
-- `format_enhanced_summary(commit_title, commit_body, capabilities, roles)` — Format enhanced business-value summary as markdown.
-- `format_status_output(version, branch, staged_files, unstaged_files)` — Format status command output as markdown.
 - `run_git()` — Run a git command and return the result.
 - `run_command(command, capture)` — Run a shell command and return the result.
 - `run_git_with_status()` — Run git command with enhanced status display.
@@ -300,13 +300,12 @@ goal/
 - `license_check(license1, license2)` — Check compatibility between two licenses.
 - `license_list(custom)` — List available license templates.
 - `license_template(license_id, file)` — Add or show custom license templates.
-- `validate_cmd(ctx, config, strict, fix)` — Validate goal.yaml configuration file.
 - `hooks()` — Manage pre-commit hooks.
 - `hooks_install(force)` — Install Goal pre-commit hooks.
 - `hooks_uninstall()` — Uninstall Goal pre-commit hooks.
 - `hooks_run(all_files)` — Run pre-commit hooks manually.
 - `hooks_status()` — Show pre-commit hooks status.
-- `doctor(ctx, fix, path, todo)` — Diagnose and auto-fix common project configuration issues.
+- `validate_cmd(ctx, config, strict, fix)` — Validate goal.yaml configuration file.
 - `authors()` — Manage project authors and team members.
 - `authors_list()` — List all project authors.
 - `authors_add(name, email, role, alias)` — Add an author to the project.
@@ -317,6 +316,7 @@ goal/
 - `authors_find(identifier)` — Find an author by name, email, or alias.
 - `authors_co_author(name, email)` — Generate a co-author trailer for commit messages.
 - `authors_current()` — Show current user's author information.
+- `doctor(ctx, fix, path, todo)` — Diagnose and auto-fix common project configuration issues.
 - `postcommit()` — Manage post-commit actions.
 - `postcommit_run()` — Run configured post-commit actions.
 - `postcommit_list()` — List configured post-commit actions.
@@ -342,15 +342,15 @@ goal/
 - `update_json_version(filepath, new_version)` — Update version in JSON files (package.json, composer.json).
 - `update_project_metadata(filepath, user_config)` — Update author and license in project files based on user config.
 - `update_readme_metadata(user_config)` — Update README.md with author and license information.
-- `makefile_has_target(target)` — Check if Makefile has a specific target.
-- `publish_project(project_types, version, yes)` — Publish project to appropriate package registries.
 - `wizard(reset, skip_git, skip_user, skip_project)` — Interactive wizard for complete Goal setup.
-- `publish(ctx, use_make, target, version_arg)` — Publish the current project (optionally using Makefile).
+- `makefile_has_target(target)` — Check if Makefile has a specific target.
+- `publish_project(project_types, version, yes, config)` — Publish project to appropriate package registries.
 - `validation()` — Manage custom validation rules.
 - `validation_run()` — Run custom validation rules.
 - `validation_list()` — List configured validation rules.
 - `validation_validate()` — Validate rule configurations.
 - `validation_info()` — Show information about available validation rules.
+- `publish(ctx, use_make, target, version_arg)` — Publish the current project (optionally using Makefile).
 - `push(ctx, bump, no_tag, no_changelog)` — Add, commit, tag, and push changes to remote.
 - `config()` — Manage goal configuration.
 - `config_show(ctx, key)` — Show configuration value(s).
@@ -387,16 +387,17 @@ goal/
 - `add_issues_to_todo(project_dir, issues, todo_file)` — Add issues to TODO.md without duplicates.
 - `diagnose_and_report_with_todo(project_dir, project_type, auto_fix, todo_file)` — Diagnose, fix, report, and optionally add issues to TODO.md.
 - `diagnose_php(project_dir, auto_fix)` — Run all PHP-specific diagnostics.
+- `diagnose_project(project_dir, project_type, auto_fix)` — Run diagnostics for a single project directory.
+- `diagnose_and_report(project_dir, project_type, auto_fix)` — Diagnose, fix, and print a human-readable report.
+- `diagnose_java(project_dir, auto_fix)` — Run all Java-specific diagnostics.
 - `strip_ansi(text)` — —
 - `split_paths_by_type(paths)` — Split file paths into groups (code/docs/ci/examples/other).
 - `stage_paths(paths)` — —
 - `confirm(prompt, default)` — Ask for user confirmation with Y/n prompt (Enter defaults to Yes).
 - `main(ctx, bump, version, yes)` — Goal - Automated git push with smart commit messages.
-- `diagnose_nodejs(project_dir, auto_fix)` — Run all Node.js-specific diagnostics.
-- `diagnose_java(project_dir, auto_fix)` — Run all Java-specific diagnostics.
-- `create_smart_generator(config)` — Factory function to create SmartCommitGenerator.
 - `get_project_authors(project_dir)` — Get all authors for a project.
 - `add_project_author(name, email, role, alias)` — Add an author to a project.
+- `create_smart_generator(config)` — Factory function to create SmartCommitGenerator.
 - `format_co_author_trailer(name, email)` — Format a co-author trailer for git commit messages.
 - `parse_co_authors(message)` — Parse co-author trailers from a commit message.
 - `add_co_authors_to_message(message, co_authors)` — Add co-author trailers to a commit message.
@@ -406,8 +407,6 @@ goal/
 - `get_co_authors_from_command_line(co_author_args)` — Parse co-author arguments from command line.
 - `format_commit_message_with_co_authors(title, body, co_authors)` — Format a complete commit message with co-authors.
 - `extract_current_author_from_config()` — Extract current author from user config.
-- `create_license_file(license_id, fullname, year, force)` — Convenience function to create a LICENSE file.
-- `update_license_file(license_id, fullname, year)` — Convenience function to update a LICENSE file.
 - `validate_spdx_id(license_id)` — Validate an SPDX license identifier.
 - `get_license_info(license_id)` — Get detailed information about a license.
 - `check_compatibility(license1, license2)` — Check basic license compatibility between two licenses.
@@ -426,11 +425,13 @@ goal/
 - `handle_dry_run(ctx_obj, project_types, files, stats)` — Handle dry run output.
 - `create_tag(new_version, no_tag)` — Create git tag for release.
 - `push_to_remote(branch, tag_name, no_tag, yes)` — Push commits and tags to remote.
-- `handle_publish(project_types, new_version, yes)` — Publish to package registries.
+- `handle_publish(project_types, new_version, yes, no_publish)` — Publish to package registries.
 - `send_slack_notification(message, commit_info)` — Send notification to Slack.
 - `main()` — CLI entry point.
 - `send_discord_notification(message, commit_info)` — Send notification to Discord.
 - `main()` — CLI entry point.
+- `create_license_file(license_id, fullname, year, force)` — Convenience function to create a LICENSE file.
+- `update_license_file(license_id, fullname, year)` — Convenience function to update a LICENSE file.
 - `get_commit_info()` — Get information about the last commit.
 - `notify_slack(info)` — Send Slack notification.
 - `update_changelog(info)` — Auto-update changelog with commit info.
@@ -451,17 +452,16 @@ goal/
 - `main()` — Run basic API examples.
 - `main()` — Demonstrate commit message generation.
 - `main()` — Demonstrate git operations.
-- `main()` — Run all validations.
-- `main()` — —
 - `generate_project(template_type, project_name)` — Generate project from template.
 - `main()` — CLI entry point.
+- `main()` — —
+- `main()` — Run all validations.
 - `run_case()` — —
 - `print()` — —
 - `main()` — —
 - `self()` — —
+- `diagnose_nodejs(project_dir, auto_fix)` — Run all Node.js-specific diagnostics.
 - `diagnose_python(project_dir, auto_fix)` — Run all Python-specific diagnostics.
-- `diagnose_project(project_dir, project_type, auto_fix)` — Run diagnostics for a single project directory.
-- `diagnose_and_report(project_dir, project_type, auto_fix)` — Diagnose, fix, and print a human-readable report.
 
 
 ## Project Structure
@@ -500,7 +500,7 @@ goal/
 📄 `goal.cli.hooks_cmd` (5 functions)
 📄 `goal.cli.license_cmd` (8 functions)
 📄 `goal.cli.postcommit_cmd` (5 functions)
-📄 `goal.cli.publish` (4 functions)
+📄 `goal.cli.publish` (5 functions)
 📄 `goal.cli.publish_cmd` (1 functions)
 📄 `goal.cli.push_cmd` (1 functions)
 📄 `goal.cli.recover_cmd` (2 functions)

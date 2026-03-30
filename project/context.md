@@ -6,7 +6,7 @@
 - **Primary Language**: python
 - **Languages**: python: 107, shell: 5, go: 1, java: 1, csharp: 1
 - **Analysis Mode**: static
-- **Total Functions**: 656
+- **Total Functions**: 657
 - **Total Classes**: 65
 - **Modules**: 117
 - **Entry Points**: 465
@@ -432,12 +432,6 @@ Args:
     
 - **Output to**: Path, toml_file.exists, goal.toml_validation.validate_toml_file, errors.append
 
-### goal.project_bootstrap._validate_pfix_env
-> Validate that OPENROUTER_API_KEY is configured in .env.
-
-Shows error message if key is missing or em
-- **Output to**: goal.project_bootstrap._find_openrouter_api_key, click.echo, click.echo, click.echo, click.echo
-
 ### goal.version_validation.validate_project_versions
 > Validate versions across different registries.
 
@@ -461,6 +455,12 @@ Returns:
 > Format status command output as markdown.
 - **Output to**: MarkdownFormatter, formatter.add_header, None.strip, formatter.add_section, formatter.add_list
 
+### goal.project_bootstrap._validate_pfix_env
+> Validate that OPENROUTER_API_KEY is configured in .env.
+
+Shows error message if key is missing or em
+- **Output to**: goal.project_bootstrap._find_openrouter_api_key, click.echo, click.echo, click.echo, click.echo
+
 ### goal.git_ops.validate_repo_url
 > Validate that a URL looks like a git repository (HTTP/HTTPS/SSH/file).
 - **Output to**: url.strip, re.match, re.match, re.match
@@ -479,13 +479,13 @@ Args:
 This is a convenience function that extracts validation 
 - **Output to**: goal.git_ops.get_staged_files, goal.validators.file_validator.manage_dot_folders, goal.git_ops.get_staged_files, goal.validators.file_validator.validate_files, config.get
 
-### goal.push.core._validate_staged_files
-> Validate staged files for security issues.
-- **Output to**: goal.validators.file_validator.validate_staged_files, click.echo, ctx_obj.get, click.echo, click.echo
-
 ### goal.cli.license_cmd.license_validate
 > Validate the LICENSE file.
 - **Output to**: license.command, LicenseManager, manager.validate_license_file, click.echo, click.echo
+
+### goal.push.core._validate_staged_files
+> Validate staged files for security issues.
+- **Output to**: goal.validators.file_validator.validate_staged_files, click.echo, ctx_obj.get, click.echo, click.echo
 
 ### goal.cli.config_validate_cmd.validate_cmd
 > Validate goal.yaml configuration file.
@@ -553,7 +553,7 @@ Functions exposed as public API (no underscore prefix):
 - `goal.cli.commit_cmd.commit` - 47 calls
 - `goal.cli.commit_cmd.validate` - 45 calls
 - `goal.generator.analyzer.ContentAnalyzer.per_file_notes` - 43 calls
-- `goal.push.core.execute_push_workflow` - 41 calls
+- `goal.push.core.execute_push_workflow` - 43 calls
 - `goal.push.stages.commit.handle_split_commits` - 41 calls
 - `goal.push.stages.push_remote.push_to_remote` - 41 calls
 - `goal.formatter.format_enhanced_summary` - 39 calls
@@ -565,14 +565,14 @@ Functions exposed as public API (no underscore prefix):
 - `goal.push.stages.dry_run.handle_dry_run` - 36 calls
 - `goal.changelog.update_changelog` - 35 calls
 - `goal.cli.wizard_cmd.wizard` - 34 calls
+- `goal.cli.publish.publish_project` - 34 calls
 - `examples.api-usage.01_basic_api.main` - 34 calls
 - `goal.doctor.python.PythonDiagnostics.check_py011_version_consistency` - 34 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.analyze_changes` - 33 calls
 - `goal.user_config.show_user_config` - 31 calls
 - `examples.api-usage.04_version_validation.main` - 30 calls
-- `goal.cli.publish.publish_project` - 29 calls
-- `goal.project_bootstrap.guess_package_name` - 28 calls
 - `goal.version_validation.validate_project_versions` - 28 calls
+- `goal.project_bootstrap.guess_package_name` - 28 calls
 - `goal.doctor.python.PythonDiagnostics.check_py010_project_name_consistency` - 28 calls
 - `goal.smart_commit.generator.SmartCommitGenerator.generate_functional_body` - 27 calls
 - `goal.generator.analyzer.ContentAnalyzer.short_action_summary` - 26 calls

@@ -1,7 +1,7 @@
-# goal | 97f 18784L | python:94,shell:3 | 2026-03-30
-# stats: 615 func | 0 cls | 97 mod | CC̄=5.3 | critical:38 | cycles:0
-# alerts[5]: CC ContentAnalyzer.short_action_summary=34; fan-out _ensure_costs_installed=32; CC validate_project_versions=30; CC ContentAnalyzer.per_file_notes=29; CC format_enhanced_summary=29
-# hotspots[5]: _ensure_costs_installed fan=32; execute_push_workflow fan=29; _update_cost_badges fan=27; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27
+# goal | 97f 18827L | python:94,shell:3 | 2026-03-30
+# stats: 616 func | 0 cls | 97 mod | CC̄=5.3 | critical:38 | cycles:0
+# alerts[5]: CC ContentAnalyzer.short_action_summary=34; fan-out _ensure_costs_installed=32; CC validate_project_versions=30; fan-out execute_push_workflow=30; CC ContentAnalyzer.per_file_notes=29
+# hotspots[5]: _ensure_costs_installed fan=32; execute_push_workflow fan=30; _update_cost_badges fan=27; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27
 # evolution: CC̄ 5.3→5.3 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[97]:
@@ -20,9 +20,9 @@ M[97]:
   goal/cli/hooks_cmd.py,71
   goal/cli/license_cmd.py,198
   goal/cli/postcommit_cmd.py,82
-  goal/cli/publish.py,144
-  goal/cli/publish_cmd.py,36
-  goal/cli/push_cmd.py,111
+  goal/cli/publish.py,170
+  goal/cli/publish_cmd.py,42
+  goal/cli/push_cmd.py,114
   goal/cli/recover_cmd.py,125
   goal/cli/utils_cmd.py,207
   goal/cli/validation_cmd.py,85
@@ -71,12 +71,12 @@ M[97]:
   goal/project_doctor.py,32
   goal/push/__init__.py,56
   goal/push/commands.py,43
-  goal/push/core.py,492
+  goal/push/core.py,494
   goal/push/stages/__init__.py,27
   goal/push/stages/changelog.py,30
   goal/push/stages/commit.py,220
   goal/push/stages/dry_run.py,98
-  goal/push/stages/publish.py,31
+  goal/push/stages/publish.py,37
   goal/push/stages/push_remote.py,377
   goal/push/stages/tag.py,28
   goal/push/stages/version.py,49
@@ -165,7 +165,7 @@ D:
     run_git_local()
     show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
     output_final_summary(ctx_obj;markdown;project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_exit_code;publish_success;no_tag)
-    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;no_publish;message;dry_run;yes;markdown;split;ticket;abstraction;todo;force;model;api_key)
+    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo;force;model;api_key;no_publish)
     _initialize_context(ctx_obj;bump;message;yes;markdown)
     _detect_and_bootstrap_projects(ctx_obj;dry_run;yes)
     _handle_no_changes(ctx_obj;project_types;dry_run;markdown)
@@ -259,6 +259,13 @@ D:
     commit(ctx;detailed;unstaged;markdown;ticket;abstraction;co_author)
     fix_summary(ctx;fix;preview;cached)
     validate(ctx;fix;cached)
+  goal/cli/publish.py:
+    e: makefile_has_target,_get_project_strategy,_get_python_bin,_ensure_publish_deps,publish_project
+    makefile_has_target(target)
+    _get_project_strategy(config;project_type)
+    _get_python_bin()
+    _ensure_publish_deps(python_bin)
+    publish_project(project_types;version;yes;config)
   goal/doctor/python.py:
     e: PythonDiagnostics,diagnose_python
     PythonDiagnostics: __init__(3),check_py001_missing_config(4),check_py002_build_system(0),check_py003_license_classifiers(0),check_py004_deprecated_backends(0),check_py005_license_table(0),check_py006_duplicate_authors(0),check_py007_requires_python(0),check_py008_empty_classifiers(0),check_py009_string_authors(0),check_py010_project_name_consistency(0),check_py011_version_consistency(0),check_py012_dist_cleanup(0),check_py013_goal_publish_pattern(0),check_py014_pypi_token(0),write_fixes(1)  # Container for Python diagnostic checks with shared state...
@@ -282,12 +289,6 @@ D:
     _handle_pull_merge()
     _handle_view_diff()
     _handle_automatic_recovery(error_output)
-  goal/cli/publish.py:
-    e: makefile_has_target,_get_python_bin,_ensure_publish_deps,publish_project
-    makefile_has_target(target)
-    _get_python_bin()
-    _ensure_publish_deps(python_bin)
-    publish_project(project_types;version;yes)
   goal/cli/__init__.py:
     e: GoalGroup,_setup_nfo_logging,_nfo_log_call,strip_ansi,split_paths_by_type,stage_paths,confirm,main
     GoalGroup(click.Group): get_command(2),parse_args(2)  # Custom Click Group that shows docs URL for unknown commands ...
@@ -391,6 +392,9 @@ D:
     validate_toml_file(filepath)
     validate_project_toml_files(project_dir)
     check_pyproject_toml()
+  goal/cli/publish_cmd.py:
+    e: publish
+    publish(ctx;use_make;target;version_arg)
   goal/doctor/todo.py:
     e: _generate_ticket_id,_read_existing_tickets,_format_todo_entry,add_issues_to_todo,diagnose_and_report_with_todo
     _generate_ticket_id(issue)
@@ -434,9 +438,6 @@ D:
     validation_list()
     validation_validate()
     validation_info()
-  goal/cli/publish_cmd.py:
-    e: publish
-    publish(ctx;use_make;target;version_arg)
   goal/postcommit/actions.py:
     e: PostCommitAction,NotificationAction,WebhookAction,ScriptAction,GitPushAction
     PostCommitAction(ABC): __init__(1),execute(1),get_name(0),validate_config(0)  # Base class for post-commit actions...
@@ -477,6 +478,9 @@ D:
   goal/doctor/java.py:
     e: diagnose_java
     diagnose_java(project_dir;auto_fix)
+  goal/push/stages/publish.py:
+    e: handle_publish
+    handle_publish(project_types;new_version;yes;no_publish;config)
   goal/doctor/go.py:
     e: diagnose_go
     diagnose_go(project_dir;auto_fix)
@@ -491,9 +495,6 @@ D:
     get_co_authors_from_command_line(co_author_args)
     format_commit_message_with_co_authors(title;body;co_authors)
     extract_current_author_from_config()
-  goal/push/stages/publish.py:
-    e: handle_publish
-    handle_publish(project_types;new_version;yes)
   goal/hooks/manager.py:
     e: HooksManager,install_hooks,uninstall_hooks,run_hooks
     HooksManager: __init__(1),is_precommit_installed(0),is_hooks_configured(0),install_precommit(0),create_hook_script(0),create_precommit_config(1),install_hooks(1),uninstall_hooks(0),run_validation(1),run_hooks(1),status(0)  # Manages pre-commit hooks for Goal...
@@ -567,6 +568,9 @@ D:
     hooks_uninstall()
     hooks_run(all_files)
     hooks_status()
+  goal/cli/push_cmd.py:
+    e: push
+    push(ctx;bump;no_tag;no_changelog;no_version_sync;no_publish;message;dry_run;markdown;split;ticket;abstraction;todo;model;api_key)
   goal/summary/__init__.py:
     e: generate_business_summary,validate_summary,auto_fix_summary
     generate_business_summary(files;diff_content;config)
@@ -576,11 +580,8 @@ D:
     e: handle_changelog,update_changelog_stage
     handle_changelog(new_version;files;commit_msg;config;no_changelog)
     update_changelog_stage(new_version;files;commit_msg;config)
-  goal/cli/push_cmd.py:
-    e: push
-    push(ctx;bump;no_tag;no_changelog;no_version_sync;message;dry_run;markdown;split;ticket;abstraction;todo;model;api_key)
-  goal/enhanced_summary.py:
   goal/config/__init__.py:
+  goal/enhanced_summary.py:
   goal/commit_generator.py:
   goal/__init__.py:
   goal/__main__.py:

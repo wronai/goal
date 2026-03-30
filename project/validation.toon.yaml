@@ -1,9 +1,9 @@
-# vallm batch | 232f | 131✓ 24⚠ 29✗ | 2026-03-30
+# vallm batch | 232f | 131✓ 25⚠ 29✗ | 2026-03-30
 
 SUMMARY:
-  scanned: 232  passed: 131 (56.5%)  warnings: 24  errors: 29  unsupported: 72
+  scanned: 232  passed: 131 (56.5%)  warnings: 25  errors: 29  unsupported: 72
 
-WARNINGS[24]{path,score}:
+WARNINGS[25]{path,score}:
   goal/project_bootstrap.py,0.83
     issues[10]{rule,severity,message,line}:
       complexity.cyclomatic,warning,guess_package_name has cyclomatic complexity 20 (max: 15),253
@@ -51,9 +51,9 @@ WARNINGS[24]{path,score}:
   goal/push/core.py,0.93
     issues[4]{rule,severity,message,line}:
       complexity.cyclomatic,warning,execute_push_workflow has cyclomatic complexity 17 (max: 15),114
-      complexity.cyclomatic,warning,_update_cost_badges has cyclomatic complexity 24 (max: 15),363
+      complexity.cyclomatic,warning,_update_cost_badges has cyclomatic complexity 24 (max: 15),364
       complexity.lizard_cc,warning,execute_push_workflow: CC=17 exceeds limit 15,114
-      complexity.lizard_cc,warning,_update_cost_badges: CC=24 exceeds limit 15,363
+      complexity.lizard_cc,warning,_update_cost_badges: CC=24 exceeds limit 15,364
   goal/smart_commit/generator.py,0.93
     issues[4]{rule,severity,message,line}:
       complexity.cyclomatic,warning,analyze_changes has cyclomatic complexity 24 (max: 15),32
@@ -122,6 +122,9 @@ WARNINGS[24]{path,score}:
   integration/run_matrix.sh,0.97
     issues[1]{rule,severity,message,line}:
       complexity.lizard_length,warning,run_case: 175 lines exceeds limit 100,11
+  goal/cli/publish.py,0.98
+    issues[1]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,publish_project has cyclomatic complexity 17 (max: 15),95
   tests/test_project_bootstrap.py,0.98
     issues[1]{rule,severity,message,line}:
       complexity.maintainability,warning,Low maintainability index: 18.4 (threshold: 20),
