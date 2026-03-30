@@ -127,6 +127,27 @@ def publish_project(
             if not _ensure_publish_deps(python_bin):
                 success = False
                 continue
+
+            build_cmd = strategy.get('build', '') or ''
+            if not build_cmd and 'build' not in publish_cmd:
+                build_cmd = 'python -m build'
+
+            if build_cmd:
+                build_cmd = build_cmd.replace('python ', f'{python_bin} ')
+                click.echo(click.style(f"  Build command: {build_cmd}", fg='cyan'))
+                build_result = run_command_tee(build_cmd)
+                if build_result.returncode != 0:
+                    click.echo(click.style(
+                        f"  Build failed with exit code {build_result.returncode}",
+                        fg='red'
+                    ), err=True)
+                    if build_result.stderr:
+                        click.echo(click.style(f"  stderr: {build_result.stderr}", fg='red'), err=True)
+                    if build_result.stdout:
+                        click.echo(click.style(f"  stdout: {build_result.stdout}", fg='yellow'), err=True)
+                    success = False
+                    continue
+
             # Replace 'python' with the actual Python path in the command
             publish_cmd = publish_cmd.replace('python ', f'{python_bin} ')
             click.echo(click.style(f"  Command: {publish_cmd}", fg='cyan'))

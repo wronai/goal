@@ -115,6 +115,7 @@ class GoalGroup(click.Group):
     and defaults to 'push' command when -a/--all is passed without a subcommand."""
     
     def get_command(self, ctx, cmd_name) -> Any:
+        load_command_modules()
         rv = super().get_command(ctx, cmd_name)
         if rv is not None:
             return rv
@@ -125,8 +126,13 @@ class GoalGroup(click.Group):
         click.echo(click.style("Available commands:", fg='cyan', bold=True))
         self.list_commands(ctx)
         ctx.exit(2)
+
+    def list_commands(self, ctx) -> List[str]:
+        load_command_modules()
+        return super().list_commands(ctx)
     
     def parse_args(self, ctx, args) -> Any:
+        load_command_modules()
         # Check if -a or --all is in args without any command
         has_all_flag = '-a' in args or '--all' in args
         has_subcommand = any(
@@ -188,20 +194,21 @@ def main(ctx, bump, version, yes, all_flags, no_publish, todo, markdown, dry_run
     ctx.obj['user_config'] = user_config
 
 
-# Import commands to register them
-from . import push_cmd
-from . import publish_cmd
-from . import utils_cmd
-from . import doctor_cmd
-from . import config_cmd
-from . import commit_cmd
-from . import recover_cmd
-from . import wizard_cmd
-from . import license_cmd
-from . import authors_cmd
-from . import hooks_cmd
-from . import postcommit_cmd
-from . import validation_cmd
+def load_command_modules() -> None:
+    """Import command modules so Click registers them on demand."""
+    from . import push_cmd
+    from . import publish_cmd
+    from . import utils_cmd
+    from . import doctor_cmd
+    from . import config_cmd
+    from . import commit_cmd
+    from . import recover_cmd
+    from . import wizard_cmd
+    from . import license_cmd
+    from . import authors_cmd
+    from . import hooks_cmd
+    from . import postcommit_cmd
+    from . import validation_cmd
 
 # Import version functions for external access
 from .version import sync_all_versions
@@ -218,6 +225,7 @@ __all__ = [
     'split_paths_by_type',
     'stage_paths',
     'confirm',
+    'load_command_modules',
     'sync_all_versions',
     'DOCS_URL',
 ]

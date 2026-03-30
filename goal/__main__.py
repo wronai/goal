@@ -11,7 +11,8 @@ When working with the goal source repository, run it directly:
 This ensures you're using the latest local version with all fixes.
 """
 
-from goal.cli import main
+from goal.cli import load_command_modules, main
 
 if __name__ == '__main__':
+    load_command_modules()
     main()
