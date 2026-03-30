@@ -274,6 +274,47 @@ class TestPushWorkflowE2E:
         mock_push_remote.assert_not_called()
         mock_publish.assert_not_called()
 
+    def test_publish_project_skips_nodejs_publish_when_not_configured(self):
+        """Test that local Node.js packages without nodejs project config are not published."""
+        from goal.cli.publish import publish_project
+
+        config = {
+            'project': {
+                'type': ['python'],
+            },
+        }
+
+        with patch('goal.cli.publish.validate_project_toml_files', return_value=(True, [])), \
+             patch('goal.cli.publish.run_command_tee') as mock_run_command:
+            result = publish_project(['nodejs'], '1.2.3', yes=True, config=config)
+
+        assert result is True
+        mock_run_command.assert_not_called()
+
+    def test_publish_project_runs_nodejs_publish_when_configured(self):
+        """Test that explicit Node.js publish configuration still runs npm publish."""
+        from goal.cli.publish import publish_project
+
+        config = {
+            'project': {
+                'type': ['nodejs'],
+            },
+            'strategies': {
+                'nodejs': {
+                    'publish': 'npm publish --access public',
+                }
+            }
+        }
+
+        with patch('goal.cli.publish.validate_project_toml_files', return_value=(True, [])), \
+             patch('goal.cli.publish.run_command_tee') as mock_run_command:
+            mock_run_command.return_value = MagicMock(returncode=0, stdout='', stderr='')
+
+            result = publish_project(['nodejs'], '1.2.3', yes=True, config=config)
+
+        assert result is True
+        mock_run_command.assert_called_once_with('npm publish --access public')
+
     def test_run_tests_ignores_top_level_tests_dir_as_subdir(self):
         """Test that the canonical top-level tests dir is not rerun as a subdir scan."""
         from goal.cli.tests import run_tests

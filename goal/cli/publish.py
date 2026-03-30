@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, List
 
 import click
+import yaml
 
 from goal.git_ops import run_command_tee
 from goal.cli.version import PROJECT_TYPES
@@ -39,6 +40,42 @@ def _get_project_strategy(config: Any, project_type: str) -> dict:
         return config.get('strategies', {}).get(project_type, {}) or {}
 
     return {}
+
+
+def _get_configured_project_types(config: Any) -> List[str]:
+    """Get project types from the active configuration without default fallbacks."""
+    if config is None:
+        return []
+
+    if isinstance(config, dict):
+        raw_config = config
+    else:
+        config_path = getattr(config, 'config_path', None)
+        if not config_path:
+            return []
+
+        config_file = Path(config_path)
+        if not config_file.exists():
+            return []
+
+        try:
+            raw_config = yaml.safe_load(config_file.read_text(encoding='utf-8')) or {}
+        except Exception:
+            return []
+
+        if not isinstance(raw_config, dict):
+            return []
+
+    project_config = raw_config.get('project', {})
+    project_types = project_config.get('type', []) if isinstance(project_config, dict) else []
+
+    if isinstance(project_types, str):
+        return [project_types]
+
+    if isinstance(project_types, list):
+        return [ptype for ptype in project_types if isinstance(ptype, str)]
+
+    return []
 
 
 def _get_python_bin() -> str:
@@ -113,6 +150,14 @@ def publish_project(
         strategy = _get_project_strategy(config, ptype)
         if strategy.get('publish_enabled') is False:
             click.echo(click.style(f"  Skipping {ptype} publish (disabled in config)", fg='yellow'))
+            continue
+
+        configured_project_types = _get_configured_project_types(config)
+        if ptype == 'nodejs' and 'nodejs' not in configured_project_types:
+            click.echo(click.style(
+                "  Skipping nodejs publish (npm publish not configured for this project)",
+                fg='yellow'
+            ))
             continue
 
         publish_cmd = strategy.get('publish', '') or PROJECT_TYPES.get(ptype, {}).get('publish_command', '')
