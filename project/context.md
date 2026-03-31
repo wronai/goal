@@ -455,15 +455,15 @@ Returns:
 > Format status command output as markdown.
 - **Output to**: MarkdownFormatter, formatter.add_header, None.strip, formatter.add_section, formatter.add_list
 
-### goal.git_ops.validate_repo_url
-> Validate that a URL looks like a git repository (HTTP/HTTPS/SSH/file).
-- **Output to**: url.strip, re.match, re.match, re.match
-
 ### goal.project_bootstrap._validate_pfix_env
 > Validate that OPENROUTER_API_KEY is configured in .env.
 
 Shows error message if key is missing or em
 - **Output to**: goal.project_bootstrap._find_openrouter_api_key, click.echo, click.echo, click.echo, click.echo
+
+### goal.git_ops.validate_repo_url
+> Validate that a URL looks like a git repository (HTTP/HTTPS/SSH/file).
+- **Output to**: url.strip, re.match, re.match, re.match
 
 ### goal.validators.file_validator.validate_files
 > Validate files before commit.
@@ -529,14 +529,11 @@ Returns:
 
 ### goal.postcommit.actions.GitPushAction.validate_config
 
-### goal.config.validation.ConfigValidator.validate
+### goal.config.manager.GoalConfig.validate
 > Validate the configuration.
 
-Args:
-    strict: If True, warnings are treated as errors
-    
-Returns:
-- **Output to**: self._validate_required_sections, self._validate_project_section, self._validate_git_section, self._validate_versioning_section, self._validate_publishing_section
+Returns a list of validation errors (empty if valid).
+- **Output to**: self.get, self.get, self.get, self.load, self.get
 
 ## Behavioral Patterns
 

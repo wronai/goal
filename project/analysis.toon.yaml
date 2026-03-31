@@ -9,19 +9,19 @@ HEALTH[20]:
   🟡 CC    format_enhanced_summary CC=29 (limit:15)
   🟡 CC    _analyze_python_diff CC=15 (limit:15)
   🟡 CC    _build_summary CC=16 (limit:15)
-  🟡 CC    ensure_git_repository CC=23 (limit:15)
   🟡 CC    guess_package_name CC=20 (limit:15)
   🟡 CC    ensure_project_environment CC=26 (limit:15)
   🟡 CC    scaffold_test CC=15 (limit:15)
   🟡 CC    _ensure_costs_installed CC=21 (limit:15)
   🟡 CC    _ensure_costs_config CC=20 (limit:15)
+  🟡 CC    ensure_git_repository CC=23 (limit:15)
   🟡 CC    _score_by_signals CC=15 (limit:15)
   🟡 CC    short_action_summary CC=34 (limit:15)
   🟡 CC    per_file_notes CC=29 (limit:15)
   🟡 CC    detect_tokens_in_content CC=17 (limit:15)
   🟡 CC    check_dot_folders CC=23 (limit:15)
   🟡 CC    validate_files CC=18 (limit:15)
-  🟡 CC    execute_push_workflow CC=17 (limit:15)
+  🟡 CC    enforce_quality_gates CC=15 (limit:15)
 
 REFACTOR[2]:
   1. split goal/recovery/strategies.py  (god module)
@@ -30,13 +30,13 @@ REFACTOR[2]:
 PIPELINES[415]:
   [1] Src [Main]: Main → Add
       PURITY: 100% pure
-  [2] Src [main]: main → print
+  [2] Src [main]: main → send_slack_notification → print
       PURITY: 100% pure
-  [3] Src [main]: main → print
+  [3] Src [main]: main → send_discord_notification → print
       PURITY: 100% pure
   [4] Src [main]: main
       PURITY: 100% pure
-  [5] Src [test_build]: test_build → print
+  [5] Src [main]: main → print
       PURITY: 100% pure
 
 LAYERS:
@@ -161,13 +161,13 @@ COUPLING:
     goal.validation                  2                                                                                                                                                                                                                                  ──                   
       goal.recovery                  1                                                                                                                                                                                                                                                     ──
   CYCLES: none
-  HUB: goal.cli/ (fan-in=7)
   HUB: goal.license/ (fan-in=7)
   HUB: goal.config/ (fan-in=14)
+  HUB: goal.cli/ (fan-in=7)
   HUB: goal/ (fan-in=122)
-  SMELL: goal.cli/ fan-out=67 → split needed
   SMELL: goal.validators/ fan-out=11 → split needed
   SMELL: goal.push/ fan-out=56 → split needed
+  SMELL: goal.cli/ fan-out=67 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

@@ -1,5 +1,28 @@
 ## [Unreleased]
 
+## [2.1.174] - 2026-03-31
+
+### Docs
+- Update README.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/context.md
+
+### Test
+- Update tests/test_project_bootstrap.py
+
+### Other
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/duplication.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- Update project/index.html
+- Update project/validation.toon.yaml
+
 ## [2.1.173] - 2026-03-31
 
 ### Docs

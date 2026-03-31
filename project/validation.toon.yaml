@@ -1,7 +1,7 @@
-# vallm batch | 232f | 161✓ 28⚠ 0✗ | 2026-03-31
+# vallm batch | 233f | 161✓ 28⚠ 0✗ | 2026-03-31
 
 SUMMARY:
-  scanned: 232  passed: 161 (69.4%)  warnings: 28  errors: 0  unsupported: 71
+  scanned: 233  passed: 161 (69.1%)  warnings: 28  errors: 0  unsupported: 72
 
 WARNINGS[28]{path,score}:
   goal/project_bootstrap.py,0.87
@@ -139,11 +139,11 @@ WARNINGS[28]{path,score}:
       complexity.lizard_length,warning,run_case: 175 lines exceeds limit 100,11
   tests/test_project_bootstrap.py,0.98
     issues[1]{rule,severity,message,line}:
-      complexity.maintainability,warning,Low maintainability index: 18.0 (threshold: 20),
+      complexity.maintainability,warning,Low maintainability index: 16.6 (threshold: 20),
 
 UNSUPPORTED[5]{bucket,count}:
   *.md,49
   Dockerfile*,1
   *.txt,1
   *.yml,1
-  other,19
+  other,20

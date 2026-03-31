@@ -336,6 +336,18 @@ class TestOpenRouterEnvDiscovery:
 
         assert not (sub / ".env").exists()
 
+    def test_creates_llm_model_template_when_no_api_key_exists(self, tmp_path):
+        with mock.patch.dict(os.environ, {"OPENROUTER_API_KEY": ""}, clear=True):
+            assert _ensure_pfix_env(tmp_path) is True
+
+        env_text = (tmp_path / ".env").read_text(encoding="utf-8")
+        example_text = (tmp_path / ".env.example").read_text(encoding="utf-8")
+
+        assert "LLM_MODEL=openrouter/qwen/qwen3-coder-next" in env_text
+        assert "LLM_MODEL=openrouter/qwen/qwen3-coder-next" in example_text
+        assert "PFIX_MODEL" not in env_text
+        assert "PFIX_MODEL" not in example_text
+
 
 # ---------------------------------------------------------------------------
 # Python test dependency installation

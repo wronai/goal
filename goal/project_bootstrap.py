@@ -1059,7 +1059,7 @@ def _ensure_pfix_env(project_dir: Path) -> bool:
 OPENROUTER_API_KEY=
 
 # Model (default: openrouter/qwen/qwen3-coder-next)
-PFIX_MODEL=openrouter/qwen/qwen3-coder-next
+LLM_MODEL=openrouter/qwen/qwen3-coder-next
 
 # Behavior
 PFIX_AUTO_APPLY=true         # true = apply fixes without asking
