@@ -1,19 +1,20 @@
 # code2llm | 97f 18938L | python:94,shell:3 | 2026-03-31
-# CC̄=5.3 | critical:38/659 | dups:0 | cycles:0
+# CC̄=5.3 | critical:38/658 | dups:0 | cycles:0
 
 HEALTH[20]:
   🔴 GOD   goal/recovery/strategies.py = 685L, 7 classes, 30m, max CC=11
+  🟡 CC    main CC=15 (limit:15)
   🟡 CC    update_changelog CC=24 (limit:15)
   🟡 CC    validate_project_versions CC=30 (limit:15)
   🟡 CC    format_enhanced_summary CC=29 (limit:15)
   🟡 CC    _analyze_python_diff CC=15 (limit:15)
   🟡 CC    _build_summary CC=16 (limit:15)
+  🟡 CC    ensure_git_repository CC=23 (limit:15)
   🟡 CC    guess_package_name CC=20 (limit:15)
   🟡 CC    ensure_project_environment CC=26 (limit:15)
   🟡 CC    scaffold_test CC=15 (limit:15)
   🟡 CC    _ensure_costs_installed CC=21 (limit:15)
   🟡 CC    _ensure_costs_config CC=20 (limit:15)
-  🟡 CC    ensure_git_repository CC=23 (limit:15)
   🟡 CC    _score_by_signals CC=15 (limit:15)
   🟡 CC    short_action_summary CC=34 (limit:15)
   🟡 CC    per_file_notes CC=29 (limit:15)
@@ -21,26 +22,25 @@ HEALTH[20]:
   🟡 CC    check_dot_folders CC=23 (limit:15)
   🟡 CC    validate_files CC=18 (limit:15)
   🟡 CC    execute_push_workflow CC=17 (limit:15)
-  🟡 CC    _update_cost_badges CC=23 (limit:15)
 
 REFACTOR[2]:
   1. split goal/recovery/strategies.py  (god module)
   2. split 19 high-CC methods  (CC>15)
 
-PIPELINES[414]:
-  [1] Src [get_registry_version]: get_registry_version
+PIPELINES[415]:
+  [1] Src [Main]: Main → Add
       PURITY: 100% pure
-  [2] Src [__init__]: __init__
+  [2] Src [main]: main → print
       PURITY: 100% pure
-  [3] Src [_load]: _load
+  [3] Src [main]: main → print
       PURITY: 100% pure
-  [4] Src [_save]: _save
+  [4] Src [main]: main
       PURITY: 100% pure
-  [5] Src [get]: get
+  [5] Src [test_build]: test_build → print
       PURITY: 100% pure
 
 LAYERS:
-  goal/                           CC̄=5.3    ←in:123  →out:3
+  goal/                           CC̄=5.3    ←in:122  →out:3
   │ !! project_bootstrap         1230L  0C   20m  CC=26     ←3
   │ !! strategies                 685L  7C   30m  CC=11     ←0
   │ !! generator                  675L  1C   16m  CC=26     ←0
@@ -86,7 +86,7 @@ LAYERS:
   │ config_cmd                 129L  0C    7m  CC=4      ←0
   │ todo                       127L  0C    5m  CC=9      ←1
   │ recover_cmd                125L  0C    2m  CC=6      ←0
-  │ !! changelog                  123L  0C    1m  CC=24     ←1
+  │ !! changelog                  123L  0C    1m  CC=24     ←0
   │ authors_cmd                118L  0C   10m  CC=4      ←0
   │ push_cmd                   114L  0C    1m  CC=2      ←0
   │ version_types              113L  0C    0m  CC=0.0    ←0
@@ -146,9 +146,9 @@ LAYERS:
 
 COUPLING:
                                   goal           goal.cli          goal.push        goal.config    goal.validators       goal.license       goal.authors       goal.summary        goal.doctor         goal.hooks     goal.generator  goal.smart_commit    goal.validation      goal.recovery
-               goal                 ──                ←41                ←49                  2                ←11                                    ←2                 ←6                  1                 ←1                 ←4                 ←2                 ←2                 ←1  hub
+               goal                 ──                ←41                ←48                  2                ←11                                    ←2                 ←6                  1                 ←1                 ←4                 ←2                 ←2                 ←1  hub
            goal.cli                 41                 ──                  1                 11                                     7                  3                                     1                  3                                                                              hub
-          goal.push                 49                  7                 ──                                     1                                                                                                                                                                             !! fan-out
+          goal.push                 48                  7                 ──                                     1                                                                                                                                                                             !! fan-out
         goal.config                  1                ←11                                    ──                                                       ←1                                                                                                                                       hub
     goal.validators                 11                                    ←1                                    ──                                                                                             ←1                                                                              !! fan-out
        goal.license                                    ←7                                                                          ──                                                                                                                                                          hub
@@ -161,13 +161,13 @@ COUPLING:
     goal.validation                  2                                                                                                                                                                                                                                  ──                   
       goal.recovery                  1                                                                                                                                                                                                                                                     ──
   CYCLES: none
-  HUB: goal.config/ (fan-in=14)
-  HUB: goal/ (fan-in=123)
   HUB: goal.cli/ (fan-in=7)
   HUB: goal.license/ (fan-in=7)
-  SMELL: goal.push/ fan-out=57 → split needed
-  SMELL: goal.validators/ fan-out=11 → split needed
+  HUB: goal.config/ (fan-in=14)
+  HUB: goal/ (fan-in=122)
   SMELL: goal.cli/ fan-out=67 → split needed
+  SMELL: goal.validators/ fan-out=11 → split needed
+  SMELL: goal.push/ fan-out=56 → split needed
 
 EXTERNAL:
   validation: run `vallm batch .` → validation.toon

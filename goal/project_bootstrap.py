@@ -905,7 +905,7 @@ def _ensure_costs_config(project_dir: Path) -> bool:
                     for line in existing.split('\n'):
                         stripped = line.lstrip()
                         if stripped.startswith('"'):
-                            indent = line[:len(line) - len(stripped)]
+                            indent = line[:len(line) - len(stripped)] or indent
                             break
                     # Build new entries with proper formatting
                     new_entries = '\n'.join(f'{indent}{dep},' for dep in to_add)
@@ -940,7 +940,7 @@ def _ensure_costs_config(project_dir: Path) -> bool:
                     for line in existing.split('\n'):
                         stripped = line.lstrip()
                         if stripped.startswith('"'):
-                            indent = line[:len(line) - len(stripped)]
+                            indent = line[:len(line) - len(stripped)] or indent
                             break
                     # Build new entries with proper formatting
                     new_entries = '\n'.join(f'{indent}{dep},' for dep in to_add)

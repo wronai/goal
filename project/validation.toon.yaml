@@ -1,9 +1,9 @@
-# vallm batch | 232f | 132✓ 25⚠ 29✗ | 2026-03-31
+# vallm batch | 232f | 161✓ 28⚠ 0✗ | 2026-03-31
 
 SUMMARY:
-  scanned: 232  passed: 132 (56.9%)  warnings: 25  errors: 29  unsupported: 71
+  scanned: 232  passed: 161 (69.4%)  warnings: 28  errors: 0  unsupported: 71
 
-WARNINGS[25]{path,score}:
+WARNINGS[28]{path,score}:
   goal/project_bootstrap.py,0.87
     issues[9]{rule,severity,message,line}:
       complexity.cyclomatic,warning,guess_package_name has cyclomatic complexity 20 (max: 15),253
@@ -82,6 +82,10 @@ WARNINGS[25]{path,score}:
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,update_changelog has cyclomatic complexity 24 (max: 15),9
       complexity.lizard_cc,warning,update_changelog: CC=24 exceeds limit 15,9
+  goal/cli/commit_cmd.py,0.97
+    issues[2]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,commit has cyclomatic complexity 17 (max: 15),19
+      complexity.lizard_cc,warning,commit: CC=17 exceeds limit 15,19
   goal/cli/publish.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,publish_project has cyclomatic complexity 24 (max: 15),132
@@ -90,6 +94,10 @@ WARNINGS[25]{path,score}:
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,_run_tests_in_subdirs has cyclomatic complexity 24 (max: 15),55
       complexity.lizard_cc,warning,_run_tests_in_subdirs: CC=24 exceeds limit 15,55
+  goal/cli/version_utils.py,0.97
+    issues[2]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,update_project_metadata has cyclomatic complexity 18 (max: 15),118
+      complexity.lizard_cc,warning,update_project_metadata: CC=18 exceeds limit 15,118
   goal/config/validation.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,_validate_advanced_section has cyclomatic complexity 21 (max: 15),261
@@ -98,6 +106,10 @@ WARNINGS[25]{path,score}:
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,format_enhanced_summary has cyclomatic complexity 29 (max: 15),265
       complexity.lizard_cc,warning,format_enhanced_summary: CC=28 exceeds limit 15,265
+  goal/push/stages/commit.py,0.97
+    issues[2]{rule,severity,message,line}:
+      complexity.cyclomatic,warning,handle_split_commits has cyclomatic complexity 22 (max: 15),140
+      complexity.lizard_cc,warning,handle_split_commits: CC=22 exceeds limit 15,140
   goal/push/stages/dry_run.py,0.97
     issues[2]{rule,severity,message,line}:
       complexity.cyclomatic,warning,handle_dry_run has cyclomatic complexity 19 (max: 15),12
@@ -128,143 +140,6 @@ WARNINGS[25]{path,score}:
   tests/test_project_bootstrap.py,0.98
     issues[1]{rule,severity,message,line}:
       complexity.maintainability,warning,Low maintainability index: 18.0 (threshold: 20),
-
-ERRORS[29]{path,score}:
-  goal/authors/__init__.py,0.57
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'manager' not found,9
-      python.import.resolvable,error,Module 'utils' not found,10
-  goal/cli/version.py,0.57
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'version_types' not found,8
-      python.import.resolvable,error,Module 'version_utils' not found,9
-      python.import.resolvable,error,Module 'version_sync' not found,20
-  goal/config/__init__.py,0.57
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'constants' not found,8
-      python.import.resolvable,error,Module 'manager' not found,11
-      python.import.resolvable,error,Module 'validation' not found,19
-  goal/generator/__init__.py,0.57
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'git_ops' not found,3
-      python.import.resolvable,error,Module 'analyzer' not found,4
-      python.import.resolvable,error,Module 'generator' not found,5
-  goal/hooks/__init__.py,0.57
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'manager' not found,9
-      python.import.resolvable,error,Module 'config' not found,10
-  goal/license/__init__.py,0.57
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'manager' not found,10
-      python.import.resolvable,error,Module 'spdx' not found,11
-  goal/postcommit/__init__.py,0.57
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'manager' not found,10
-      python.import.resolvable,error,Module 'actions' not found,11
-  goal/push/__init__.py,0.57
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'core' not found,9
-      python.import.resolvable,error,Module 'stages' not found,18
-  goal/recovery/__init__.py,0.57
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'strategies' not found,12
-      python.import.resolvable,error,Module 'manager' not found,21
-      python.import.resolvable,error,Module 'exceptions' not found,22
-  goal/smart_commit/__init__.py,0.57
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'abstraction' not found,7
-      python.import.resolvable,error,Module 'generator' not found,8
-  goal/summary/__init__.py,0.57
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'quality_filter' not found,3
-      python.import.resolvable,error,Module 'validator' not found,4
-      python.import.resolvable,error,Module 'generator' not found,5
-  goal/validation/__init__.py,0.57
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'manager' not found,10
-      python.import.resolvable,error,Module 'rules' not found,11
-  goal/validators/__init__.py,0.57
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'file_validator' not found,7
-  goal/doctor/__init__.py,0.61
-    issues[11]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'models' not found,8
-      python.import.resolvable,error,Module 'core' not found,11
-      python.import.resolvable,error,Module 'python' not found,18
-      python.import.resolvable,error,Module 'nodejs' not found,19
-      python.import.resolvable,error,Module 'rust' not found,20
-      python.import.resolvable,error,Module 'go' not found,21
-      python.import.resolvable,error,Module 'ruby' not found,22
-      python.import.resolvable,error,Module 'php' not found,23
-      python.import.resolvable,error,Module 'dotnet' not found,24
-      python.import.resolvable,error,Module 'java' not found,25
-      python.import.resolvable,error,Module 'todo' not found,28
-  goal/push/stages/__init__.py,0.62
-    issues[7]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'commit' not found,3
-      python.import.resolvable,error,Module 'version' not found,4
-      python.import.resolvable,error,Module 'changelog' not found,5
-      python.import.resolvable,error,Module 'tag' not found,7
-      python.import.resolvable,error,Module 'push_remote' not found,8
-      python.import.resolvable,error,Module 'publish' not found,9
-      python.import.resolvable,error,Module 'dry_run' not found,10
-  goal/cli.py,0.67
-    issues[10]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'cli' not found,10
-      python.import.resolvable,error,Module 'cli.version' not found,16
-      python.import.resolvable,error,Module 'cli.publish' not found,22
-      python.import.resolvable,error,Module 'cli.tests' not found,23
-      python.import.resolvable,error,Module 'cli.push_cmd' not found,24
-      python.import.resolvable,error,Module 'cli.publish_cmd' not found,25
-      python.import.resolvable,error,Module 'cli.utils_cmd' not found,26
-      python.import.resolvable,error,Module 'cli.doctor_cmd' not found,27
-      python.import.resolvable,error,Module 'cli.config_cmd' not found,28
-      python.import.resolvable,error,Module 'cli.commit_cmd' not found,29
-  goal/doctor/logging.py,0.79
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'models' not found,4
-  goal/push/stages/commit.py,0.88
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'core' not found,194
-      python.import.resolvable,error,Module 'version' not found,197
-      python.import.resolvable,error,Module 'changelog' not found,207
-  goal/hooks/manager.py,0.89
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'validators.file_validator' not found,14
-      python.import.resolvable,error,Module 'git_ops' not found,15
-  goal/recovery/manager.py,0.89
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'strategies' not found,10
-      python.import.resolvable,error,Module 'exceptions' not found,19
-  goal/cli/__init__.py,0.90
-    issues[3]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'version' not found,224
-      python.import.resolvable,error,Module 'nfo' not found,11
-      python.import.resolvable,error,Module 'nfo.terminal' not found,12
-  goal/cli/version_sync.py,0.91
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'version_utils' not found,7
-  goal/cli/version_utils.py,0.91
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'version_types' not found,8
-  goal/toml_validation.py,0.91
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'tomli' not found,14
-  goal/cli/commit_cmd.py,0.93
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'enhanced_summary' not found,86
-  goal/postcommit/manager.py,0.93
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'actions' not found,9
-  goal/validation/manager.py,0.94
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'rules' not found,10
-  goal/doctor/todo.py,0.95
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'core' not found,117
-  goal/recovery/strategies.py,0.95
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'exceptions' not found,11
 
 UNSUPPORTED[5]{bucket,count}:
   *.md,49

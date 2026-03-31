@@ -1,17 +1,17 @@
-# goal | 97f 18827L | python:94,shell:3 | 2026-03-30
-# stats: 616 func | 0 cls | 97 mod | CC̄=5.3 | critical:38 | cycles:0
-# alerts[5]: CC ContentAnalyzer.short_action_summary=34; fan-out _ensure_costs_installed=32; CC validate_project_versions=30; fan-out execute_push_workflow=30; CC ContentAnalyzer.per_file_notes=29
-# hotspots[5]: _ensure_costs_installed fan=32; execute_push_workflow fan=30; _update_cost_badges fan=27; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27
+# goal | 97f 18938L | shell:3,python:94 | 2026-03-31
+# stats: 618 func | 0 cls | 97 mod | CC̄=5.3 | critical:38 | cycles:0
+# alerts[5]: CC ContentAnalyzer.short_action_summary=34; fan-out _ensure_costs_installed=31; CC validate_project_versions=30; CC ContentAnalyzer.per_file_notes=29; CC format_enhanced_summary=29
+# hotspots[5]: _ensure_costs_installed fan=31; execute_push_workflow fan=29; QualityValidator.auto_fix fan=27; SmartCommitGenerator.analyze_changes fan=27; _update_cost_badges fan=26
 # evolution: CC̄ 5.3→5.3 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
 M[97]:
   goal/__init__.py,3
-  goal/__main__.py,17
+  goal/__main__.py,18
   goal/authors/__init__.py,19
   goal/authors/manager.py,315
   goal/authors/utils.py,212
   goal/changelog.py,123
-  goal/cli/__init__.py,223
+  goal/cli/__init__.py,241
   goal/cli/authors_cmd.py,118
   goal/cli/commit_cmd.py,205
   goal/cli/config_cmd.py,129
@@ -20,7 +20,7 @@ M[97]:
   goal/cli/hooks_cmd.py,71
   goal/cli/license_cmd.py,198
   goal/cli/postcommit_cmd.py,82
-  goal/cli/publish.py,170
+  goal/cli/publish.py,233
   goal/cli/publish_cmd.py,42
   goal/cli/push_cmd.py,114
   goal/cli/recover_cmd.py,125
@@ -67,14 +67,14 @@ M[97]:
   goal/postcommit/__init__.py,27
   goal/postcommit/actions.py,221
   goal/postcommit/manager.py,192
-  goal/project_bootstrap.py,1207
+  goal/project_bootstrap.py,1230
   goal/project_doctor.py,32
   goal/push/__init__.py,56
   goal/push/commands.py,43
-  goal/push/core.py,494
+  goal/push/core.py,490
   goal/push/stages/__init__.py,27
   goal/push/stages/changelog.py,30
-  goal/push/stages/commit.py,220
+  goal/push/stages/commit.py,230
   goal/push/stages/dry_run.py,98
   goal/push/stages/publish.py,37
   goal/push/stages/push_remote.py,377
@@ -159,19 +159,14 @@ D:
   goal/changelog.py:
     e: update_changelog
     update_changelog(version;files;commit_msg;config;changelog_entry)
-  goal/push/core.py:
-    e: PushContext,run_git_local,show_workflow_preview,output_final_summary,execute_push_workflow,_initialize_context,_detect_and_bootstrap_projects,_handle_no_changes,_validate_staged_files,_handle_commit_phase,_update_cost_badges
-    PushContext: __init__(1),get(2)  # Context object wrapper for push command...
-    run_git_local()
-    show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
-    output_final_summary(ctx_obj;markdown;project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_exit_code;publish_success;no_tag)
-    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo;force;model;api_key;no_publish)
-    _initialize_context(ctx_obj;bump;message;yes;markdown)
-    _detect_and_bootstrap_projects(ctx_obj;dry_run;yes)
-    _handle_no_changes(ctx_obj;project_types;dry_run;markdown)
-    _validate_staged_files(ctx_obj;dry_run;force)
-    _handle_commit_phase(ctx_obj;split;message;commit_title;commit_body;commit_msg;files;ticket;new_version;current_version;no_version_sync;no_changelog)
-    _update_cost_badges(ctx_obj;version;model;api_key)
+  goal/cli/publish.py:
+    e: makefile_has_target,_get_project_strategy,_get_configured_project_types,_get_python_bin,_ensure_publish_deps,publish_project
+    makefile_has_target(target)
+    _get_project_strategy(config;project_type)
+    _get_configured_project_types(config)
+    _get_python_bin()
+    _ensure_publish_deps(python_bin)
+    publish_project(project_types;version;yes;config)
   goal/smart_commit/generator.py:
     e: SmartCommitGenerator,create_smart_generator
     SmartCommitGenerator: __init__(1),analyze_changes(1),_generate_functional_summary(1),_get_staged_files(0),_get_file_diff(1),_infer_commit_type(1),generate_message(2),_is_docs_only_change(1),_generate_docs_message(1),_generate_high_abstraction_message(1),_generate_medium_abstraction_message(1),_generate_low_abstraction_message(1),_filter_meaningful_entities(1),_infer_message_from_files(1),generate_functional_body(1),generate_changelog_entry(2),format_changelog_entry(1)  # Generates smart commit messages using code abstraction...
@@ -216,6 +211,25 @@ D:
     validate_files(files;max_size_mb;block_large_files;token_patterns;detect_tokens;exclude_patterns;auto_handle_large)
     handle_large_files(large_files)
     validate_staged_files(config)
+  goal/push/core.py:
+    e: PushContext,run_git_local,show_workflow_preview,output_final_summary,execute_push_workflow,_initialize_context,_detect_and_bootstrap_projects,_handle_no_changes,_validate_staged_files,_handle_commit_phase,_update_cost_badges
+    PushContext: __init__(1),get(2)  # Context object wrapper for push command...
+    run_git_local()
+    show_workflow_preview(files;stats;current_version;new_version;commit_msg;commit_body;markdown;ctx_obj)
+    output_final_summary(ctx_obj;markdown;project_types;files;stats;current_version;new_version;commit_msg;commit_body;test_exit_code;publish_success;no_tag)
+    execute_push_workflow(ctx_obj;bump;no_tag;no_changelog;no_version_sync;message;dry_run;yes;markdown;split;ticket;abstraction;todo;force;model;api_key;no_publish)
+    _initialize_context(ctx_obj;bump;message;yes;markdown)
+    _detect_and_bootstrap_projects(ctx_obj;dry_run;yes)
+    _handle_no_changes(ctx_obj;project_types;dry_run;markdown)
+    _validate_staged_files(ctx_obj;dry_run;force)
+    _handle_commit_phase(ctx_obj;split;message;commit_title;commit_body;commit_msg;files;ticket;new_version;current_version;no_version_sync;no_changelog)
+    _update_cost_badges(ctx_obj;version;model;api_key)
+  goal/push/stages/commit.py:
+    e: get_commit_message,enforce_quality_gates,handle_single_commit,handle_split_commits
+    get_commit_message(ctx_obj;files;diff_content;message;ticket;abstraction)
+    enforce_quality_gates(ctx_obj;commit_msg;detailed_result;files;total_adds;total_dels;yes;markdown)
+    handle_single_commit(commit_title;commit_body;commit_msg;message;yes)
+    handle_split_commits(ctx_obj;files;ticket;new_version;current_version;no_version_sync;no_changelog;yes)
   goal/config/validation.py:
     e: ConfigValidationError,ConfigValidator,validate_config_file,validate_config_interactive,_auto_fix_config
     ConfigValidationError(Exception): __init__(2)  # Error raised when configuration validation fails...
@@ -231,12 +245,12 @@ D:
     LicenseManager: __init__(1),get_available_licenses(0),get_license_template(1),add_custom_template(2),create_license_file(4),update_license_file(3),validate_license_file(0)  # Manages license operations including template handling and f...
     create_license_file(license_id;fullname;year;force)
     update_license_file(license_id;fullname;year)
-  goal/summary/validator.py:
-    e: QualityValidator
-    QualityValidator: __init__(1),validate(2),_extract_intent(2),_validate_title(3),_validate_intent(7),_validate_metrics(3),_validate_relations(3),_validate_files(3),_validate_capabilities(3),_validate_body(3),_validate_value_score(4),_calculate_score(2),auto_fix(4)  # Validate commit summary against quality gates...
   goal/push/stages/dry_run.py:
     e: handle_dry_run
     handle_dry_run(ctx_obj;project_types;files;stats;current_version;new_version;commit_msg;commit_body;detailed_result;split;ticket;bump;no_version_sync;no_changelog;no_tag;markdown)
+  goal/summary/validator.py:
+    e: QualityValidator
+    QualityValidator: __init__(1),validate(2),_extract_intent(2),_validate_title(3),_validate_intent(7),_validate_metrics(3),_validate_relations(3),_validate_files(3),_validate_capabilities(3),_validate_body(3),_validate_value_score(4),_calculate_score(2),auto_fix(4)  # Validate commit summary against quality gates...
   goal/cli/version_utils.py:
     e: detect_project_types,find_version_files,get_version_from_file,get_current_version,bump_version,update_version_in_file,update_json_version,update_project_metadata,update_readme_metadata
     detect_project_types()
@@ -248,24 +262,11 @@ D:
     update_json_version(filepath;new_version)
     update_project_metadata(filepath;user_config)
     update_readme_metadata(user_config)
-  goal/push/stages/commit.py:
-    e: get_commit_message,enforce_quality_gates,handle_single_commit,handle_split_commits
-    get_commit_message(ctx_obj;files;diff_content;message;ticket;abstraction)
-    enforce_quality_gates(ctx_obj;commit_msg;detailed_result;files;total_adds;total_dels;yes;markdown)
-    handle_single_commit(commit_title;commit_body;commit_msg;message;yes)
-    handle_split_commits(ctx_obj;files;ticket;new_version;current_version;no_version_sync;no_changelog;yes)
   goal/cli/commit_cmd.py:
     e: commit,fix_summary,validate
     commit(ctx;detailed;unstaged;markdown;ticket;abstraction;co_author)
     fix_summary(ctx;fix;preview;cached)
     validate(ctx;fix;cached)
-  goal/cli/publish.py:
-    e: makefile_has_target,_get_project_strategy,_get_python_bin,_ensure_publish_deps,publish_project
-    makefile_has_target(target)
-    _get_project_strategy(config;project_type)
-    _get_python_bin()
-    _ensure_publish_deps(python_bin)
-    publish_project(project_types;version;yes;config)
   goal/doctor/python.py:
     e: PythonDiagnostics,diagnose_python
     PythonDiagnostics: __init__(3),check_py001_missing_config(4),check_py002_build_system(0),check_py003_license_classifiers(0),check_py004_deprecated_backends(0),check_py005_license_table(0),check_py006_duplicate_authors(0),check_py007_requires_python(0),check_py008_empty_classifiers(0),check_py009_string_authors(0),check_py010_project_name_consistency(0),check_py011_version_consistency(0),check_py012_dist_cleanup(0),check_py013_goal_publish_pattern(0),check_py014_pypi_token(0),write_fixes(1)  # Container for Python diagnostic checks with shared state...
@@ -290,11 +291,12 @@ D:
     _handle_view_diff()
     _handle_automatic_recovery(error_output)
   goal/cli/__init__.py:
-    e: GoalGroup,_setup_nfo_logging,_nfo_log_call,strip_ansi,split_paths_by_type,stage_paths,confirm,main
+    e: GoalGroup,_setup_nfo_logging,_nfo_log_call,strip_ansi,load_command_modules,split_paths_by_type,stage_paths,confirm,main
     GoalGroup(click.Group): get_command(2),parse_args(2)  # Custom Click Group that shows docs URL for unknown commands ...
     _setup_nfo_logging(nfo_format;nfo_sink)
     _nfo_log_call()
     strip_ansi(text)
+    load_command_modules()
     split_paths_by_type(paths)
     stage_paths(paths)
     confirm(prompt;default)
@@ -460,6 +462,9 @@ D:
   goal/recovery/manager.py:
     e: RecoveryManager
     RecoveryManager: __init__(2),_ensure_recovery_dir(0),run_git(0),recover_from_push_failure(1),_identify_strategy(1),_create_backup(0),_cleanup_backup(1),_rollback_to_backup(1),_attempt_push(0),setup_clean_clone(0),identify_new_commits(0),cherry_pick_commits(1),push_from_clean_clone(0),full_recovery_workflow(0)  # Manages the recovery process for failed git pushes...
+  goal/push/stages/publish.py:
+    e: handle_publish
+    handle_publish(project_types;new_version;yes;no_publish;config)
   goal/cli/recover_cmd.py:
     e: recover,_get_error_output
     recover(ctx;full;error_file;error_message;no_backup;verbose)
@@ -478,9 +483,6 @@ D:
   goal/doctor/java.py:
     e: diagnose_java
     diagnose_java(project_dir;auto_fix)
-  goal/push/stages/publish.py:
-    e: handle_publish
-    handle_publish(project_types;new_version;yes;no_publish;config)
   goal/doctor/go.py:
     e: diagnose_go
     diagnose_go(project_dir;auto_fix)
@@ -501,6 +503,9 @@ D:
     install_hooks(project_dir;force)
     uninstall_hooks(project_dir)
     run_hooks(project_dir;all_files)
+  goal/push/stages/tag.py:
+    e: create_tag
+    create_tag(new_version;no_tag)
   goal/cli/authors_cmd.py:
     e: authors,authors_list,authors_add,authors_remove,authors_update,authors_import,authors_export,authors_find,authors_co_author,authors_current
     authors()
@@ -528,9 +533,6 @@ D:
   goal/doctor/dotnet.py:
     e: diagnose_dotnet
     diagnose_dotnet(project_dir;auto_fix)
-  goal/push/stages/tag.py:
-    e: create_tag
-    create_tag(new_version;no_tag)
   goal/recovery/exceptions.py:
     e: RecoveryError,AuthError,LargeFileError,DivergentHistoryError,CorruptedObjectError,LFSIssueError,RollbackError,NetworkError,QuotaExceededError
     RecoveryError(Exception): __init__(2)  # Base exception for all recovery operations...
@@ -542,6 +544,12 @@ D:
     RollbackError(RecoveryError): __init__(2)  # Raised when rollback operation fails...
     NetworkError(RecoveryError): __init__(2)  # Raised when network connectivity issues occur...
     QuotaExceededError(RecoveryError): __init__(2)  # Raised when GitHub API quota is exceeded...
+  goal/push/stages/version.py:
+    e: _get_version_module,sync_all_versions_wrapper,handle_version_sync,get_version_info
+    _get_version_module()
+    sync_all_versions_wrapper(new_version;user_config)
+    handle_version_sync(new_version;no_version_sync;user_config;yes)
+    get_version_info(current_version;bump)
   goal/cli/config_validate_cmd.py:
     e: validate_cmd
     validate_cmd(ctx;config;strict;fix)
@@ -552,15 +560,13 @@ D:
     e: _log_issue,_log_fix
     _log_issue(issue)
     _log_fix(issue)
-  goal/push/stages/version.py:
-    e: _get_version_module,sync_all_versions_wrapper,handle_version_sync,get_version_info
-    _get_version_module()
-    sync_all_versions_wrapper(new_version;user_config)
-    handle_version_sync(new_version;no_version_sync;user_config;yes)
-    get_version_info(current_version;bump)
   goal/push/commands.py:
     e: push
     push(ctx;bump;no_tag;no_changelog;no_version_sync;no_publish;message;dry_run;yes;markdown;split;ticket;abstraction;todo)
+  goal/push/stages/changelog.py:
+    e: handle_changelog,update_changelog_stage
+    handle_changelog(new_version;files;commit_msg;config;no_changelog)
+    update_changelog_stage(new_version;files;commit_msg;config)
   goal/cli/hooks_cmd.py:
     e: hooks,hooks_install,hooks_uninstall,hooks_run,hooks_status
     hooks()
@@ -576,10 +582,7 @@ D:
     generate_business_summary(files;diff_content;config)
     validate_summary(summary;files;config)
     auto_fix_summary(summary;files;config)
-  goal/push/stages/changelog.py:
-    e: handle_changelog,update_changelog_stage
-    handle_changelog(new_version;files;commit_msg;config;no_changelog)
-    update_changelog_stage(new_version;files;commit_msg;config)
+  project.sh:
   goal/config/__init__.py:
   goal/enhanced_summary.py:
   goal/commit_generator.py:
@@ -592,6 +595,7 @@ D:
   goal/validators/__init__.py:
   goal/recovery/__init__.py:
   goal/push/__init__.py:
+  goal/push/stages/__init__.py:
   goal/cli/version.py:
   goal/cli/version_types.py:
   goal/postcommit/__init__.py:
@@ -600,8 +604,6 @@ D:
   goal/doctor/__init__.py:
   goal/authors/__init__.py:
   goal/license/__init__.py:
-  goal/push/stages/__init__.py:
-  project.sh:
   integration/run_docker_matrix.sh:
   integration/run_matrix.sh:
     e: App,run_case,print,main,self
