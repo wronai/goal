@@ -583,3 +583,152 @@ goal push -m "chore: rollback $NEW_VERSION to $PREVIOUS_VERSION" --no-version-sy
 ## Examples Repository
 
 See [github.com/wronai/goal-examples](https://github.com/wronai/goal-examples) for complete CI/CD configurations for various platforms.
+
+## Pyqual Quality Pipeline
+
+Goal używa **pyqual** do automatycznego zarządzania jakością kodu z iteracyjnym pipeline.
+
+### Konfiguracja (`pyqual.yaml`)
+
+```yaml
+pipeline:
+  name: quality-loop-with-llx
+
+  metrics:
+    cc_max: 20           # cyclomatic complexity per function
+    critical_max: 20     # critical issues threshold
+    vallm_pass_min: 50   # vallm validation pass rate (%)
+
+  stages:
+    - name: setup        # Install dependencies
+    - name: test         # Run pytest with coverage
+    - name: prefact      # AI refactoring (when metrics fail)
+    - name: claude_fix   # Claude Code fixes (fallback)
+    - name: verify       # Re-validate after fixes
+    - name: report       # Generate metrics report
+    - name: push         # Git push (when metrics pass)
+    - name: publish      # Build package for PyPI
+
+  loop:
+    max_iterations: 3
+    on_fail: report
+```
+
+### Uruchomienie lokalne
+
+```bash
+# Zainstaluj pyqual
+pip install pyqual
+
+# Uruchom pipeline
+pyqual run --config pyqual.yaml
+
+# Walidacja bez uruchamiania
+pyqual validate --config pyqual.yaml
+
+# Status metryk
+pyqual status --config pyqual.yaml
+```
+
+### Integracja z GitHub Actions
+
+```yaml
+# .github/workflows/quality.yml
+name: Quality Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          pip install -e ".[dev]"
+          pip install pyqual tox
+      
+      - name: Run quality pipeline
+        run: pyqual run --config pyqual.yaml
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+```
+
+### Tox - testowanie wielu środowisk
+
+Skonfigurowane w `pyproject.toml`:
+
+```toml
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py38,py39,py310,py311,py312
+isolated_build = true
+
+[testenv]
+deps =
+    pytest>=7.0.0
+    build
+    twine
+extras = nfo
+commands = pytest {posargs}
+"""
+```
+
+Uruchomienie:
+
+```bash
+# Testuj wszystkie wersje Pythona
+pip install tox
+tox
+
+# Konkretna wersja
+tox -e py311
+
+# Z pokryciem
+tox -e py311 -- --cov=goal
+```
+
+### Stage'y pipeline
+
+| Stage | Opis | Warunek |
+|-------|------|---------|
+| `setup` | Instalacja zależności | `first_iteration` |
+| `test` | Pytest + coverage | `always` |
+| `prefact` | AI refactoring | `metrics_fail` |
+| `claude_fix` | Claude Code CLI fix | `metrics_fail` |
+| `verify` | Re-walidacja | `after_fix` |
+| `push` | Git push | `metrics_pass` |
+| `publish` | Build do PyPI | `metrics_pass` |
+| `markdown_report` | Raport z metrykami | `always` |
+
+### Gate'y jakości
+
+- **CC** ≤ 20 - cyclomatic complexity na funkcję
+- **Critical** ≤ 20 - krytyczne problemy
+- **Vallm pass** ≥ 50% - procent poprawnych walidacji
+
+### Troubleshooting pyqual
+
+```bash
+# Brak uprawnień do push
+# → Sprawdź GITHUB_TOKEN / git credentials
+
+# Claude Code nie działa
+# → Wymaga auth: claude auth login (lokalnie) lub ANTHROPIC_API_KEY (CI)
+
+# Coverage nie parsuje się
+# → Pyqual nie wspiera pytest-cov parsowania - użyj gate na podstawie innych metryk
+
+# Za długi czas wykonania
+# → Zmniejsz max_iterations w loop lub oznacz stage jako optional: true
+```

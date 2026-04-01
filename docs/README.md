@@ -616,6 +616,15 @@ pip install -e ".[dev]"
 
 # Run tests
 pytest
+
+# Test across Python versions with tox
+pip install tox
+tox                    # All Python versions
+tox -e py311          # Specific version
+
+# Run quality pipeline with pyqual
+pip install pyqual
+pyqual run --config pyqual.yaml
 ```
 
 ## Documentation
