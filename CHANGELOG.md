@@ -1,5 +1,17 @@
 ## [Unreleased]
 
+## [2.1.179] - 2026-04-08
+
+### Docs
+- Update README.md
+
+### Other
+- Update .aider/caches/model_prices_and_context_window.json
+- Update .aider/caches/openrouter_models.json
+- Update goal/cli.py.bak
+- Update goal/commit_generator.py.bak
+- Update goal/enhanced_summary.py.bak
+
 ## [2.1.178] - 2026-04-08
 
 ### Docs

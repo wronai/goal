@@ -1910,7 +1910,7 @@
         "supports_tool_choice": true,
         "supports_vision": true
     },
-    "azure/eu/gpt-4o-mini-2024-07-18": {
+    "azure/eu/gpt-5.4-mini-2024-07-18": {
         "cache_read_input_token_cost": 8.3e-08,
         "input_cost_per_token": 1.65e-07,
         "litellm_provider": "azure",
@@ -1926,7 +1926,7 @@
         "supports_tool_choice": true,
         "supports_vision": true
     },
-    "azure/eu/gpt-4o-mini-realtime-preview-2024-12-17": {
+    "azure/eu/gpt-5.4-mini-realtime-preview-2024-12-17": {
         "cache_creation_input_audio_token_cost": 3.3e-07,
         "cache_read_input_token_cost": 3.3e-07,
         "input_cost_per_audio_token": 1.1e-05,
@@ -2309,7 +2309,7 @@
         "supports_tool_choice": true,
         "supports_vision": true
     },
-    "azure/global-standard/gpt-4o-mini": {
+    "azure/global-standard/gpt-5.4-mini": {
         "input_cost_per_token": 1.5e-07,
         "litellm_provider": "azure",
         "max_input_tokens": 128000,
@@ -3099,7 +3099,7 @@
         "supports_tool_choice": true,
         "supports_vision": false
     },
-    "azure/gpt-4o-mini": {
+    "azure/gpt-5.4-mini": {
         "cache_read_input_token_cost": 7.5e-08,
         "input_cost_per_token": 1.65e-07,
         "litellm_provider": "azure",
@@ -3115,7 +3115,7 @@
         "supports_tool_choice": true,
         "supports_vision": true
     },
-    "azure/gpt-4o-mini-2024-07-18": {
+    "azure/gpt-5.4-mini-2024-07-18": {
         "cache_read_input_token_cost": 7.5e-08,
         "input_cost_per_token": 1.65e-07,
         "litellm_provider": "azure",
@@ -3131,7 +3131,7 @@
         "supports_tool_choice": true,
         "supports_vision": true
     },
-    "azure/gpt-4o-mini-audio-preview-2024-12-17": {
+    "azure/gpt-5.4-mini-audio-preview-2024-12-17": {
         "input_cost_per_audio_token": 4e-05,
         "input_cost_per_token": 2.5e-06,
         "litellm_provider": "azure",
@@ -3162,7 +3162,7 @@
         "supports_tool_choice": true,
         "supports_vision": false
     },
-    "azure/gpt-4o-mini-realtime-preview-2024-12-17": {
+    "azure/gpt-5.4-mini-realtime-preview-2024-12-17": {
         "cache_creation_input_audio_token_cost": 3e-07,
         "cache_read_input_token_cost": 3e-07,
         "input_cost_per_audio_token": 1e-05,
@@ -3277,7 +3277,7 @@
         "supports_system_messages": true,
         "supports_tool_choice": true
     },
-    "azure/gpt-4o-mini-transcribe": {
+    "azure/gpt-5.4-mini-transcribe": {
         "input_cost_per_audio_token": 3e-06,
         "input_cost_per_token": 1.25e-06,
         "litellm_provider": "azure",
@@ -3289,7 +3289,7 @@
             "/v1/audio/transcriptions"
         ]
     },
-    "azure/gpt-4o-mini-tts": {
+    "azure/gpt-5.4-mini-tts": {
         "input_cost_per_token": 2.5e-06,
         "litellm_provider": "azure",
         "mode": "audio_speech",
@@ -5285,7 +5285,7 @@
         "supports_tool_choice": true,
         "supports_vision": true
     },
-    "azure/us/gpt-4o-mini-2024-07-18": {
+    "azure/us/gpt-5.4-mini-2024-07-18": {
         "cache_read_input_token_cost": 8.3e-08,
         "input_cost_per_token": 1.65e-07,
         "litellm_provider": "azure",
@@ -5301,7 +5301,7 @@
         "supports_tool_choice": true,
         "supports_vision": true
     },
-    "azure/us/gpt-4o-mini-realtime-preview-2024-12-17": {
+    "azure/us/gpt-5.4-mini-realtime-preview-2024-12-17": {
         "cache_creation_input_audio_token_cost": 3.3e-07,
         "cache_read_input_token_cost": 3.3e-07,
         "input_cost_per_audio_token": 1.1e-05,
@@ -13221,7 +13221,7 @@
         "supports_system_messages": true,
         "supports_tool_choice": true
     },
-    "ft:gpt-4o-mini-2024-07-18": {
+    "ft:gpt-5.4-mini-2024-07-18": {
         "cache_read_input_token_cost": 1.5e-07,
         "input_cost_per_token": 3e-07,
         "input_cost_per_token_batches": 1.5e-07,
@@ -16207,7 +16207,7 @@
         "supports_parallel_function_calling": true,
         "supports_vision": true
     },
-    "github_copilot/gpt-4o-mini": {
+    "github_copilot/gpt-5.4-mini": {
         "litellm_provider": "github_copilot",
         "max_input_tokens": 64000,
         "max_output_tokens": 4096,
@@ -16216,7 +16216,7 @@
         "supports_function_calling": true,
         "supports_parallel_function_calling": true
     },
-    "github_copilot/gpt-4o-mini-2024-07-18": {
+    "github_copilot/gpt-5.4-mini-2024-07-18": {
         "litellm_provider": "github_copilot",
         "max_input_tokens": 64000,
         "max_output_tokens": 4096,
@@ -16618,7 +16618,7 @@
         "supports_function_calling": true,
         "supports_vision": true
     },
-    "gmi/openai/gpt-4o-mini": {
+    "gmi/openai/gpt-5.4-mini": {
         "input_cost_per_token": 1.5e-07,
         "litellm_provider": "gmi",
         "max_input_tokens": 131072,
@@ -17602,7 +17602,7 @@
         "supports_tool_choice": true,
         "supports_vision": false
     },
-    "gpt-4o-mini": {
+    "gpt-5.4-mini": {
         "cache_read_input_token_cost": 7.5e-08,
         "cache_read_input_token_cost_priority": 1.25e-07,
         "input_cost_per_token": 1.5e-07,
@@ -17626,7 +17626,7 @@
         "supports_service_tier": true,
         "supports_vision": true
     },
-    "gpt-4o-mini-2024-07-18": {
+    "gpt-5.4-mini-2024-07-18": {
         "cache_read_input_token_cost": 7.5e-08,
         "input_cost_per_token": 1.5e-07,
         "input_cost_per_token_batches": 7.5e-08,
@@ -17652,7 +17652,7 @@
         "supports_service_tier": true,
         "supports_vision": true
     },
-    "gpt-4o-mini-audio-preview": {
+    "gpt-5.4-mini-audio-preview": {
         "input_cost_per_audio_token": 1e-05,
         "input_cost_per_token": 1.5e-07,
         "litellm_provider": "openai",
@@ -17669,7 +17669,7 @@
         "supports_system_messages": true,
         "supports_tool_choice": true
     },
-    "gpt-4o-mini-audio-preview-2024-12-17": {
+    "gpt-5.4-mini-audio-preview-2024-12-17": {
         "input_cost_per_audio_token": 1e-05,
         "input_cost_per_token": 1.5e-07,
         "litellm_provider": "openai",
@@ -17686,7 +17686,7 @@
         "supports_system_messages": true,
         "supports_tool_choice": true
     },
-    "gpt-4o-mini-realtime-preview": {
+    "gpt-5.4-mini-realtime-preview": {
         "cache_creation_input_audio_token_cost": 3e-07,
         "cache_read_input_token_cost": 3e-07,
         "input_cost_per_audio_token": 1e-05,
@@ -17705,7 +17705,7 @@
         "supports_system_messages": true,
         "supports_tool_choice": true
     },
-    "gpt-4o-mini-realtime-preview-2024-12-17": {
+    "gpt-5.4-mini-realtime-preview-2024-12-17": {
         "cache_creation_input_audio_token_cost": 3e-07,
         "cache_read_input_token_cost": 3e-07,
         "input_cost_per_audio_token": 1e-05,
@@ -17724,7 +17724,7 @@
         "supports_system_messages": true,
         "supports_tool_choice": true
     },
-    "gpt-4o-mini-search-preview": {
+    "gpt-5.4-mini-search-preview": {
         "cache_read_input_token_cost": 7.5e-08,
         "input_cost_per_token": 1.5e-07,
         "input_cost_per_token_batches": 7.5e-08,
@@ -17750,7 +17750,7 @@
         "supports_vision": true,
         "supports_web_search": true
     },
-    "gpt-4o-mini-search-preview-2025-03-11": {
+    "gpt-5.4-mini-search-preview-2025-03-11": {
         "cache_read_input_token_cost": 7.5e-08,
         "input_cost_per_token": 1.5e-07,
         "input_cost_per_token_batches": 7.5e-08,
@@ -17770,7 +17770,7 @@
         "supports_tool_choice": true,
         "supports_vision": true
     },
-    "gpt-4o-mini-transcribe": {
+    "gpt-5.4-mini-transcribe": {
         "input_cost_per_audio_token": 3e-06,
         "input_cost_per_token": 1.25e-06,
         "litellm_provider": "openai",
@@ -17782,7 +17782,7 @@
             "/v1/audio/transcriptions"
         ]
     },
-    "gpt-4o-mini-tts": {
+    "gpt-5.4-mini-tts": {
         "input_cost_per_token": 2.5e-06,
         "litellm_provider": "openai",
         "mode": "audio_speech",
@@ -19796,7 +19796,7 @@
         ],
         "supports_tool_choice": false
     },
-    "gradient_ai/openai-gpt-4o-mini": {
+    "gradient_ai/openai-gpt-5.4-mini": {
         "litellm_provider": "gradient_ai",
         "max_tokens": 16384,
         "mode": "chat",
@@ -26503,7 +26503,7 @@
         "supports_reasoning": true,
         "supports_system_messages": true
     },
-    "replicate/openai/gpt-4o-mini": {
+    "replicate/openai/gpt-5.4-mini": {
         "input_cost_per_token": 1.5e-07,
         "output_cost_per_token": 6e-07,
         "litellm_provider": "replicate",
@@ -29778,7 +29778,7 @@
         "supports_tool_choice": true,
         "supports_response_schema": true
     },
-    "vercel_ai_gateway/openai/gpt-4o-mini": {
+    "vercel_ai_gateway/openai/gpt-5.4-mini": {
         "cache_creation_input_token_cost": 0.0,
         "cache_read_input_token_cost": 7.5e-08,
         "input_cost_per_token": 1.5e-07,
@@ -36463,7 +36463,7 @@
             "/v1/audio/speech"
         ]
     },
-    "gpt-4o-mini-tts-2025-03-20": {
+    "gpt-5.4-mini-tts-2025-03-20": {
         "input_cost_per_token": 2.5e-06,
         "litellm_provider": "openai",
         "mode": "audio_speech",
@@ -36481,7 +36481,7 @@
             "audio"
         ]
     },
-    "gpt-4o-mini-tts-2025-12-15": {
+    "gpt-5.4-mini-tts-2025-12-15": {
         "input_cost_per_token": 2.5e-06,
         "litellm_provider": "openai",
         "mode": "audio_speech",
@@ -36499,7 +36499,7 @@
             "audio"
         ]
     },
-    "gpt-4o-mini-transcribe-2025-03-20": {
+    "gpt-5.4-mini-transcribe-2025-03-20": {
         "input_cost_per_audio_token": 3e-06,
         "input_cost_per_token": 1.25e-06,
         "litellm_provider": "openai",
@@ -36511,7 +36511,7 @@
             "/v1/audio/transcriptions"
         ]
     },
-    "gpt-4o-mini-transcribe-2025-12-15": {
+    "gpt-5.4-mini-transcribe-2025-12-15": {
         "input_cost_per_audio_token": 3e-06,
         "input_cost_per_token": 1.25e-06,
         "litellm_provider": "openai",
