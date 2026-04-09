@@ -1,5 +1,31 @@
 ## [Unreleased]
 
+### Fixed
+- Remove `--asyncio-mode=auto` from pytest configuration for compatibility with older pytest-asyncio versions used by `goal -a`
+
+## [2.1.184] - 2026-04-09
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+- Update docs/README.md
+- Update project/README.md
+- Update project/context.md
+
+### Other
+- Update project/analysis.toon.yaml
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/duplication.toon.yaml
+- Update project/evolution.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- Update project/index.html
+- ... and 4 more files
+
 ## [2.1.183] - 2026-04-09
 
 ### Docs

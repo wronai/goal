@@ -1,12 +1,8 @@
 
-
 CONSTANT_3 = 3
 CONSTANT_4 = 4
 CONSTANT_5 = 5
 
-CONSTANT_3 = 3
-CONSTANT_4 = 4
-CONSTANT_5 = 5
 
 """Deep code analysis for functional commit messages.
 
@@ -388,7 +384,7 @@ def _check_cli_value(self, areas: List[str], added: List[Dict]) -> Optional[str]
         cli_entities = [e for e in added if any(d in str(e.get('decorators', []))
                                                 for d in ['click', 'command'])]
         if cli_entities:
-            return f"new CLI commands: {', '.join(e['name'] for e in cli_entities[:3])}"
+            return f"new CLI commands: {', '.join(e['name'] for e in cli_entities[:CONSTANT_3])}"
     return None
 
 def _check_area_values(self, areas: List[str], added: List[Dict]) -> Optional[str]:
@@ -417,7 +413,7 @@ def _check_area_values(self, areas: List[str], added: List[Dict]) -> Optional[st
 
 def _check_complexity_value(self, complexity: int) -> Optional[str]:
     """Check complexity-based value."""
-    if complexity < -5:
+    if complexity < -CONSTANT_5:
         return "simplified code structure"
     if complexity > 10:
         return "new functionality"
@@ -431,8 +427,8 @@ def _check_architecture_value(self, added: List[Dict]) -> Optional[str]:
 
 def _build_entity_fallback(self, added: List[Dict], modified: List[Dict]) -> str:
     """Build fallback value based on added/modified entities."""
-    if len(added) >= 3:
-        names = [e['name'] for e in added[:3]]
+    if len(added) >= CONSTANT_3:
+        names = [e['name'] for e in added[:CONSTANT_3]]
         return f"added {', '.join(names)}"
 
     if len(modified) >= 2:
@@ -564,7 +560,7 @@ def _build_summary(self, aggregated: Dict, value: str, relations: List) -> str:
     complexity = aggregated.get('complexity_change', 0)
     
     if added:
-        funcs = self._format_entity_names([e for e in added if e.get('type') == 'function'], 4)
+        funcs = self._format_entity_names([e for e in added if e.get('type') == 'function'], CONSTANT_4)
         classes = self._format_entity_names([e for e in added if e.get('type') == 'class'], 2)
         if classes:
             parts.append(f"New classes: {', '.join(classes)}")
@@ -572,7 +568,7 @@ def _build_summary(self, aggregated: Dict, value: str, relations: List) -> str:
             parts.append(f"New functions: {', '.join(funcs)}")
 
     if modified:
-        names = self._format_entity_names(modified, 3)
+        names = self._format_entity_names(modified, CONSTANT_3)
         parts.append(f"Modified: {', '.join(names)}")
 
     if relations:

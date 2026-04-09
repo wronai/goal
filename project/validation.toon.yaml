@@ -1,9 +1,9 @@
-# vallm batch | 257f | 166✓ 8⚠ 12✗ | 2026-04-08
+# vallm batch | 258f | 178✓ 9⚠ 0✗ | 2026-04-09
 
 SUMMARY:
-  scanned: 257  passed: 166 (64.6%)  warnings: 8  errors: 12  unsupported: 79
+  scanned: 258  passed: 178 (69.0%)  warnings: 9  errors: 0  unsupported: 80
 
-WARNINGS[8]{path,score}:
+WARNINGS[9]{path,score}:
   examples/validation/test_api_signatures.py,0.93
     issues[4]{rule,severity,message,line}:
       complexity.cyclomatic,warning,extract_function_calls has cyclomatic complexity 20 (max: 15),27
@@ -19,62 +19,26 @@ WARNINGS[8]{path,score}:
       complexity.lizard_length,warning,run_case: 175 lines exceeds limit 100,11
   goal/deep_analyzer.py,0.98
     issues[1]{rule,severity,message,line}:
-      complexity.maintainability,warning,Low maintainability index: 17.9 (threshold: 20),
+      complexity.maintainability,warning,Low maintainability index: 17.7 (threshold: 20),
   goal/doctor/python.py,0.98
     issues[1]{rule,severity,message,line}:
       complexity.maintainability,warning,Low maintainability index: 10.1 (threshold: 20),
   goal/formatter.py,0.98
     issues[1]{rule,severity,message,line}:
-      complexity.maintainability,warning,Low maintainability index: 15.0 (threshold: 20),
+      complexity.maintainability,warning,Low maintainability index: 14.7 (threshold: 20),
   goal/project_bootstrap.py,0.98
     issues[1]{rule,severity,message,line}:
       complexity.maintainability,warning,Low maintainability index: 8.2 (threshold: 20),
   goal/smart_commit/generator.py,0.98
     issues[1]{rule,severity,message,line}:
       complexity.maintainability,warning,Low maintainability index: 15.6 (threshold: 20),
-
-ERRORS[12]{path,score}:
-  goal/user_config.py,0.00
+  tests/test_project_bootstrap.py,0.98
     issues[1]{rule,severity,message,line}:
-      syntax.parse,error,SyntaxError: unexpected indent,23
-  goal/version_validation.py,0.00
-    issues[1]{rule,severity,message,line}:
-      syntax.parse,error,SyntaxError: expected an indented block after 'try' statement on line 9,11
-  tests/test_formatter.py,0.79
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,2
-  tests/test_config_validation.py,0.86
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,3
-  tests/test_smart_commit_shim.py,0.86
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,2
-  tests/test_user_config.py,0.93
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,6
-  tests/test_project_doctor.py,0.94
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,7
-  tests/test_clone_repo.py,0.95
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,9
-  tests/test_git_ops.py,0.96
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,7
-  tests/test_project_bootstrap.py,0.96
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,11
-  examples/api-usage/test_integration.py,0.97
-    issues[1]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,15
-  tests/test_push_e2e.py,0.98
-    issues[2]{rule,severity,message,line}:
-      python.import.resolvable,error,Module 'pytest' not found,10
-      python.import.resolvable,error,Module 'pytest' not found,422
+      complexity.maintainability,warning,Low maintainability index: 16.6 (threshold: 20),
 
 UNSUPPORTED[5]{bucket,count}:
   *.md,52
   Dockerfile*,1
   *.txt,1
   *.yml,1
-  other,24
+  other,25

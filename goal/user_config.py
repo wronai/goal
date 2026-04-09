@@ -1,12 +1,7 @@
-
-CONSTANT_70 = 70
-
 """User configuration management for goal.
 
 Stores user preferences in ~/.goal including:
-
-if __name__ == "__main__":
-    - Git author information (name, email)
+- Git author information (name, email)
 - Default license preference
 - Other user-specific settings
 """
@@ -18,6 +13,9 @@ from typing import Optional, Dict, Any
 
 import click
 
+
+# Constants
+CONSTANT_70 = 70
 
 # Available licenses with their identifiers
 AVAILABLE_LICENSES = {
@@ -40,7 +38,7 @@ class UserConfig:
         self.config: Dict[str, Any] = {}
         self._load()
     
-    def _load(self):
+    def _load(self) -> None:
         """Load configuration from ~/.goal file."""
         if self.config_path.exists():
             try:
@@ -51,7 +49,7 @@ class UserConfig:
         else:
             self.config = {}
     
-    def _save(self):
+    def _save(self) -> None:
         """Save configuration to ~/.goal file."""
         try:
             self.config_path.parent.mkdir(parents=True, exist_ok=True)
@@ -64,7 +62,7 @@ class UserConfig:
         """Get configuration value."""
         return self.config.get(key, default)
     
-    def set(self, key: str, value: Any):
+    def set(self, key: str, value: Any) -> None:
         """Set configuration value and save."""
         self.config[key] = value
         self._save()
@@ -228,7 +226,7 @@ def get_user_config() -> UserConfig:
     return config
 
 
-def show_user_config():
+def show_user_config() -> None:
     """Display current user configuration."""
     config = UserConfig()
     

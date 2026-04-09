@@ -4,10 +4,7 @@ CONSTANT_6 = 6
 CONSTANT_20 = 20
 CONSTANT_50 = 50
 
-CONSTANT_5 = 5
-CONSTANT_6 = 6
-CONSTANT_20 = 20
-CONSTANT_50 = 50
+
 'Markdown output formatter for Goal.'
 import json
 from typing import Dict, List, Any, Optional
@@ -102,7 +99,7 @@ def _build_functional_overview(features: List[str], summary: str, entities: List
         functional_overview += f'\n**Commit:** `{commit_msg}`'
         meaningful = []
         if entities:
-            meaningful = [e for e in entities if len(e) > 2][:6]
+            meaningful = [e for e in entities if len(e) > 2][:CONSTANT_6]
         return ('Summary', functional_overview, meaningful)
     else:
         overview = f"**Project Type:** {', '.join(project_types)}\n**Files Changed:** {len(files)} (+{total_adds}/-{total_dels} lines)\n**Version:** {current_version} → {new_version}\n**Commit Message:** `{commit_msg}`".strip()
@@ -172,7 +169,7 @@ def _format_complexity_metric(metrics: Dict[str, Any]) -> Optional[str]:
     delta_pct = (new_cc - old_cc) / old_cc * 100
     if delta_pct < -10:
         return f'📉 -{abs(delta_pct):.0f}% complexity (refactor win)'
-    if delta_pct > 50:
+    if delta_pct > CONSTANT_50:
         return f'⚠️ +{delta_pct:.0f}% complexity (monitor)'
     if delta_pct > 0:
         return f'📊 +{delta_pct:.0f}% complexity (new features)'
@@ -205,13 +202,13 @@ def _build_capabilities_content(capabilities: List[Dict[str, str]]) -> Optional[
     """Build capabilities section content."""
     if not capabilities:
         return None
-    return '\n'.join((f"✅ **{c['capability']}** - {c['impact']}" for c in capabilities[:5])) or None
+    return '\n'.join((f"✅ **{c['capability']}** - {c['impact']}" for c in capabilities[:CONSTANT_5])) or None
 
 def _build_roles_content(roles: List[Dict[str, str]]) -> Optional[str]:
     """Build roles section content."""
     if not roles:
         return None
-    return '\n'.join((f"- **{r['role']}** (`{r['name']}`)" for r in roles[:5])) or None
+    return '\n'.join((f"- **{r['role']}** (`{r['name']}`)" for r in roles[:CONSTANT_5])) or None
 
 def _build_details_content(commit_body: str, capabilities: List[Dict[str, str]]) -> Optional[str]:
     """Build details section content (only if no capabilities)."""
@@ -252,9 +249,9 @@ def format_status_output(version: str, branch: str, staged_files: List[str], uns
     if staged_files:
         formatter.add_list('Staged Files', staged_files)
     if unstaged_files:
-        formatter.add_list('Unstaged/Untracked Files', unstaged_files[:20])
-        if len(unstaged_files) > 20:
-            formatter.add_section('', f'... and {len(unstaged_files) - 20} more files')
+        formatter.add_list('Unstaged/Untracked Files', unstaged_files[:CONSTANT_20])
+        if len(unstaged_files) > CONSTANT_20:
+            formatter.add_section('', f'... and {len(unstaged_files) - CONSTANT_20} more files')
     actions = ['Commit staged files: `goal push`', 'Stage all changes: `git add . && goal push`', 'Check version: `goal version`', 'Dry run: `goal push --dry-run`']
     formatter.add_list('Quick Actions', actions)
     return formatter.render()

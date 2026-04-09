@@ -1,11 +1,11 @@
-# goal | 108f 18854L | shell:3,python:105 | 2026-04-08
-# stats: 751 func | 0 cls | 108 mod | CC̄=4.4 | critical:1 | cycles:0
+# goal | 110f 19441L | shell:3,python:107 | 2026-04-09
+# stats: 783 func | 0 cls | 110 mod | CC̄=4.3 | critical:1 | cycles:0
 # alerts[5]: fan-out execute_push_workflow=26; fan-out EnhancedSummaryGenerator.generate_enhanced_summary=24; fan-out doctor=20; fan-out update_cost_badges=19; fan-out fix_summary=18
 # hotspots[5]: execute_push_workflow fan=26; EnhancedSummaryGenerator.generate_enhanced_summary fan=24; doctor fan=20; update_cost_badges fan=19; fix_summary fan=18
-# evolution: CC̄ 4.4→4.4 (flat 0.0)
+# evolution: CC̄ 4.3→4.3 (flat 0.0)
 # Keys: M=modules, D=details, i=imports, e=exports, c=classes, f=functions, m=methods
-M[108]:
-  goal/__init__.py,5
+M[110]:
+  goal/__init__.py,3
   goal/__main__.py,18
   goal/authors/__init__.py,19
   goal/authors/manager.py,315
@@ -31,12 +31,12 @@ M[108]:
   goal/cli/version_types.py,113
   goal/cli/version_utils.py,316
   goal/cli/wizard_cmd.py,340
-  goal/commit_generator.py,24
+  goal/commit_generator.py,27
   goal/config/__init__.py,36
   goal/config/constants.py,436
   goal/config/manager.py,457
   goal/config/validation.py,474
-  goal/deep_analyzer.py,588
+  goal/deep_analyzer.py,598
   goal/doctor/__init__.py,55
   goal/doctor/core.py,87
   goal/doctor/dotnet.py,26
@@ -50,8 +50,8 @@ M[108]:
   goal/doctor/ruby.py,25
   goal/doctor/rust.py,35
   goal/doctor/todo.py,127
-  goal/enhanced_summary.py,8
-  goal/formatter.py,260
+  goal/enhanced_summary.py,23
+  goal/formatter.py,272
   goal/generator/__init__.py,14
   goal/generator/analyzer.py,442
   goal/generator/generator.py,381
@@ -101,6 +101,7 @@ M[108]:
   goal/summary/quality_filter.py,344
   goal/summary/validator.py,364
   goal/toml_validation.py,112
+  goal/user_config.py,252
   goal/validation/__init__.py,27
   goal/validation/manager.py,190
   goal/validation/rules.py,220
@@ -110,6 +111,7 @@ M[108]:
   goal/validators/file_validator.py,247
   goal/validators/gitignore.py,46
   goal/validators/tokens.py,225
+  goal/version_validation.py,297
   integration/run_docker_matrix.sh,5
   integration/run_matrix.sh,216
   project.sh,40
@@ -269,13 +271,13 @@ D:
     _prepare_python_publish(strategy)
     _run_publish_command(ptype;publish_cmd)
     publish_project(project_types;version;yes;config)
+  goal/doctor/nodejs.py:
+    e: diagnose_nodejs
+    diagnose_nodejs(project_dir;auto_fix)
   goal/smart_commit/generator.py:
     e: SmartCommitGenerator,create_smart_generator
     SmartCommitGenerator: __init__(1),_analyze_file_diffs(2),_merge_deep_analysis(2),analyze_changes(1),_summarize_features(0),_summarize_entities(0),_summarize_documentation(0),_summarize_test_files(1),_fallback_functional_summary(2),_generate_functional_summary(1),_get_staged_files(0),_get_file_diff(1),_infer_commit_type(1),generate_message(2),_is_docs_only_change(1),_generate_docs_message(1),_generate_high_abstraction_message(1),_generate_medium_abstraction_message(1),_generate_low_abstraction_message(1),_filter_meaningful_entities(1),_infer_message_from_files(1),generate_functional_body(1),generate_changelog_entry(2),format_changelog_entry(1)  # Generates smart commit messages using code abstraction...
     create_smart_generator(config)
-  goal/doctor/nodejs.py:
-    e: diagnose_nodejs
-    diagnose_nodejs(project_dir;auto_fix)
   goal/generator/generator.py:
     e: CommitMessageGenerator,generate_smart_commit_message
     CommitMessageGenerator: __init__(1),get_diff_stats(1),get_name_status(2),get_numstat_map(2),get_changed_files(2),get_diff_content(2),classify_change_type(3),detect_scope(1),extract_functions_changed(1),_short_action_summary(2),_per_file_notes(2),generate_commit_message(3),generate_abstraction_message(2),generate_changelog_entry(2),generate_enhanced_summary(2),_try_enhanced_summary(2),_classify_files(2),_build_statistics_section(1),_build_summary_section(5),_build_file_lists(4),_build_per_file_notes(3),_build_implementation_notes(0),generate_detailed_message(2)  # Generate conventional commit messages using diff analysis an...
@@ -319,6 +321,18 @@ D:
   goal/smart_commit/abstraction.py:
     e: CodeAbstraction
     CodeAbstraction: __init__(1),get_domain(1),get_language(1),_added_lines_from_diff(0),_dedupe_entities(0),extract_entities(2),extract_markdown_topics(1),infer_benefit(5),detect_features(2),determine_abstraction_level(1),get_action_verb(1)  # Extracts meaningful abstractions from code changes...
+  goal/user_config.py:
+    e: UserConfig,get_git_user_name,get_git_user_email,prompt_for_license,initialize_user_config,get_user_config,show_user_config
+    UserConfig: __init__(0),_load(0),_save(0),get(2),set(2),is_initialized(0)  # Manages user-specific configuration stored in ~/.goal...
+    get_git_user_name()
+    get_git_user_email()
+    prompt_for_license()
+    initialize_user_config(force)
+    get_user_config()
+    show_user_config()
+  goal/generator/git_ops.py:
+    e: GitDiffOperations
+    GitDiffOperations: __init__(0),get_diff_stats(1),get_name_status(2),get_numstat_map(2),get_changed_files(2),get_diff_content(2),clear_cache(0)  # Git diff operations with caching...
   goal/git_ops.py:
     e: run_git,run_command,_echo_cmd,_run_git_verbose,run_git_with_status,run_command_tee,is_git_repository,validate_repo_url,get_remote_url,list_remotes,_prompt_remote_url,_list_remote_branches,get_remote_branch,clone_repository,_select_branch,_handle_merge_strategy,_handle_init_remote,_handle_clone,_handle_local_init,ensure_git_repository,ensure_remote,get_staged_files,get_unstaged_files,get_working_tree_files,get_diff_stats,get_diff_content,read_ticket,apply_ticket_prefix
     run_git()
@@ -349,9 +363,6 @@ D:
     get_diff_content(cached;max_lines)
     read_ticket(path)
     apply_ticket_prefix(title;ticket)
-  goal/generator/git_ops.py:
-    e: GitDiffOperations
-    GitDiffOperations: __init__(0),get_diff_stats(1),get_name_status(2),get_numstat_map(2),get_changed_files(2),get_diff_content(2),clear_cache(0)  # Git diff operations with caching...
   goal/recovery/large_file.py:
     e: LargeFileStrategy,_run_git_chunked
     LargeFileStrategy(RecoveryStrategy): __init__(2),can_handle(1),recover(1),_files_in_history(1),_remove_from_history(1),_extract_file_paths(1),_find_large_files(1),_get_file_size_mb(1),_remove_large_files(1),_move_to_lfs(1),_skip_large_files(1)  # Handles large file errors...
@@ -449,6 +460,23 @@ D:
     validate_toml_file(filepath)
     validate_project_toml_files(project_dir)
     check_pyproject_toml()
+  goal/version_validation.py:
+    e: get_pypi_version,get_npm_version,get_cargo_version,get_rubygems_version,get_registry_version,extract_badge_versions,update_badge_versions,_detect_python_package,_detect_nodejs_package,_detect_rust_package,_detect_ruby_package,_validate_single_type,validate_project_versions,check_readme_badges,format_validation_results
+    get_pypi_version(package_name)
+    get_npm_version(package_name)
+    get_cargo_version(package_name)
+    get_rubygems_version(package_name)
+    get_registry_version(registry;package_name)
+    extract_badge_versions(readme_path)
+    update_badge_versions(readme_path;new_version)
+    _detect_python_package()
+    _detect_nodejs_package()
+    _detect_rust_package()
+    _detect_ruby_package()
+    _validate_single_type(project_type;current_version)
+    validate_project_versions(project_types;current_version)
+    check_readme_badges(current_version)
+    format_validation_results(results)
   goal/validators/dot_folders.py:
     e: _is_dot_path,_is_safe_path,_is_whitelisted_path,_matches_problematic,check_dot_folders,manage_dot_folders
     _is_dot_path(path)
@@ -678,6 +706,12 @@ D:
     e: _log_issue,_log_fix
     _log_issue(issue)
     _log_fix(issue)
+  goal/commit_generator.py:
+    e: is_detailed_output_requested,display_detailed_message,display_commit_message,main
+    is_detailed_output_requested(args)
+    display_detailed_message(generator)
+    display_commit_message(generator)
+    main()
   goal/validators/exceptions.py:
     e: ValidationError,FileSizeError,TokenDetectedError,DotFolderError
     ValidationError(Exception):  # Base validation error...
@@ -712,7 +746,6 @@ D:
   project.sh:
   goal/config/__init__.py:
   goal/enhanced_summary.py:
-  goal/commit_generator.py:
   goal/__init__.py:
   goal/__main__.py:
   goal/smart_commit/__init__.py:
@@ -730,10 +763,6 @@ D:
   goal/config/constants.py:
   goal/validation/__init__.py:
   goal/doctor/__init__.py:
-  goal/doctor/models.py:
-    e: Issue,DoctorReport
-    Issue:  # A single diagnosed issue...
-    DoctorReport:  # Aggregated report from a doctor run...
   goal/authors/__init__.py:
   goal/license/__init__.py:
   integration/run_docker_matrix.sh:
@@ -744,3 +773,7 @@ D:
     print()
     main()
     self()
+  goal/doctor/models.py:
+    e: Issue,DoctorReport
+    Issue:  # A single diagnosed issue...
+    DoctorReport:  # Aggregated report from a doctor run...

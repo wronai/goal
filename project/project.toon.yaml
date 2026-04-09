@@ -1,7 +1,7 @@
-# goal | 751 func | 84f | 22763L | python | 2026-04-08
+# goal | 783 func | 87f | 22957L | python | 2026-04-09
 
 HEALTH:
-  CC̄=4.4  critical=71 (limit:10)  dup=0  cycles=0
+  CC̄=4.3  critical=72 (limit:10)  dup=0  cycles=0
 
 ALERTS[20]:
   !!! high_fan_out     execute_push_workflow = 26 (limit:10)
@@ -15,23 +15,23 @@ ALERTS[20]:
   !!  high_fan_out     commit = 17 (limit:10)
   !!  high_fan_out     add_issues_to_todo = 17 (limit:10)
 
-MODULES[109] (top by size):
+MODULES[111] (top by size):
   M[goal/project_bootstrap.py] 1216L C:0 F:38 CC↑14 D:3 (python)
   M[goal/doctor/python.py] 625L C:1 F:31 CC↑10 D:0 (python)
   M[goal/package_managers.py] 616L C:1 F:16 CC↑5 D:1 (python)
-  M[goal/deep_analyzer.py] 588L C:1 F:27 CC↑13 D:0 (python)
+  M[goal/deep_analyzer.py] 598L C:1 F:27 CC↑13 D:0 (python)
   M[goal/git_ops.py] 574L C:0 F:28 CC↑11 D:16 (python)
   M[goal/license/manager.py] 570L C:1 F:12 CC↑10 D:1 (python)
   M[goal/smart_commit/generator.py] 527L C:1 F:25 CC↑13 D:0 (python)
   M[goal/summary/generator.py] 523L C:1 F:14 CC↑15 D:0 (python)
   M[goal/config/validation.py] 474L C:2 F:15 CC↑14 D:2 (python)
-  M[goal/config/manager.py] 457L C:1 F:25 CC↑10 D:22 (python)
+  M[goal/config/manager.py] 457L C:1 F:25 CC↑10 D:7 (python)
   M[goal/generator/analyzer.py] 442L C:2 F:27 CC↑14 D:0 (python)
   M[goal/config/constants.py] 436L C:0 F:0 CC↑0 D:0 (python)
   M[goal/push/core.py] 412L C:1 F:17 CC↑10 D:3 (python)
   M[goal/push/stages/push_remote.py] 382L C:0 F:17 CC↑11 D:1 (python)
-  M[goal/generator/generator.py] 381L C:1 F:24 CC↑12 D:1 (python)
-  LANGS: python:106/shell:3
+  M[goal/generator/generator.py] 381L C:1 F:24 CC↑12 D:6 (python)
+  LANGS: python:108/shell:3
 
 HOTSPOTS[10]:
   ★ execute_push_workflow fan=26  // Execute the complete push workflow.
@@ -43,11 +43,11 @@ HOTSPOTS[10]:
 REFACTOR[12]:
   [1] H/H Split god module goal/summary/generator.py (523L, 1 classes)
   [2] H/H Split god module goal/project_bootstrap.py (1216L, 0 classes)
-  [3] H/H Split god module goal/deep_analyzer.py (588L, 1 classes)
+  [3] H/H Split god module goal/deep_analyzer.py (598L, 1 classes)
   [4] H/H Split god module goal/smart_commit/generator.py (527L, 1 classes)
   [5] H/H Split god module goal/git_ops.py (574L, 0 classes)
 
 EVOLUTION:
   2026-03-08 CC̄=6.0 crit=66 12955L // Automated analysis
   2026-03-15 CC̄=6.0 crit=68 13352L // Automated analysis
-  2026-04-08 CC̄=4.4 crit=71 22763L // Automated analysis
+  2026-04-09 CC̄=4.3 crit=72 22957L // Automated analysis
