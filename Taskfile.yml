@@ -125,15 +125,116 @@ tasks:
     - taskfile run install
     - taskfile run lint
     - taskfile run test
-  fmt:
-    desc: Auto-format with ruff
+  sumd:
+    desc: Generate SUMD (Structured Unified Markdown Descriptor) for AI-aware project description
     cmds:
-    - ruff format .
-  lint:
-    desc: Run ruff lint check
+    - |
+      echo "# $(basename $(pwd))" > SUMD.md
+      echo "" >> SUMD.md
+      echo "$(python3 -c "import tomllib; f=open('pyproject.toml','rb'); d=tomllib.load(f); print(d.get('project',{}).get('description','Project description'))" 2>/dev/null || echo 'Project description')" >> SUMD.md
+      echo "" >> SUMD.md
+      echo "## Contents" >> SUMD.md
+      echo "" >> SUMD.md
+      echo "- [Metadata](#metadata)" >> SUMD.md
+      echo "- [Architecture](#architecture)" >> SUMD.md
+      echo "- [Dependencies](#dependencies)" >> SUMD.md
+      echo "- [Source Map](#source-map)" >> SUMD.md
+      echo "- [Intent](#intent)" >> SUMD.md
+      echo "" >> SUMD.md
+      echo "## Metadata" >> SUMD.md
+      echo "" >> SUMD.md
+      echo "- **name**: \`$(basename $(pwd))\`" >> SUMD.md
+      echo "- **version**: \`$(python3 -c "import tomllib; f=open('pyproject.toml','rb'); d=tomllib.load(f); print(d.get('project',{}).get('version','unknown'))" 2>/dev/null || echo 'unknown')\`" >> SUMD.md
+      echo "- **python_requires**: \`>=$(python3 --version 2>/dev/null | cut -d' ' -f2 | cut -d. -f1,2)\`" >> SUMD.md
+      echo "- **license**: $(python3 -c "import tomllib; f=open('pyproject.toml','rb'); d=tomllib.load(f); print(d.get('project',{}).get('license',{}).get('text','MIT'))" 2>/dev/null || echo 'MIT')" >> SUMD.md
+      echo "- **ecosystem**: SUMD + DOQL + testql + taskfile" >> SUMD.md
+      echo "- **generated_from**: pyproject.toml, Taskfile.yml, Makefile, src/" >> SUMD.md
+      echo "" >> SUMD.md
+      echo "## Architecture" >> SUMD.md
+      echo "" >> SUMD.md
+      echo '```' >> SUMD.md
+      echo "SUMD (description) → DOQL/source (code) → taskfile (automation) → testql (verification)" >> SUMD.md
+      echo '```' >> SUMD.md
+      echo "" >> SUMD.md
+      echo "## Source Map" >> SUMD.md
+      echo "" >> SUMD.md
+      find . -name '*.py' -not -path './.venv/*' -not -path './venv/*' -not -path './__pycache__/*' -not -path './.git/*' | head -50 | sed 's|^./||' | sed 's|^|- |' >> SUMD.md
+      echo "Generated SUMD.md"
+    - |
+      python3 -c "
+      import json, os, subprocess
+      from pathlib import Path
+      project_name = Path.cwd().name
+      py_files = list(Path('.').rglob('*.py'))
+      py_files = [f for f in py_files if not any(x in str(f) for x in ['.venv', 'venv', '__pycache__', '.git'])]
+      data = {
+          'project_name': project_name,
+          'description': 'SUMD - Structured Unified Markdown Descriptor for AI-aware project refactorization',
+          'files': [{'path': str(f), 'type': 'python'} for f in py_files[:100]]
+      }
+      with open('sumd.json', 'w') as f:
+          json.dump(data, f, indent=2)
+      print('Generated sumd.json')
+      " 2>/dev/null || echo 'Python generation failed, using fallback'
+  sumr:
+    desc: Generate SUMR (Summary Report) with project metrics and health status
     cmds:
-    - ruff check .
-  format:
-    desc: Auto-format with ruff (alias of fmt)
-    cmds:
-    - ruff format .
+    - |
+      echo "# $(basename $(pwd)) - Summary Report" > SUMR.md
+      echo "" >> SUMR.md
+      echo "SUMR - Summary Report for project analysis" >> SUMR.md
+      echo "" >> SUMR.md
+      echo "## Contents" >> SUMR.md
+      echo "" >> SUMR.md
+      echo "- [Metadata](#metadata)" >> SUMR.md
+      echo "- [Quality Status](#quality-status)" >> SUMR.md
+      echo "- [Metrics](#metrics)" >> SUMR.md
+      echo "- [Refactoring Analysis](#refactoring-analysis)" >> SUMR.md
+      echo "- [Intent](#intent)" >> SUMR.md
+      echo "" >> SUMR.md
+      echo "## Metadata" >> SUMR.md
+      echo "" >> SUMR.md
+      echo "- **name**: \`$(basename $(pwd))\`" >> SUMR.md
+      echo "- **version**: \`$(python3 -c "import tomllib; f=open('pyproject.toml','rb'); d=tomllib.load(f); print(d.get('project',{}).get('version','unknown'))" 2>/dev/null || echo 'unknown')\`" >> SUMR.md
+      echo "- **generated_at**: \`$(date -Iseconds)\`" >> SUMR.md
+      echo "" >> SUMR.md
+      echo "## Quality Status" >> SUMR.md
+      echo "" >> SUMR.md
+      if [ -f pyqual.yaml ]; then
+        echo "- **pyqual_config**: ✅ Present" >> SUMR.md
+        echo "- **last_run**: $(stat -c %y .pyqual/pipeline.db 2>/dev/null | cut -d' ' -f1 || echo 'N/A')" >> SUMR.md
+      else
+        echo "- **pyqual_config**: ❌ Missing" >> SUMR.md
+      fi
+      echo "" >> SUMR.md
+      echo "## Metrics" >> SUMR.md
+      echo "" >> SUMR.md
+      py_files=$(find . -name '*.py' -not -path './.venv/*' -not -path './venv/*' | wc -l)
+      echo "- **python_files**: $py_files" >> SUMR.md
+      lines=$(find . -name '*.py' -not -path './.venv/*' -not -path './venv/*' -exec cat {} \; 2>/dev/null | wc -l)
+      echo "- **total_lines**: $lines" >> SUMR.md
+      echo "" >> SUMR.md
+      echo "## Refactoring Analysis" >> SUMR.md
+      echo "" >> SUMR.md
+      echo "Run \`code2llm ./ -f evolution\` for detailed refactoring queue." >> SUMR.md
+      echo "Generated SUMR.md"
+    - |
+      python3 -c "
+      import json, os, subprocess
+      from pathlib import Path
+      from datetime import datetime
+      project_name = Path.cwd().name
+      py_files = len([f for f in Path('.').rglob('*.py') if not any(x in str(f) for x in ['.venv', 'venv', '__pycache__', '.git'])])
+      data = {
+          'project_name': project_name,
+          'report_type': 'SUMR',
+          'generated_at': datetime.now().isoformat(),
+          'metrics': {
+              'python_files': py_files,
+              'has_pyqual_config': Path('pyqual.yaml').exists()
+          }
+      }
+      with open('SUMR.json', 'w') as f:
+          json.dump(data, f, indent=2)
+      print('Generated SUMR.json')
+      " 2>/dev/null || echo 'Python generation failed, using fallback'
