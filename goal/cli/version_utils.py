@@ -67,13 +67,32 @@ def get_current_version() -> str:
 
 
 def bump_version(version: str, bump_type: str) -> str:
-    """Bump version according to semantic versioning."""
-    parts = version.split('.')
+    """Bump version according to semantic versioning.
+
+    Handles pre-release suffixes such as:
+      - PEP 440 pre-release:  1.2.3a1, 1.2.3b2, 1.2.3rc1
+      - PEP 440 dev/post:     1.2.3.dev1, 1.2.3.post1
+      - Hyphen pre-release:   1.2.3-rc1, 1.2.3-alpha, 1.2.3-beta.2
+      - CalVer with suffix:   2024.1.0-rc1
+    The pre-release suffix is always stripped; the bumped result is a clean semver.
+    """
+    # Strip any pre-release / build suffix before numeric parsing.
+    # Matches an optional hyphen or dot followed by non-numeric tail, e.g.
+    # "0.2.0-rc1", "1.0.0rc1", "2024.1.0.dev3", "1.2.3.post1"
+    base = re.split(r'[-+]|(?<=\d)(?=[a-zA-Z])', version)[0]
+    # Remove any trailing dot-separated non-numeric segment (e.g. ".dev1", ".post1")
+    base = re.sub(r'\.(dev|post|a|b|rc|alpha|beta)\d*$', '', base, flags=re.IGNORECASE)
+
+    parts = base.split('.')
     if len(parts) < 3:
         parts.extend(['0'] * (3 - len(parts)))
-    
-    major, minor, patch = int(parts[0]), int(parts[1]), int(parts[2])
-    
+
+    try:
+        major, minor, patch = int(parts[0]), int(parts[1]), int(parts[2])
+    except ValueError:
+        # Last-resort fallback: treat as 0.0.0
+        major, minor, patch = 0, 0, 0
+
     if bump_type == 'major':
         return f"{major + 1}.0.0"
     elif bump_type == 'minor':
