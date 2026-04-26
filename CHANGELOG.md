@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+### Fixed
+- Auto-update prompt no longer blocks help commands (--help, -h) by skipping version banner check
+- Fixed nfo dependency constraint from nfo>=0.3.0 to nfo>=0.2.22 to match available PyPI version
+
 ### Added
 - **PackageManagerBroker**: Intelligent package manager selection system
   - Automatic detection of uv, pdm, poetry, pip with priority-based selection
@@ -21,6 +25,11 @@
 
 ### Deprecated
 - Legacy `_install_python_deps()` waterfall approach (still works via fallback)
+
+## [2.1.201] - 2026-04-26
+
+### Docs
+- Update README.md
 
 ## [2.1.200] - 2026-04-26
 
