@@ -116,26 +116,8 @@ def _show_goal_version_banner() -> None:
     latest = get_pypi_version("goal")
     if latest and latest != __version__:
         click.echo(click.style(f"Goal v{__version__} (latest: v{latest})", fg='yellow', bold=True))
-        
-        # Check if auto-update is enabled (via environment variable or config)
-        auto_update = os.environ.get('GOAL_AUTO_UPDATE', '').lower() in ('1', 'true', 'yes')
-        
-        # Also check config if env var is not set
-        if not auto_update:
-            try:
-                from goal.config import ensure_config
-                config = ensure_config()
-                auto_update = config.get('advanced.auto_update_config', False)
-            except Exception:
-                pass
-        
-        if auto_update:
-            if confirm("Auto-update to latest version?", default=True):
-                success = _auto_update_goal(__version__, latest)
-                if success:
-                    # Restart goal with the new version
-                    click.echo(click.style("\n🔄 Restarting goal with new version...", fg='cyan'))
-                    os.execv(sys.executable, [sys.executable] + sys.argv)
+        # Auto-update disabled temporarily due to bugs
+        click.echo(click.style("  (Auto-update disabled - run: pip install -U goal)", fg='cyan'))
     else:
         click.echo(click.style(f"Goal v{__version__} ✓", fg='cyan', bold=True))
 

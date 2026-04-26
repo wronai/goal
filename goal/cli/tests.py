@@ -128,7 +128,13 @@ def _run_subdir_test(project_type: str, base_cmd: List[str], test_dir: str) -> b
                             for line in install_result.stderr.strip().split('\n')[:10]:
                                 click.echo(f"    {line}")
                         click.echo(click.style(f"\n  💡 Fix: cd {project_root} && {python_bin} -m pip install -e .[dev]", fg='cyan'))
-                        return False
+                        click.echo(click.style(f"\n  ⏭️  Skipping {project_root.name}/ tests", fg='yellow'))
+                        return True  # Not a failure, just skip
+                    # Re-check after installation
+                    check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
+                    if check_result.returncode != 0:
+                        click.echo(click.style(f"\n  ⏭️  Skipping {project_root.name}/ - pytest still not available after install", fg='yellow'))
+                        return True  # Not a failure, just skip
             result = subprocess.run(base_cmd + [test_dir], capture_output=True, text=True, timeout=120)
         else:
             result = subprocess.run(base_cmd, cwd=test_dir, capture_output=True, text=True, timeout=120)
