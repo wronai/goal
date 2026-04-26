@@ -4,10 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "goal"
-version = "2.1.202"
+version = "2.1.203"
 description = "Goal - Automated git push with enterprise-grade commit intelligence, smart conventional commit generation based on deep code analysis, and interactive release workflow management."
 readme = "README.md"
-license = "Apache-2.0"
 authors = [
     {name = "Tom Sapletta", email = "tom@sapletta.com"},
 ]
@@ -24,6 +23,9 @@ dependencies = [
     "costs>=0.1.21",
     "tomlkit>=0.12.0",
 ]
+
+[project.license]
+text = "Apache-2.0"
 
 [project.optional-dependencies]
 nfo = [

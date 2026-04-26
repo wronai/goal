@@ -92,6 +92,20 @@ def _run_subdir_test(project_type: str, base_cmd: List[str], test_dir: str) -> b
         if project_type == 'python':
             if Path(test_dir).parent == Path('.'):
                 return True
+            
+            # Check if subproject has a virtual environment (indicates it's set up)
+            project_root = _find_project_root(Path(test_dir), 'python')
+            if project_root:
+                venv_paths = [
+                    project_root / '.venv',
+                    project_root / 'venv',
+                    project_root / 'env',
+                ]
+                has_venv = any(v.exists() for v in venv_paths)
+                if not has_venv:
+                    click.echo(click.style(f"  ⏭️  Skipping {project_root.name}/ - no virtual environment (run 'goal doctor' to set up)", fg='yellow'))
+                    return True  # Not a failure, just not ready
+            
             # Check if pytest is available in the subproject's Python environment
             python_bin = base_cmd[0]
             check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
