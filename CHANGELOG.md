@@ -12,6 +12,11 @@
 - docs(docs): update README and documentation for configuration management and markdown output
 - chore(goal): update CLI docs and tests
 
+## [2.1.197] - 2026-04-26
+
+### Docs
+- Update README.md
+
 ## [2.1.196] - 2026-04-25
 
 ### Docs

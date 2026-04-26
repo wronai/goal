@@ -14,7 +14,7 @@ from goal.push.stages import (
     get_commit_message, enforce_quality_gates, handle_single_commit,
     handle_split_commits, handle_version_sync, get_version_info,
     handle_changelog, run_test_stage, create_tag, push_to_remote,
-    handle_publish, handle_dry_run
+    handle_publish, handle_dry_run, handle_todo_stage
 )
 
 
@@ -223,6 +223,10 @@ def execute_push_workflow(
     no_publish = no_publish or ctx_obj.get('no_publish', False)
     
     project_types = _detect_and_bootstrap_projects(ctx_obj, dry_run, yes)
+    
+    # Handle TODO update via prefact
+    ctx_obj['todo'] = todo
+    handle_todo_stage(ctx_obj, yes, dry_run)
     
     if not dry_run:
         run_git('add', '-A')
