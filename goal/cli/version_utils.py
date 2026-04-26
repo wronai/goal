@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 from typing import Optional, List, Dict
 
+try:
+    import tomlkit
+except ImportError:
+    tomlkit = None
+
 from .version_types import PROJECT_TYPES
 
 
@@ -152,6 +157,40 @@ def _build_author_block(existing_authors: str, author_name: str, author_email: s
 
 def _update_pyproject_metadata(content: str, author_name: str, author_email: str,
                                license_id: str, license_classifier: Optional[str]) -> str:
+    # Use tomlkit if available to preserve structure
+    if tomlkit is not None:
+        try:
+            doc = tomlkit.parse(content)
+            
+            # Update license
+            if 'project' in doc:
+                doc['project']['license'] = {'text': license_id}
+            
+            # Update authors
+            if 'project' in doc and 'authors' in doc['project']:
+                authors = doc['project']['authors']
+                # Check if author already exists
+                author_exists = any(
+                    isinstance(a, dict) and a.get('email') == author_email
+                    for a in authors
+                )
+                if not author_exists:
+                    authors.append({'name': author_name, 'email': author_email})
+            
+            # Update license classifier
+            if license_classifier and 'project' in doc and 'classifiers' in doc['project']:
+                classifiers = doc['project']['classifiers']
+                for i, classifier in enumerate(classifiers):
+                    if 'License :: OSI Approved ::' in classifier:
+                        classifiers[i] = license_classifier
+                        break
+            
+            return tomlkit.dumps(doc)
+        except Exception:
+            # Fallback to regex if tomlkit fails
+            pass
+    
+    # Fallback to regex-based approach
     content = re.sub(
         r'^license\s*=\s*[{{\[].*?[}}\]]',
         f'license = {{text = "{license_id}"}}',

@@ -4,6 +4,11 @@ import re
 from pathlib import Path
 from typing import List
 
+try:
+    import tomlkit
+except ImportError:
+    tomlkit = None
+
 from .version_utils import update_json_version, update_project_metadata, update_readme_metadata
 from goal.version_validation import update_badge_versions
 
@@ -28,21 +33,51 @@ def _update_json_version_file(filename: str, new_version: str, user_config, upda
 def _update_toml_version(filename: str, new_version: str, user_config, updated: List[str]) -> None:
     """Update TOML version file (pyproject.toml)."""
     path = Path(filename)
-    if path.exists():
+    if not path.exists():
+        return
+
+    try:
         content = path.read_text()
-        new_content = re.sub(
-            r'^(version\s*=\s*["\'])\d+\.\d+\.\d+(["\'])',
-            rf'\g<1>{new_version}\g<2>',
-            content,
-            count=1,
-            flags=re.MULTILINE
-        )
-        if new_content != content:
-            path.write_text(new_content)
-            updated.append(filename)
-        if user_config and update_project_metadata(path, user_config):
-            if filename not in updated:
+        # Use tomlkit to preserve formatting and structure
+        if tomlkit is not None:
+            doc = tomlkit.parse(content)
+            if 'project' in doc and 'version' in doc['project']:
+                if doc['project']['version'] != new_version:
+                    doc['project']['version'] = new_version
+                    path.write_text(tomlkit.dumps(doc))
+                    updated.append(filename)
+        else:
+            # Fallback to regex if tomlkit not available
+            new_content = re.sub(
+                r'^(version\s*=\s*["\'])\d+\.\d+\.\d+(["\'])',
+                rf'\g<1>{new_version}\g<2>',
+                content,
+                count=1,
+                flags=re.MULTILINE
+            )
+            if new_content != content:
+                path.write_text(new_content)
                 updated.append(filename)
+    except Exception:
+        # Fallback to regex on any error
+        try:
+            content = path.read_text()
+            new_content = re.sub(
+                r'^(version\s*=\s*["\'])\d+\.\d+\.\d+(["\'])',
+                rf'\g<1>{new_version}\g<2>',
+                content,
+                count=1,
+                flags=re.MULTILINE
+            )
+            if new_content != content:
+                path.write_text(new_content)
+                updated.append(filename)
+        except Exception:
+            pass
+
+    if user_config and update_project_metadata(path, user_config):
+        if filename not in updated:
+            updated.append(filename)
 
 
 def _update_cargo_version(filename: str, new_version: str, user_config, updated: List[str]) -> None:

@@ -3,6 +3,11 @@
 ### Fixed
 - Auto-update prompt no longer blocks help commands (--help, -h) by skipping version banner check
 - Fixed nfo dependency constraint from nfo>=0.3.0 to nfo>=0.2.22 to match available PyPI version
+- Subproject tests now automatically install dev dependencies when pytest is not available
+
+### Changed
+- Updated minimum Python version from 3.8 to 3.10 to match pfix>=0.1.60 requirements
+- Updated tox test matrix from py38,py39,py310,py311,py312 to py310,py311,py312,py313
 
 ### Added
 - **PackageManagerBroker**: Intelligent package manager selection system
@@ -25,6 +30,17 @@
 
 ### Deprecated
 - Legacy `_install_python_deps()` waterfall approach (still works via fallback)
+
+## [2.1.202] - 2026-04-26
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+
+### Other
+- Update .gitignore
+- Update app.doql.css
+- Update uv.lock
 
 ## [2.1.201] - 2026-04-26
 

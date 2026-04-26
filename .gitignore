@@ -1,4 +1,6 @@
 .env.example
+uv.lock
+*.lock
 /tmp/tmp2942h9yo.txt
 /tmp/tmpysed7a9i.txt
 /tmp/tmpj57qtti8.txt

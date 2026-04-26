@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "goal"
-version = "2.1.201"
+version = "2.1.202"
 description = "Goal - Automated git push with enterprise-grade commit intelligence, smart conventional commit generation based on deep code analysis, and interactive release workflow management."
 readme = "README.md"
 license = "Apache-2.0"
@@ -16,12 +16,13 @@ classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 dependencies = [
     "click>=8.0.0",
     "PyYAML>=6.0",
     "clickmd>=0.1.0",
     "costs>=0.1.21",
+    "tomlkit>=0.12.0",
 ]
 
 [project.optional-dependencies]
@@ -55,7 +56,7 @@ homepage = "https://github.com/wronai/goal"
 repository = "https://github.com/wronai/goal"
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.10"
 click = "^8.0.0"
 PyYAML = "^6.0"
 clickmd = "^0.1.0"
@@ -111,7 +112,7 @@ deduplicate = true
 [tool.tox]
 legacy_tox_ini = """
 [tox]
-envlist = py38,py39,py310,py311,py312
+envlist = py310,py311,py312,py313
 isolated_build = true
 
 [testenv]

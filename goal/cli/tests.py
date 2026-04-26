@@ -92,6 +92,29 @@ def _run_subdir_test(project_type: str, base_cmd: List[str], test_dir: str) -> b
         if project_type == 'python':
             if Path(test_dir).parent == Path('.'):
                 return True
+            # Check if pytest is available in the subproject's Python environment
+            python_bin = base_cmd[0]
+            check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
+            if check_result.returncode != 0:
+                # Try to install dev dependencies
+                project_root = _find_project_root(Path(test_dir), 'python')
+                if project_root:
+                    click.echo(click.style(f"\n  📦 Installing dev dependencies in {project_root}/", fg='cyan'))
+                    install_result = subprocess.run(
+                        [python_bin, '-m', 'pip', 'install', '-e', '.[dev]'],
+                        cwd=project_root,
+                        capture_output=True,
+                        text=True,
+                        timeout=120
+                    )
+                    if install_result.returncode != 0:
+                        click.echo(click.style(f"\n  ❌ Failed to install dev dependencies in {project_root}/", fg='red'))
+                        if install_result.stderr:
+                            click.echo(click.style("  stderr:", fg='yellow'))
+                            for line in install_result.stderr.strip().split('\n')[:10]:
+                                click.echo(f"    {line}")
+                        click.echo(click.style(f"\n  💡 Fix: cd {project_root} && {python_bin} -m pip install -e .[dev]", fg='cyan'))
+                        return False
             result = subprocess.run(base_cmd + [test_dir], capture_output=True, text=True, timeout=120)
         else:
             result = subprocess.run(base_cmd, cwd=test_dir, capture_output=True, text=True, timeout=120)
