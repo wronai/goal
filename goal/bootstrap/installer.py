@@ -198,23 +198,55 @@ def _ensure_python_env(project_dir: Path, cfg: ProjectTemplate, yes: bool) -> bo
     return _ensure_python_test_dependency(project_dir, python_bin, test_dep)
 
 
-def _ensure_generic_env(project_dir: Path, project_type: str, cfg: ProjectTemplate, yes: bool) -> bool:
-    """Set up a non-Python project environment (Node, Rust, Go, etc.)."""
+def _needs_install(project_dir: Path, cfg: ProjectTemplate) -> bool:
+    """Check if dependency installation is needed for a non-Python project."""
     env_dir = cfg.env_dir if isinstance(cfg, ProjectTemplate) else cfg.get('env_dir')
     if env_dir and (project_dir / env_dir).exists():
-        return True  # Already set up
+        return False  # Already set up
 
-    needs_install = env_dir and not (project_dir / env_dir).exists()
+    if env_dir and not (project_dir / env_dir).exists():
+        return True
+
     dep_commands = cfg.dep_install_commands if isinstance(cfg, ProjectTemplate) else cfg.get('dep_install_commands', [])
-    
-    if not needs_install:
-        for dep_cfg in dep_commands:
-            condition = dep_cfg['condition'] if isinstance(dep_cfg, dict) else dep_cfg.get('condition')
-            if _match_marker(project_dir, condition):
-                needs_install = True
-                break
+    for dep_cfg in dep_commands:
+        condition = dep_cfg['condition'] if isinstance(dep_cfg, dict) else dep_cfg.get('condition')
+        if _match_marker(project_dir, condition):
+            return True
 
-    if not needs_install:
+    return False
+
+
+def _run_dep_install(project_dir: Path, dep_cfg: dict) -> bool:
+    """Run a single dependency install command. Returns True if successful."""
+    cmd = dep_cfg['cmd'] if isinstance(dep_cfg, dict) else dep_cfg.get('cmd')
+    tool = cmd.split()[0]
+    if not shutil.which(tool):
+        click.echo(click.style(f"  ⚠  '{tool}' not found in PATH, skipping", fg='yellow'))
+        return False
+
+    click.echo(click.style(f"  Installing deps: {cmd}", fg='cyan'))
+    result = subprocess.run(cmd, shell=True, cwd=str(project_dir),
+                            capture_output=True, text=True)
+    if result.returncode == 0:
+        click.echo(click.style("  ✓ Dependencies installed", fg='green'))
+        return True
+    else:
+        click.echo(click.style(f"  ⚠  Install had issues (exit {result.returncode})", fg='yellow'))
+        return False
+
+
+def _get_matching_dep_command(project_dir: Path, dep_commands: list) -> Optional[dict]:
+    """Find the first dependency install command that matches the project."""
+    for dep_cfg in dep_commands:
+        condition = dep_cfg['condition'] if isinstance(dep_cfg, dict) else dep_cfg.get('condition')
+        if _match_marker(project_dir, condition):
+            return dep_cfg
+    return None
+
+
+def _ensure_generic_env(project_dir: Path, project_type: str, cfg: ProjectTemplate, yes: bool) -> bool:
+    """Set up a non-Python project environment (Node, Rust, Go, etc.)."""
+    if not _needs_install(project_dir, cfg):
         return True
 
     if not yes:
@@ -222,23 +254,10 @@ def _ensure_generic_env(project_dir: Path, project_type: str, cfg: ProjectTempla
         if not click.confirm(click.style("Install dependencies?", fg='cyan'), default=True):
             return True
 
-    for dep_cfg in dep_commands:
-        condition = dep_cfg['condition'] if isinstance(dep_cfg, dict) else dep_cfg.get('condition')
-        if not _match_marker(project_dir, condition):
-            continue
-        cmd = dep_cfg['cmd'] if isinstance(dep_cfg, dict) else dep_cfg.get('cmd')
-        tool = cmd.split()[0]
-        if not shutil.which(tool):
-            click.echo(click.style(f"  ⚠  '{tool}' not found in PATH, skipping", fg='yellow'))
-            continue
-        click.echo(click.style(f"  Installing deps: {cmd}", fg='cyan'))
-        result = subprocess.run(cmd, shell=True, cwd=str(project_dir),
-                                capture_output=True, text=True)
-        if result.returncode == 0:
-            click.echo(click.style("  ✓ Dependencies installed", fg='green'))
-        else:
-            click.echo(click.style(f"  ⚠  Install had issues (exit {result.returncode})", fg='yellow'))
-        break
+    dep_commands = cfg.dep_install_commands if isinstance(cfg, ProjectTemplate) else cfg.get('dep_install_commands', [])
+    dep_cfg = _get_matching_dep_command(project_dir, dep_commands)
+    if dep_cfg:
+        _run_dep_install(project_dir, dep_cfg)
 
     return True
 

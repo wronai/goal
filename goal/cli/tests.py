@@ -59,6 +59,7 @@ _SKIP_DIRS = {'venv', '.venv', 'build', 'dist', '__pycache__', 'node_modules'}
 
 def _find_python_test_dirs() -> List[str]:
     """Find subdirectories containing Python test files that belong to a real sub-project."""
+    seen_roots: set = set()
     dirs: List[str] = []
     for root, child_dirs, files in os.walk('.'):
         child_dirs[:] = [d for d in child_dirs if not d.startswith('.') and d not in _SKIP_DIRS]
@@ -69,7 +70,11 @@ def _find_python_test_dirs() -> List[str]:
         project_root = _find_project_root(Path(root), 'python')
         if project_root is None or project_root == Path('.'):
             continue
-        dirs.append(root)
+        root_key = str(project_root.resolve())
+        if root_key in seen_roots:
+            continue
+        seen_roots.add(root_key)
+        dirs.append(str(project_root))
     return dirs
 
 
@@ -86,75 +91,100 @@ def _find_nodejs_test_dirs() -> List[str]:
     return dirs
 
 
+def _check_python_venv(project_root: Optional[Path]) -> tuple[bool, Optional[Path]]:
+    """Check if Python project has a virtual environment. Returns (has_venv, project_root)."""
+    if not project_root:
+        return False, None
+    venv_paths = [
+        project_root / '.venv',
+        project_root / 'venv',
+        project_root / 'env',
+    ]
+    has_venv = any(v.exists() for v in venv_paths)
+    return has_venv, project_root
+
+
+def _ensure_pytest(python_bin: str, project_root: Optional[Path]) -> bool:
+    """Ensure pytest is available in the project. Returns True if available."""
+    check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
+    if check_result.returncode == 0:
+        return True
+    # Try to install pytest directly first
+    if project_root:
+        subprocess.run(
+            [python_bin, '-m', 'pip', 'install', 'pytest'],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+            timeout=60
+        )
+        check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
+    return check_result.returncode == 0
+
+
+def _display_test_error(result: subprocess.CompletedProcess, test_dir: str, project_type: str) -> None:
+    """Display test failure output."""
+    click.echo(click.style(f"\n  ❌ Tests failed in {test_dir}/", fg='red'))
+    if result.stdout:
+        click.echo(click.style("  stdout:", fg='yellow'))
+        for line in result.stdout.strip().split('\n')[:10]:
+            click.echo(f"    {line}")
+    if result.stderr:
+        click.echo(click.style("  stderr:", fg='yellow'))
+        for line in result.stderr.strip().split('\n')[:10]:
+            click.echo(f"    {line}")
+    if project_type == 'nodejs':
+        if not (Path(test_dir) / 'node_modules').exists():
+            click.echo(click.style(f"\n  💡 Fix: cd {test_dir} && npm install", fg='cyan'))
+        elif 'Cannot find module' in (result.stderr or ''):
+            click.echo(click.style(f"\n  💡 Fix: cd {test_dir} && npm run compile", fg='cyan'))
+
+
+def _run_python_test(test_dir: str, base_cmd: List[str]) -> tuple[bool, bool]:
+    """Run Python tests in a subdirectory. Returns (success, skipped)."""
+    project_root = _find_project_root(Path(test_dir), 'python')
+    if project_root:
+        has_venv, _ = _check_python_venv(project_root)
+        if not has_venv:
+            click.echo(click.style(
+                f"  ⏭️  Skipping {project_root.name}/ - no virtual environment (run 'goal doctor' to set up)",
+                fg='yellow'
+            ))
+            return True, True  # Not a failure, just not ready
+
+    python_bin = _find_python_bin(project_root) if project_root else base_cmd[0]
+    if not _ensure_pytest(python_bin, project_root):
+        click.echo(click.style(
+            f"\n  ⏭️  Skipping {project_root.name if project_root else test_dir}/ - pytest not available",
+            fg='yellow'
+        ))
+        return True, True  # Not a failure, just skip
+
+    subdir_cmd = [python_bin, '-m', 'pytest']
+    result = subprocess.run(subdir_cmd + [test_dir], capture_output=True, text=True, timeout=120)
+    if result.returncode != 0:
+        _display_test_error(result, test_dir, 'python')
+        return False, False
+    return True, False
+
+
+def _run_nodejs_test(test_dir: str, base_cmd: List[str]) -> bool:
+    """Run Node.js tests in a subdirectory. Returns True on success."""
+    result = subprocess.run(base_cmd, cwd=test_dir, capture_output=True, text=True, timeout=120)
+    if result.returncode != 0:
+        _display_test_error(result, test_dir, 'nodejs')
+        return False
+    return True
+
+
 def _run_subdir_test(project_type: str, base_cmd: List[str], test_dir: str) -> bool:
     """Run a single sub-directory test. Returns True on success."""
     try:
         if project_type == 'python':
-            if Path(test_dir).parent == Path('.'):
-                return True
-            
-            # Check if subproject has a virtual environment (indicates it's set up)
-            project_root = _find_project_root(Path(test_dir), 'python')
-            if project_root:
-                venv_paths = [
-                    project_root / '.venv',
-                    project_root / 'venv',
-                    project_root / 'env',
-                ]
-                has_venv = any(v.exists() for v in venv_paths)
-                if not has_venv:
-                    click.echo(click.style(f"  ⏭️  Skipping {project_root.name}/ - no virtual environment (run 'goal doctor' to set up)", fg='yellow'))
-                    return True  # Not a failure, just not ready
-            
-            # Check if pytest is available in the subproject's Python environment
-            python_bin = base_cmd[0]
-            check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
-            if check_result.returncode != 0:
-                # Try to install dev dependencies
-                project_root = _find_project_root(Path(test_dir), 'python')
-                if project_root:
-                    click.echo(click.style(f"\n  📦 Installing dev dependencies in {project_root}/", fg='cyan'))
-                    install_result = subprocess.run(
-                        [python_bin, '-m', 'pip', 'install', '-e', '.[dev]'],
-                        cwd=project_root,
-                        capture_output=True,
-                        text=True,
-                        timeout=120
-                    )
-                    if install_result.returncode != 0:
-                        click.echo(click.style(f"\n  ❌ Failed to install dev dependencies in {project_root}/", fg='red'))
-                        if install_result.stderr:
-                            click.echo(click.style("  stderr:", fg='yellow'))
-                            for line in install_result.stderr.strip().split('\n')[:10]:
-                                click.echo(f"    {line}")
-                        click.echo(click.style(f"\n  💡 Fix: cd {project_root} && {python_bin} -m pip install -e .[dev]", fg='cyan'))
-                        click.echo(click.style(f"\n  ⏭️  Skipping {project_root.name}/ tests", fg='yellow'))
-                        return True  # Not a failure, just skip
-                    # Re-check after installation
-                    check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
-                    if check_result.returncode != 0:
-                        click.echo(click.style(f"\n  ⏭️  Skipping {project_root.name}/ - pytest still not available after install", fg='yellow'))
-                        return True  # Not a failure, just skip
-            result = subprocess.run(base_cmd + [test_dir], capture_output=True, text=True, timeout=120)
+            success, _ = _run_python_test(test_dir, base_cmd)
+            return success
         else:
-            result = subprocess.run(base_cmd, cwd=test_dir, capture_output=True, text=True, timeout=120)
-        if result.returncode != 0:
-            click.echo(click.style(f"\n  ❌ Tests failed in {test_dir}/", fg='red'))
-            if result.stdout:
-                click.echo(click.style("  stdout:", fg='yellow'))
-                for line in result.stdout.strip().split('\n')[:10]:
-                    click.echo(f"    {line}")
-            if result.stderr:
-                click.echo(click.style("  stderr:", fg='yellow'))
-                for line in result.stderr.strip().split('\n')[:10]:
-                    click.echo(f"    {line}")
-            if project_type == 'nodejs':
-                if not (Path(test_dir) / 'node_modules').exists():
-                    click.echo(click.style(f"\n  💡 Fix: cd {test_dir} && npm install", fg='cyan'))
-                elif 'Cannot find module' in (result.stderr or ''):
-                    click.echo(click.style(f"\n  💡 Fix: cd {test_dir} && npm run compile", fg='cyan'))
-            return False
-        return True
+            return _run_nodejs_test(test_dir, base_cmd)
     except Exception as e:
         click.echo(click.style(f"\n  ❌ Error running tests in {test_dir}/: {e}", fg='red'))
         return False
@@ -189,7 +219,17 @@ def run_tests(project_types: List[str]) -> bool:
             continue
 
         if ptype == 'python':
-            test_cmd = [_find_python_bin(Path.cwd()), '-m', 'pytest']
+            python_bin = _find_python_bin(Path.cwd())
+            check = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
+            if check.returncode != 0:
+                pytest_path = shutil.which('pytest')
+                if pytest_path:
+                    test_cmd = [pytest_path]
+                else:
+                    import sys
+                    test_cmd = [sys.executable, '-m', 'pytest']
+            else:
+                test_cmd = [python_bin, '-m', 'pytest']
         else:
             test_cmd = test_cmd_str.split()
         

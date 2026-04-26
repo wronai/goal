@@ -155,42 +155,52 @@ def _build_author_block(existing_authors: str, author_name: str, author_email: s
     return authors_block
 
 
-def _update_pyproject_metadata(content: str, author_name: str, author_email: str,
-                               license_id: str, license_classifier: Optional[str]) -> str:
-    # Use tomlkit if available to preserve structure
-    if tomlkit is not None:
-        try:
-            doc = tomlkit.parse(content)
-            
-            # Update license
-            if 'project' in doc:
-                doc['project']['license'] = {'text': license_id}
-            
-            # Update authors
-            if 'project' in doc and 'authors' in doc['project']:
-                authors = doc['project']['authors']
-                # Check if author already exists
-                author_exists = any(
-                    isinstance(a, dict) and a.get('email') == author_email
-                    for a in authors
-                )
-                if not author_exists:
-                    authors.append({'name': author_name, 'email': author_email})
-            
-            # Update license classifier
-            if license_classifier and 'project' in doc and 'classifiers' in doc['project']:
-                classifiers = doc['project']['classifiers']
-                for i, classifier in enumerate(classifiers):
-                    if 'License :: OSI Approved ::' in classifier:
-                        classifiers[i] = license_classifier
-                        break
-            
-            return tomlkit.dumps(doc)
-        except Exception:
-            # Fallback to regex if tomlkit fails
-            pass
-    
-    # Fallback to regex-based approach
+def _update_tomlkit_license(doc: tomlkit.TOMLDocument, license_id: str) -> None:
+    """Update license in tomlkit document."""
+    if 'project' in doc:
+        doc['project']['license'] = {'text': license_id}
+
+
+def _update_tomlkit_authors(doc: tomlkit.TOMLDocument, author_name: str, author_email: str) -> None:
+    """Update authors in tomlkit document."""
+    if 'project' in doc and 'authors' in doc['project']:
+        authors = doc['project']['authors']
+        author_exists = any(
+            isinstance(a, dict) and a.get('email') == author_email
+            for a in authors
+        )
+        if not author_exists:
+            authors.append({'name': author_name, 'email': author_email})
+
+
+def _update_tomlkit_classifier(doc: tomlkit.TOMLDocument, license_classifier: str) -> None:
+    """Update license classifier in tomlkit document."""
+    if 'project' in doc and 'classifiers' in doc['project']:
+        classifiers = doc['project']['classifiers']
+        for i, classifier in enumerate(classifiers):
+            if 'License :: OSI Approved ::' in classifier:
+                classifiers[i] = license_classifier
+                break
+
+
+def _update_pyproject_with_tomlkit(content: str, author_name: str, author_email: str,
+                                   license_id: str, license_classifier: Optional[str]) -> Optional[str]:
+    """Update pyproject.toml using tomlkit. Returns updated content or None if failed."""
+    if tomlkit is None:
+        return None
+    try:
+        doc = tomlkit.parse(content)
+        _update_tomlkit_license(doc, license_id)
+        _update_tomlkit_authors(doc, author_name, author_email)
+        if license_classifier:
+            _update_tomlkit_classifier(doc, license_classifier)
+        return tomlkit.dumps(doc)
+    except Exception:
+        return None
+
+
+def _update_regex_license(content: str, license_id: str) -> str:
+    """Update license field using regex."""
     content = re.sub(
         r'^license\s*=\s*[{{\[].*?[}}\]]',
         f'license = {{text = "{license_id}"}}',
@@ -203,7 +213,11 @@ def _update_pyproject_metadata(content: str, author_name: str, author_email: str
         content,
         flags=re.MULTILINE
     )
+    return content
 
+
+def _update_regex_authors(content: str, author_name: str, author_email: str) -> str:
+    """Update authors field using regex."""
     authors_match = re.search(r'authors\s*=\s*\[(.*?)\]', content, re.DOTALL)
     if authors_match and author_email not in authors_match.group(1):
         authors_block = _build_author_block(authors_match.group(1), author_name, author_email)
@@ -213,7 +227,11 @@ def _update_pyproject_metadata(content: str, author_name: str, author_email: str
             content,
             flags=re.DOTALL
         )
+    return content
 
+
+def _update_regex_classifier(content: str, license_classifier: Optional[str]) -> str:
+    """Update license classifier using regex."""
     if license_classifier:
         content = re.sub(
             r'"License :: OSI Approved :: .*?"',
@@ -221,8 +239,30 @@ def _update_pyproject_metadata(content: str, author_name: str, author_email: str
             content,
             flags=re.MULTILINE
         )
-
     return content
+
+
+def _update_pyproject_with_regex(content: str, author_name: str, author_email: str,
+                                 license_id: str, license_classifier: Optional[str]) -> str:
+    """Update pyproject.toml using regex fallback."""
+    content = _update_regex_license(content, license_id)
+    content = _update_regex_authors(content, author_name, author_email)
+    content = _update_regex_classifier(content, license_classifier)
+    return content
+
+
+def _update_pyproject_metadata(content: str, author_name: str, author_email: str,
+                               license_id: str, license_classifier: Optional[str]) -> str:
+    """Update pyproject.toml metadata with author and license information."""
+    # Try tomlkit first
+    result = _update_pyproject_with_tomlkit(content, author_name, author_email,
+                                            license_id, license_classifier)
+    if result is not None:
+        return result
+
+    # Fallback to regex-based approach
+    return _update_pyproject_with_regex(content, author_name, author_email,
+                                        license_id, license_classifier)
 
 
 def _update_package_json_metadata(content: str, author_name: str, author_email: str,

@@ -393,7 +393,13 @@ class TestPushWorkflowE2E:
             assert run_tests(['python']) is True
 
         mock_find_python_bin.assert_called_once()
-        mock_subprocess_run.assert_called_once_with(
+        assert mock_subprocess_run.call_count == 2
+        mock_subprocess_run.assert_any_call(
+            ['/tmp/project/.venv/bin/python', '-c', 'import pytest'],
+            capture_output=True,
+            text=True,
+        )
+        mock_subprocess_run.assert_any_call(
             ['/tmp/project/.venv/bin/python', '-m', 'pytest'],
             capture_output=False,
             text=True,
