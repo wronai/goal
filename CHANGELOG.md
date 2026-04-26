@@ -1,5 +1,37 @@
 ## [Unreleased]
 
+### Added
+- **PackageManagerBroker**: Intelligent package manager selection system
+  - Automatic detection of uv, pdm, poetry, pip with priority-based selection
+  - Lockfile-aware installation (uv.lock, poetry.lock, pdm.lock detection)
+  - Auto-installation of uv when missing: `pip install uv --quiet`
+  - Timing and fallback reporting: "✅ uv (12.3s) | fallback: pip"
+  - New module `goal/installers/` with abstract base class and manager implementations
+  - UvManager (priority=10), PdmManager (priority=20), PoetryManager (priority=30), PipManager (priority=100)
+- **`goal doctor --manager`**: Force specific package manager for dependency installation
+- **21 new E2E tests** for installer system in `tests/test_installers_e2e.py`
+
+### Changed
+- **Refactored bootstrap system**: Split `project_bootstrap.py` (1265L) → `goal/bootstrap/` module
+  - `goal/bootstrap/detector.py` - Project type detection
+  - `goal/bootstrap/templates.py` - Project templates and configuration
+  - `goal/bootstrap/installer.py` - Environment setup with PackageManagerBroker integration
+  - `goal/bootstrap/configurator.py` - Test scaffolding and configuration helpers
+  - Full backward compatibility maintained via re-exports in `goal/project_bootstrap.py`
+
+### Deprecated
+- Legacy `_install_python_deps()` waterfall approach (still works via fallback)
+
+## [2.1.199] - 2026-04-26
+
+### Docs
+- Update CHANGELOG.md
+- Update README.md
+- Update TODO.md
+
+### Test
+- Update tests/test_installers_e2e.py
+
 ## [2.1.198] - 2026-04-26
 
 ### Docs

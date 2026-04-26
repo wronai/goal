@@ -5,7 +5,7 @@
 
 
 <p align="center">
-  <img src="https://img.shields.io/badge/version-2.1.198-blue.svg" alt="Version">
+  <img src="https://img.shields.io/badge/version-2.1.199-blue.svg" alt="Version">
   <img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python">
   <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License">
   <img src="https://img.shields.io/badge/pypi-goal-orange.svg" alt="PyPI">
@@ -23,11 +23,11 @@
 
 ## AI Cost Tracking
 
-![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-2.1.198-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
-![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-71.8h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fx--ai%2Fgrok--code--fast--1-lightgrey)
+![PyPI](https://img.shields.io/badge/pypi-costs-blue) ![Version](https://img.shields.io/badge/version-2.1.199-blue) ![Python](https://img.shields.io/badge/python-3.9+-blue) ![License](https://img.shields.io/badge/license-Apache--2.0-green)
+![AI Cost](https://img.shields.io/badge/AI%20Cost-$7.50-orange) ![Human Time](https://img.shields.io/badge/Human%20Time-72.5h-blue) ![Model](https://img.shields.io/badge/Model-openrouter%2Fx--ai%2Fgrok--code--fast--1-lightgrey)
 
-- 🤖 **LLM usage:** $7.5000 (228 commits)
-- 👤 **Human dev:** ~$7182 (71.8h @ $100/h, 30min dedup)
+- 🤖 **LLM usage:** $7.5000 (229 commits)
+- 👤 **Human dev:** ~$7248 (72.5h @ $100/h, 30min dedup)
 
 Generated on 2026-04-26 using [openrouter/x-ai/grok-code-fast-1](https://openrouter.ai/x-ai/grok-code-fast-1)
 
@@ -58,6 +58,47 @@ goal push      # Runs tests, suggests a commit, bumps patch, updates changelog, 
 # 3. CI/CD or cron-driven release
 goal --all --bump minor   # Non-interactive; perfect for nightly builds or release pipelines.
 ```
+
+## 🆕 What's New in v2.2.1
+
+> **Intelligent Package Manager Broker** — Automatic detection and selection of the fastest available package manager (uv, pdm, poetry, pip)
+
+### ✨ New Features
+
+**📦 PackageManagerBroker**
+- Automatic detection of available package managers (uv, pdm, poetry, pip)
+- Lockfile-aware installation (uv.lock → uv sync, poetry.lock → poetry install)
+- Priority-based selection (uv fastest, pip as fallback)
+- Auto-installation of uv when missing and pip is available
+- Smart dependency installation with timing and reporting
+
+```bash
+# Doctor shows available managers
+goal doctor
+📦 Available package managers:
+   ✓ uv       ⚡ fast   
+     poetry   ⚡ fast   🔒
+     pip      🐢 slow
+
+# Force specific manager
+goal doctor --manager uv
+```
+
+**⚡ Faster Python Installs**
+- uv integration: 5-30s installs vs 2-10min with pip
+- Automatic uv installation: `pip install uv` when uv missing
+- Lockfile-first strategy: sync from lock when available
+- Detailed timing reports: "✅ uv (12.3s) | fallback: pip"
+
+### 🔧 Architecture Improvements
+
+**Refactored Bootstrap System**
+- Split `project_bootstrap.py` (1265L) → `goal/bootstrap/` module
+- `goal/installers/` - new package manager abstraction layer
+- `goal/bootstrap/installer.py` - unified installation interface
+- Full backward compatibility maintained
+
+---
 
 ## 🆕 What's New in v2.2.0
 
