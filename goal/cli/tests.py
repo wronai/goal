@@ -1,7 +1,6 @@
 """Test running functions - extracted from cli.py."""
 
 import subprocess
-import os
 import shutil
 from pathlib import Path
 from typing import List, Optional
@@ -57,24 +56,55 @@ def _find_project_root(path: Path, project_type: str) -> Optional[Path]:
 _SKIP_DIRS = {'venv', '.venv', 'build', 'dist', '__pycache__', 'node_modules'}
 
 
+def _resolve_project_python(project_root: Optional[Path], fallback_python: str) -> str:
+    """Resolve Python interpreter for a subproject, preferring its own virtualenv."""
+    if not project_root:
+        return fallback_python
+    try:
+        candidate = Path(_find_python_bin(project_root))
+        if not candidate.is_absolute():
+            candidate = (Path.cwd() / candidate).resolve()
+        return str(candidate)
+    except Exception:
+        return fallback_python
+
+
 def _find_python_test_dirs() -> List[str]:
-    """Find subdirectories containing Python test files that belong to a real sub-project."""
-    seen_roots: set = set()
-    dirs: List[str] = []
-    for root, child_dirs, files in os.walk('.'):
-        child_dirs[:] = [d for d in child_dirs if not d.startswith('.') and d not in _SKIP_DIRS]
-        if root == '.':
+    """Find Python subproject test targets (tests/ dir preferred, otherwise project root)."""
+    cwd = Path('.').resolve()
+    seen_roots: set[str] = set()
+    project_roots: List[Path] = []
+
+    for test_file in Path('.').rglob('test_*.py'):
+        if set(test_file.parts) & _SKIP_DIRS:
             continue
-        if not any(f.startswith('test_') and f.endswith('.py') for f in files):
+
+        project_root = _find_project_root(test_file.parent, 'python')
+        if project_root is None:
             continue
-        project_root = _find_project_root(Path(root), 'python')
-        if project_root is None or project_root == Path('.'):
+
+        try:
+            resolved_root = project_root.resolve()
+        except Exception:
+            resolved_root = project_root
+
+        if resolved_root == cwd:
             continue
-        root_key = str(project_root.resolve())
+
+        root_key = str(resolved_root)
         if root_key in seen_roots:
             continue
         seen_roots.add(root_key)
-        dirs.append(str(project_root))
+        project_roots.append(project_root)
+
+    dirs: List[str] = []
+    for root in project_roots:
+        tests_dir = root / 'tests'
+        if tests_dir.is_dir():
+            dirs.append(str(tests_dir))
+        else:
+            dirs.append(str(root))
+
     return dirs
 
 
@@ -104,22 +134,48 @@ def _check_python_venv(project_root: Optional[Path]) -> tuple[bool, Optional[Pat
     return has_venv, project_root
 
 
-def _ensure_pytest(python_bin: str, project_root: Optional[Path]) -> bool:
-    """Ensure pytest is available in the project. Returns True if available."""
-    check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
+def _ensure_pytest_for_project(project_root: Path, python_bin: str) -> bool:
+    """Ensure pytest is available in the subproject environment."""
+    check_result = subprocess.run(
+        [python_bin, '-c', 'import pytest'],
+        cwd=project_root,
+        capture_output=True,
+        text=True,
+    )
     if check_result.returncode == 0:
         return True
-    # Try to install pytest directly first
-    if project_root:
-        subprocess.run(
-            [python_bin, '-m', 'pip', 'install', 'pytest'],
+
+    click.echo(click.style(f"\n  📦 Installing test dependencies in {project_root}/", fg='cyan'))
+
+    install_attempts = [
+        [python_bin, '-m', 'pip', 'install', '-e', '.[dev]'],
+        [python_bin, '-m', 'pip', 'install', '-e', '.'],
+        [python_bin, '-m', 'pip', 'install', 'pytest', 'pytest-cov'],
+    ]
+
+    for cmd in install_attempts:
+        install_result = subprocess.run(
+            cmd,
             cwd=project_root,
             capture_output=True,
             text=True,
-            timeout=60
+            timeout=120,
         )
-        check_result = subprocess.run([python_bin, '-c', 'import pytest'], capture_output=True, text=True)
-    return check_result.returncode == 0
+        if install_result.returncode != 0:
+            continue
+
+        verify = subprocess.run(
+            [python_bin, '-c', 'import pytest'],
+            cwd=project_root,
+            capture_output=True,
+            text=True,
+        )
+        if verify.returncode == 0:
+            return True
+
+    click.echo(click.style(f"\n  ❌ Failed to install test dependencies in {project_root}/", fg='red'))
+    click.echo(click.style(f"  💡 Fix: cd {project_root} && {python_bin} -m pip install -e .[dev]", fg='cyan'))
+    return False
 
 
 def _display_test_error(result: subprocess.CompletedProcess, test_dir: str, project_type: str) -> None:
@@ -143,22 +199,24 @@ def _display_test_error(result: subprocess.CompletedProcess, test_dir: str, proj
 def _run_python_test(test_dir: str, base_cmd: List[str]) -> tuple[bool, bool]:
     """Run Python tests in a subdirectory. Returns (success, skipped)."""
     project_root = _find_project_root(Path(test_dir), 'python')
-    if project_root:
-        has_venv, _ = _check_python_venv(project_root)
-        if not has_venv:
-            click.echo(click.style(
-                f"  ⏭️  Skipping {project_root.name}/ - no virtual environment (run 'goal doctor' to set up)",
-                fg='yellow'
-            ))
-            return True, True  # Not a failure, just not ready
+    if not project_root:
+        return True, True
 
-    python_bin = _find_python_bin(project_root) if project_root else base_cmd[0]
-    if not _ensure_pytest(python_bin, project_root):
+    has_venv, _ = _check_python_venv(project_root)
+    if not has_venv:
         click.echo(click.style(
-            f"\n  ⏭️  Skipping {project_root.name if project_root else test_dir}/ - pytest not available",
+            f"  ⏭️  Skipping {project_root.name}/ - no virtual environment (run 'goal doctor' to set up)",
             fg='yellow'
         ))
-        return True, True  # Not a failure, just skip
+        return True, True
+
+    python_bin = _resolve_project_python(project_root, base_cmd[0])
+    if not _ensure_pytest_for_project(project_root, python_bin):
+        click.echo(click.style(
+            f"\n  ⏭️  Skipping {project_root.name}/ tests",
+            fg='yellow'
+        ))
+        return True, True
 
     subdir_cmd = [python_bin, '-m', 'pytest']
     result = subprocess.run(subdir_cmd + [test_dir], capture_output=True, text=True, timeout=120)

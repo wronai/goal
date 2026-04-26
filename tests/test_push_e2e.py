@@ -381,11 +381,7 @@ class TestPushWorkflowE2E:
         """Test that the canonical top-level tests dir is not rerun as a subdir scan."""
         from goal.cli.tests import run_tests
 
-        def fake_walk(_):
-            yield ('.', ['tests'], [])
-            yield ('./tests', [], ['test_example.py'])
-
-        with patch('goal.cli.tests.os.walk', side_effect=fake_walk), \
+        with patch('goal.cli.tests._find_python_test_dirs', return_value=[]), \
              patch('goal.cli.tests._find_python_bin', return_value='/tmp/project/.venv/bin/python') as mock_find_python_bin, \
              patch('goal.cli.tests.subprocess.run') as mock_subprocess_run:
             mock_subprocess_run.return_value = MagicMock(returncode=0)

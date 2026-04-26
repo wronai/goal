@@ -27,6 +27,30 @@ from goal.cli_helpers import split_paths_by_type, stage_paths, confirm, strip_an
 DOCS_URL = "https://github.com/wronai/goal#readme"
 
 
+def _warn_goal_binary_mismatch() -> None:
+    """Warn when a global goal package is used while a virtualenv is active."""
+    venv = os.environ.get("VIRTUAL_ENV")
+    if not venv:
+        return
+
+    try:
+        pkg_path = os.path.abspath(getattr(goal, "__file__", ""))
+    except Exception:
+        return
+
+    user_site_prefix = os.path.expanduser("~/.local/lib/")
+    if not pkg_path.startswith(user_site_prefix):
+        return
+
+    venv_goal_bin = os.path.join(venv, "bin", "goal")
+    if os.path.exists(venv_goal_bin):
+        click.echo(click.style(
+            f"⚠ Using global goal from {pkg_path} while VIRTUAL_ENV={venv}",
+            fg="yellow",
+        ))
+        click.echo(click.style(f"  Prefer: {venv_goal_bin} ...", fg="cyan"))
+
+
 def _setup_nfo_logging(nfo_format: str = "markdown", nfo_sink: str = ""):
     """Configure nfo logging for the goal CLI session."""
     if not _HAS_NFO:
@@ -144,14 +168,13 @@ class GoalGroup(click.Group):
         rv = super().get_command(ctx, cmd_name)
         if rv is not None:
             return rv
+        if cmd_name == 'push':
+            click.echo(click.style("Command 'push' is unavailable (likely incomplete/broken goal installation).", fg='red', bold=True))
+            click.echo(click.style("Try: python -m pip install -U --force-reinstall goal", fg='cyan'))
+            click.echo(click.style("If multiple goal binaries exist, run the one from your project venv.", fg='yellow'))
+            click.echo()
         # Unknown command - show helpful message with docs URL
         click.echo(click.style(f"The requested command {cmd_name} does not exist.\n", fg='red', bold=True))
-        
-        # Special hint for push command (indicates old version)
-        if cmd_name == 'push':
-            click.echo(click.style("💡 This command was added in recent versions. Update goal:\n", fg='cyan'))
-            click.echo(click.style("   pip install -U goal\n", fg='yellow'))
-        
         click.echo(click.style(f"Documentation: {DOCS_URL}", fg='cyan'))
         click.echo()
         click.echo(click.style("Available commands:", fg='cyan', bold=True))
@@ -167,8 +190,9 @@ class GoalGroup(click.Group):
         )
         
         if has_all_flag and not has_subcommand:
-            # Default to push command
-            args = args + ['push']
+            push_cmd = click.Group.get_command(self, ctx, 'push')
+            if push_cmd is not None:
+                args = args + ['push']
         
         return super().parse_args(ctx, args)
 
@@ -194,6 +218,7 @@ def main(ctx, bump, target_version, yes, all_flags, no_publish, todo, markdown, 
     # Check both sys.argv and Click's resilient_parsing (used for --help)
     is_help_request = '--help' in sys.argv or '-h' in sys.argv or ctx.resilient_parsing
     if not is_help_request:
+        _warn_goal_binary_mismatch()
         _show_goal_version_banner()
     _setup_nfo_logging(nfo_format, nfo_sink)
 
