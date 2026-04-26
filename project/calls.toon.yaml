@@ -1,12 +1,12 @@
 # code2llm call graph | /home/tom/github/semcod/goal
-# nodes: 380 | edges: 500 | modules: 78
+# nodes: 398 | edges: 500 | modules: 91
 # CC̄=0.2
 
 HUBS[20]:
   Taskfile.print
     CC=0  in:255  out:0  total:255
   testql-scenarios.generated-from-pytests.testql.toon.any
-    CC=0  in:65  out:0  total:65
+    CC=0  in:67  out:0  total:67
   goal.cli.wizard_cmd._setup_project_config
     CC=9  in:1  out:55  total:56
   goal.user_config.initialize_user_config
@@ -27,20 +27,20 @@ HUBS[20]:
     CC=12  in:0  out:38  total:38
   examples.api-usage.02_git_operations.main
     CC=15  in:0  out:38  total:38
-  goal.cli.doctor_cmd.doctor
-    CC=12  in:0  out:36  total:36
-  examples.api-usage.01_basic_api.main
-    CC=10  in:0  out:34  total:34
   project.map.toon.list
-    CC=0  in:34  out:0  total:34
+    CC=0  in:37  out:0  total:37
   goal.cli.wizard_cmd._setup_git_repository
     CC=10  in:1  out:33  total:34
+  examples.api-usage.01_basic_api.main
+    CC=10  in:0  out:34  total:34
   goal.user_config.show_user_config
     CC=2  in:1  out:31  total:32
   goal.push.core.execute_push_workflow
     CC=6  in:2  out:29  total:31
   examples.api-usage.04_version_validation.main
     CC=11  in:0  out:30  total:30
+  project.map.toon.open
+    CC=0  in:29  out:0  total:29
   goal.deep_analyzer.CodeChangeAnalyzer._analyze_python_diff
     CC=10  in:0  out:29  total:29
 
@@ -106,8 +106,21 @@ MODULES:
   examples.webhooks.slack-webhook  [2 funcs]
     main  CC=4  out:9
     send_slack_notification  CC=5  out:16
-  goal.authors.utils  [1 funcs]
+  goal.authors.manager  [2 funcs]
+    __init__  CC=2  out:2
+    import_from_git  CC=6  out:14
+  goal.authors.utils  [8 funcs]
+    add_co_authors_to_message  CC=5  out:3
+    deduplicate_co_authors  CC=4  out:5
     format_co_author_trailer  CC=1  out:0
+    format_commit_message_with_co_authors  CC=3  out:1
+    get_co_authors_from_command_line  CC=3  out:4
+    parse_co_authors  CC=2  out:7
+    remove_co_authors_from_message  CC=5  out:7
+    validate_author_format  CC=3  out:8
+  goal.bootstrap.detector  [2 funcs]
+    _match_marker  CC=2  out:4
+    detect_project_types_deep  CC=11  out:11
   goal.changelog  [6 funcs]
     _build_domain_entry  CC=7  out:12
     _build_simple_entry  CC=3  out:4
@@ -115,16 +128,9 @@ MODULES:
     _find_unreleased_insert_pos  CC=3  out:6
     _insert_entry  CC=5  out:3
     update_changelog  CC=5  out:12
-  goal.cli  [9 funcs]
-    parse_args  CC=6  out:4
-    _auto_update_goal  CC=3  out:9
-    _configure_main_context  CC=3  out:4
+  goal.cli  [2 funcs]
     _format_import_warning_message  CC=1  out:0
     _print_import_warning  CC=1  out:2
-    _show_goal_version_banner  CC=8  out:14
-    confirm  CC=6  out:6
-    split_paths_by_type  CC=14  out:17
-    stage_paths  CC=5  out:4
   goal.cli.authors_cmd  [5 funcs]
     authors_co_author  CC=1  out:5
     authors_current  CC=1  out:4
@@ -144,8 +150,6 @@ MODULES:
     setup  CC=3  out:10
   goal.cli.config_validate_cmd  [1 funcs]
     validate_cmd  CC=3  out:11
-  goal.cli.doctor_cmd  [1 funcs]
-    doctor  CC=12  out:36
   goal.cli.hooks_cmd  [6 funcs]
     display_failure_message  CC=1  out:3
     display_install_success  CC=1  out:8
@@ -174,15 +178,6 @@ MODULES:
   goal.cli.recover_cmd  [2 funcs]
     _get_error_output  CC=5  out:4
     recover  CC=6  out:23
-  goal.cli.tests  [8 funcs]
-    _find_nodejs_test_dirs  CC=6  out:8
-    _find_project_root  CC=5  out:4
-    _find_python_test_dirs  CC=11  out:9
-    _has_project_marker  CC=2  out:3
-    _has_usable_test_script  CC=7  out:4
-    _run_subdir_test  CC=13  out:24
-    _run_tests_in_subdirs  CC=5  out:8
-    run_tests  CC=10  out:10
   goal.cli.utils_cmd  [8 funcs]
     bootstrap  CC=4  out:11
     check_versions  CC=2  out:12
@@ -192,38 +187,27 @@ MODULES:
     package_managers  CC=8  out:16
     status  CC=10  out:21
     version  CC=2  out:14
-  goal.cli.version_sync  [9 funcs]
-    _update_cargo_version  CC=6  out:8
-    _update_csproj_versions  CC=3  out:7
-    _update_init_py_versions  CC=7  out:9
-    _update_json_version_file  CC=6  out:6
-    _update_pom_xml  CC=3  out:6
-    _update_readme_metadata  CC=7  out:6
-    _update_toml_version  CC=6  out:8
-    _update_version_file  CC=1  out:3
+  goal.cli.version_sync  [1 funcs]
     sync_all_versions  CC=1  out:9
-  goal.cli.version_utils  [12 funcs]
-    _build_author_block  CC=5  out:6
-    _update_package_json_metadata  CC=4  out:3
-    _update_pyproject_metadata  CC=4  out:8
-    _update_setup_py_metadata  CC=1  out:3
+  goal.cli.version_utils  [3 funcs]
     bump_version  CC=5  out:9
     detect_project_types  CC=6  out:8
-    find_version_files  CC=6  out:9
     get_current_version  CC=5  out:7
-    get_version_from_file  CC=3  out:3
-    update_json_version  CC=3  out:4
   goal.cli.wizard_cmd  [5 funcs]
     _find_git_root  CC=3  out:2
     _setup_git_repository  CC=10  out:33
     _setup_project_config  CC=9  out:55
     _setup_user_config  CC=12  out:39
     _show_setup_summary  CC=7  out:39
+  goal.cli_helpers  [3 funcs]
+    confirm  CC=6  out:6
+    split_paths_by_type  CC=14  out:17
+    stage_paths  CC=5  out:4
   goal.commit_generator  [3 funcs]
     display_commit_message  CC=1  out:2
     display_detailed_message  CC=1  out:2
     print_detailed_message  CC=2  out:3
-  goal.config.manager  [8 funcs]
+  goal.config.manager  [7 funcs]
     _detect_project_types  CC=6  out:8
     load  CC=5  out:7
     save  CC=3  out:6
@@ -231,7 +215,6 @@ MODULES:
     update_from_detection  CC=4  out:11
     ensure_config  CC=5  out:8
     init_config  CC=3  out:4
-    load_config  CC=1  out:2
   goal.config.validation  [2 funcs]
     validate_config_file  CC=11  out:25
     validate_config_interactive  CC=10  out:22
@@ -246,6 +229,22 @@ MODULES:
     _detect_value_indicators  CC=6  out:8
     _extract_python_entities  CC=13  out:17
     aggregate_changes  CC=3  out:16
+  goal.doctor.core  [2 funcs]
+    diagnose_and_report  CC=8  out:21
+    diagnose_project  CC=2  out:4
+  goal.doctor.dotnet  [1 funcs]
+    diagnose_dotnet  CC=4  out:7
+  goal.doctor.logging  [1 funcs]
+    _log_issue  CC=3  out:8
+  goal.doctor.python  [2 funcs]
+    check_py006_duplicate_authors  CC=8  out:18
+    run_all_checks  CC=2  out:2
+  goal.doctor.todo  [5 funcs]
+    _format_todo_entry  CC=3  out:2
+    _generate_ticket_id  CC=1  out:2
+    _read_existing_tickets  CC=4  out:8
+    add_issues_to_todo  CC=9  out:19
+    diagnose_and_report_with_todo  CC=6  out:2
   goal.formatter  [15 funcs]
     _add_optional_sections  CC=3  out:2
     _build_capabilities_content  CC=4  out:1
@@ -272,7 +271,7 @@ MODULES:
     _classify_files  CC=11  out:7
     generate_enhanced_summary  CC=8  out:14
     generate_smart_commit_message  CC=1  out:2
-  goal.git_ops  [28 funcs]
+  goal.git_ops  [27 funcs]
     _echo_cmd  CC=2  out:5
     _handle_clone  CC=3  out:7
     _handle_init_remote  CC=5  out:25
@@ -288,10 +287,17 @@ MODULES:
   goal.hooks.manager  [2 funcs]
     create_precommit_config  CC=3  out:9
     run_validation  CC=4  out:4
-  goal.license.manager  [2 funcs]
+  goal.installers.config  [2 funcs]
+    from_dict  CC=1  out:6
+    load_installer_config  CC=3  out:10
+  goal.license.manager  [5 funcs]
+    _detect_license_type  CC=4  out:1
     create_license_file  CC=10  out:21
+    get_available_licenses  CC=4  out:6
     update_license_file  CC=7  out:13
-  goal.license.spdx  [3 funcs]
+    validate_license_file  CC=8  out:11
+  goal.license.spdx  [4 funcs]
+    _load_spdx_data  CC=4  out:4
     check_compatibility  CC=14  out:8
     get_license_info  CC=4  out:4
     validate_spdx_id  CC=11  out:13
@@ -308,10 +314,8 @@ MODULES:
     get_preferred_package_manager  CC=5  out:1
   goal.postcommit.manager  [1 funcs]
     get_config  CC=5  out:3
-  goal.project_bootstrap  [3 funcs]
-    _find_python_bin  CC=5  out:6
+  goal.project_bootstrap  [1 funcs]
     bootstrap_project  CC=1  out:5
-    detect_project_types_deep  CC=11  out:11
   goal.push.core  [14 funcs]
     _apply_enhanced_quality_gates  CC=6  out:6
     _detect_and_bootstrap_projects  CC=7  out:7
@@ -325,13 +329,8 @@ MODULES:
     _validate_toml_or_exit  CC=3  out:6
   goal.push.stages.changelog  [1 funcs]
     handle_changelog  CC=2  out:4
-  goal.push.stages.commit  [8 funcs]
-    _build_validation_summary  CC=1  out:1
-    _commit_file_group  CC=5  out:14
-    _commit_release_metadata  CC=5  out:16
-    _confirm_suggested_title  CC=4  out:1
+  goal.push.stages.commit  [3 funcs]
     enforce_quality_gates  CC=10  out:14
-    get_commit_message  CC=11  out:21
     handle_single_commit  CC=7  out:7
     handle_split_commits  CC=14  out:22
   goal.push.stages.costs  [3 funcs]
@@ -389,7 +388,36 @@ MODULES:
   goal.recovery.manager  [2 funcs]
     _ensure_recovery_dir  CC=3  out:8
     run_git  CC=2  out:5
-  goal.summary.validator  [1 funcs]
+  goal.smart_commit.abstraction  [2 funcs]
+    _dedupe_entities  CC=3  out:3
+    extract_markdown_topics  CC=9  out:11
+  goal.smart_commit.generator  [5 funcs]
+    _analyze_file_diffs  CC=10  out:17
+    _generate_docs_message  CC=7  out:11
+    _infer_message_from_files  CC=12  out:15
+    _is_docs_only_change  CC=5  out:5
+    _merge_deep_analysis  CC=10  out:8
+  goal.summary.generator  [5 funcs]
+    _special_title_from_files  CC=8  out:4
+    calculate_quality_metrics  CC=6  out:26
+    detect_capabilities  CC=5  out:7
+    detect_file_relations  CC=10  out:10
+    validate_summary_quality  CC=8  out:19
+  goal.summary.quality_filter  [10 funcs]
+    _classify_by_file_type  CC=6  out:5
+    _resolve_scored_intent  CC=6  out:7
+    _score_intent_patterns  CC=7  out:6
+    categorize_files  CC=11  out:15
+    classify_intent  CC=14  out:17
+    dedupe_files  CC=3  out:4
+    dedupe_relations  CC=4  out:5
+    generate_architecture_title  CC=12  out:10
+    has_banned_words  CC=4  out:5
+    is_noise  CC=3  out:2
+  goal.summary.validator  [4 funcs]
+    _calculate_score  CC=1  out:4
+    _expand_short_title  CC=6  out:13
+    _validate_body  CC=5  out:6
     _validate_title  CC=10  out:21
   goal.toml_validation  [4 funcs]
     check_pyproject_toml  CC=3  out:3
@@ -406,6 +434,11 @@ MODULES:
     initialize_user_config  CC=11  out:52
     prompt_for_license  CC=4  out:25
     show_user_config  CC=2  out:31
+  goal.validation.manager  [2 funcs]
+    get_rules  CC=5  out:3
+    get_validation_context  CC=2  out:6
+  goal.validation.rules  [1 funcs]
+    validate  CC=9  out:12
   goal.validators.dot_folders  [6 funcs]
     _is_dot_path  CC=3  out:3
     _is_safe_path  CC=3  out:1
@@ -432,25 +465,24 @@ MODULES:
     _is_dummy_value  CC=8  out:7
     detect_tokens_in_content  CC=10  out:13
     get_default_token_patterns  CC=1  out:0
-  goal.version_validation  [7 funcs]
+  goal.version_validation  [6 funcs]
     _validate_single_type  CC=4  out:3
     check_readme_badges  CC=5  out:4
     extract_badge_versions  CC=4  out:10
     format_validation_results  CC=5  out:5
     get_pypi_version  CC=2  out:6
-    update_badge_versions  CC=3  out:5
     validate_project_versions  CC=2  out:1
-  project.map.toon  [11 funcs]
+  project.map.toon  [13 funcs]
     ai_cost  CC=0  out:0
-    finder  CC=0  out:0
+    cls  CC=0  out:0
     get_commit_diff  CC=0  out:0
     get_repo_stats  CC=0  out:0
     list  CC=0  out:0
     max  CC=0  out:0
+    method  CC=0  out:0
+    min  CC=0  out:0
     open  CC=0  out:0
     parse_commits  CC=0  out:0
-    patch  CC=0  out:0
-    sum  CC=0  out:0
   testql-scenarios.generated-from-pytests.testql.toon  [2 funcs]
     all  CC=0  out:0
     any  CC=0  out:0

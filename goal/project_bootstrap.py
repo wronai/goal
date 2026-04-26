@@ -992,24 +992,95 @@ def _try_add_deps(content: str) -> tuple[str, bool]:
     if all(name in content.lower() for name, _ in _REQUIRED_DEV_DEPS):
         return content, False
 
-    dep_pattern = r'((?:dev|dependencies)\s*=\s*\[)([^\]]*)\]'
+    # Use bracket-counting to handle nested brackets like uvicorn[standard]>=0.20
+    def find_dep_list_end(content: str, start_idx: int) -> int:
+        """Find the matching closing bracket for a dependency list."""
+        bracket_count = 1  # Start with 1 since we're after the opening [
+        in_string = False
+        escape_next = False
+        quote_char = None
+        
+        for i in range(start_idx, len(content)):
+            char = content[i]
+            
+            if escape_next:
+                escape_next = False
+                continue
+            
+            if char == '\\':
+                escape_next = True
+                continue
+            
+            if char in ('"', "'") and not in_string:
+                in_string = True
+                quote_char = char
+            elif char == quote_char and in_string:
+                in_string = False
+                quote_char = None
+            elif not in_string:
+                if char == '[':
+                    bracket_count += 1
+                elif char == ']':
+                    bracket_count -= 1
+                    if bracket_count == 0:
+                        return i
+        
+        return -1  # Not found
+    
     re_flags = re.IGNORECASE | re.DOTALL
 
     # Strategy 1: [project.optional-dependencies] dev = [...]
     if '[project.optional-dependencies]' in content and 'dev = [' in content.lower():
-        new = re.sub(dep_pattern, _add_deps_to_section, content, flags=re_flags)
-        if new != content:
-            return new, True
+        dev_match = re.search(r'(dev\s*=\s*\[)', content, flags=re.IGNORECASE)
+        if dev_match:
+            match_start = dev_match.start()
+            start = dev_match.end()
+            end = find_dep_list_end(content, start)
+            if end != -1:
+                section_start = dev_match.group(1)
+                existing = content[start:end]
+                new_content = _add_deps_to_section_match(section_start, existing)
+                old_content = content[match_start:end+1]
+                if new_content != old_content:
+                    content = content[:match_start] + new_content + content[end+1:]
+                    return content, True
 
     # Strategy 2: [tool.hatch.envs.default] dependencies = [...]
     if '[tool.hatch.envs.default]' in content and 'dependencies = [' in content:
-        hatch_section = content.split('[tool.hatch.envs.default]')[1].split('[')[0]
-        if not all(name in hatch_section.lower() for name, _ in _REQUIRED_DEV_DEPS):
-            new = re.sub(dep_pattern, _add_deps_to_section, content, flags=re_flags)
-            if new != content:
-                return new, True
+        dep_match = re.search(r'(dependencies\s*=\s*\[)', content, flags=re.IGNORECASE)
+        if dep_match:
+            match_start = dep_match.start()
+            start = dep_match.end()
+            end = find_dep_list_end(content, start)
+            if end != -1:
+                section_start = dep_match.group(1)
+                existing = content[start:end]
+                new_content = _add_deps_to_section_match(section_start, existing)
+                old_content = content[match_start:end+1]
+                if new_content != old_content:
+                    content = content[:match_start] + new_content + content[end+1:]
+                    return content, True
 
     return content, False
+
+
+def _add_deps_to_section_match(section_start: str, existing: str, required_deps=_REQUIRED_DEV_DEPS) -> str:
+    """Add missing deps to a TOML section."""
+    to_add = [spec for name, spec in required_deps if name not in existing.lower()]
+    if not to_add:
+        return f'{section_start}{existing}]'
+
+    existing_stripped = existing.rstrip()
+    indent = '    '
+    for line in existing.split('\n'):
+        stripped = line.lstrip()
+        if stripped.startswith('"'):
+            indent = line[:len(line) - len(stripped)] or indent
+            break
+    new_entries = '\n'.join(f'{indent}{dep},' for dep in to_add)
+    if existing_stripped and not existing_stripped.endswith(','):
+        existing_stripped += ','
+    return f'{section_start}{existing_stripped}\n{new_entries}\n]'
 
 
 _COSTS_CONFIG_TEMPLATE = '''\n[tool.costs]

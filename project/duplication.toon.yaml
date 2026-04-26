@@ -1,27 +1,36 @@
-# redup/duplication | 19 groups | 132f 20738L | 2026-04-26
+# redup/duplication | 28 groups | 138f 21561L | 2026-04-26
 
 SUMMARY:
-  files_scanned: 132
-  total_lines:   20738
-  dup_groups:    19
-  dup_fragments: 48
-  saved_lines:   203
-  scan_ms:       5651
+  files_scanned: 138
+  total_lines:   21561
+  dup_groups:    28
+  dup_fragments: 67
+  saved_lines:   356
+  scan_ms:       9156
 
 HOTSPOTS[7] (files with most duplication):
-  goal/cli/version_sync.py  dup=36L  groups=1  frags=2  (0.2%)
+  goal/project_bootstrap.py  dup=166L  groups=10  frags=10  (0.8%)
+  goal/bootstrap/installer.py  dup=88L  groups=5  frags=5  (0.4%)
+  goal/bootstrap/configurator.py  dup=67L  groups=4  frags=4  (0.3%)
   goal/hooks/manager.py  dup=35L  groups=2  frags=3  (0.2%)
   goal/user_config.py  dup=28L  groups=1  frags=2  (0.1%)
   goal/cli/postcommit_cmd.py  dup=27L  groups=4  frags=4  (0.1%)
   goal/cli/validation_cmd.py  dup=27L  groups=4  frags=4  (0.1%)
-  goal/cli/authors_cmd.py  dup=23L  groups=3  frags=6  (0.1%)
-  goal/license/spdx.py  dup=20L  groups=1  frags=2  (0.1%)
 
-DUPLICATES[19] (ranked by impact):
+DUPLICATES[28] (ranked by impact):
+  [3ca623f2c7cef5f7]   EXAC  _ensure_python_test_dependency  L=28 N=2 saved=28 sim=1.00
+      goal/bootstrap/installer.py:133-160  (_ensure_python_test_dependency)
+      goal/project_bootstrap.py:419-446  (_ensure_python_test_dependency)
+  [68ebad56e63cec81]   EXAC  _read_openrouter_api_key  L=24 N=2 saved=24 sim=1.00
+      goal/bootstrap/configurator.py:84-107  (_read_openrouter_api_key)
+      goal/project_bootstrap.py:362-385  (_read_openrouter_api_key)
   [92a676278db9e76e]   STRU  uninstall_hooks  L=11 N=3 saved=22 sim=1.00
       goal/hooks/manager.py:278-288  (uninstall_hooks)
       goal/postcommit/manager.py:182-192  (run_post_commit_actions)
       goal/validation/manager.py:180-190  (run_custom_validations)
+  [4958a83bb9f5d53c]   EXAC  _install_python_deps_broker  L=20 N=2 saved=20 sim=1.00
+      goal/bootstrap/installer.py:111-130  (_install_python_deps_broker)
+      goal/project_bootstrap.py:558-577  (_install_python_deps_broker)
   [0269aa7743a3214a]   STRU  authors_list  L=4 N=6 saved=20 sim=1.00
       goal/cli/authors_cmd.py:40-43  (authors_list)
       goal/cli/authors_cmd.py:77-80  (authors_import)
@@ -32,9 +41,18 @@ DUPLICATES[19] (ranked by impact):
   [cb9ebedb82c1a435]   STRU  main  L=19 N=2 saved=19 sim=1.00
       examples/webhooks/discord-webhook.py:89-107  (main)
       examples/webhooks/slack-webhook.py:101-119  (main)
-  [eb3783695175b171]   STRU  _update_toml_version  L=18 N=2 saved=18 sim=1.00
-      goal/cli/version_sync.py:28-45  (_update_toml_version)
-      goal/cli/version_sync.py:48-65  (_update_cargo_version)
+  [116594718eb1c607]   STRU  _find_openrouter_api_key  L=19 N=2 saved=19 sim=1.00
+      goal/bootstrap/configurator.py:110-128  (_find_openrouter_api_key)
+      goal/project_bootstrap.py:388-406  (_find_openrouter_api_key)
+  [632e6e2ec1a0e267]   STRU  ensure_project_environment  L=18 N=2 saved=18 sim=1.00
+      goal/bootstrap/installer.py:246-263  (ensure_project_environment)
+      goal/project_bootstrap.py:621-638  (ensure_project_environment)
+  [46adb307bd5a442b]   EXAC  _should_skip_install  L=17 N=2 saved=17 sim=1.00
+      goal/bootstrap/installer.py:23-39  (_should_skip_install)
+      goal/project_bootstrap.py:486-502  (_should_skip_install)
+  [cab65114a71c7a9a]   EXAC  _find_python_bin  L=16 N=2 saved=16 sim=1.00
+      goal/bootstrap/configurator.py:66-81  (_find_python_bin)
+      goal/project_bootstrap.py:344-359  (_find_python_bin)
   [90e6c0a8cb78d015]   STRU  authors  L=3 N=6 saved=15 sim=1.00
       goal/cli/authors_cmd.py:34-36  (authors)
       goal/cli/config_cmd.py:11-13  (config)
@@ -48,9 +66,16 @@ DUPLICATES[19] (ranked by impact):
   [61866fcb488af822]   STRU  install_hooks  L=12 N=2 saved=12 sim=1.00
       goal/hooks/manager.py:264-275  (install_hooks)
       goal/hooks/manager.py:291-302  (run_hooks)
+  [375e6f760a777f2d]   EXAC  _guess_nodejs_name  L=11 N=2 saved=11 sim=1.00
+      goal/bootstrap/detector.py:66-76  (_guess_nodejs_name)
+      goal/project_bootstrap.py:279-289  (_guess_nodejs_name)
   [7aa96675d99bbfa5]   STRU  postcommit_validate  L=11 N=2 saved=11 sim=1.00
       goal/cli/postcommit_cmd.py:35-45  (postcommit_validate)
       goal/cli/validation_cmd.py:35-45  (validation_validate)
+  [ea0ee7af576e6a69]   EXAC  _match_marker  L=5 N=3 saved=10 sim=1.00
+      goal/bootstrap/detector.py:11-15  (_match_marker)
+      goal/bootstrap/installer.py:16-20  (_match_marker)
+      goal/project_bootstrap.py:223-227  (_match_marker)
   [647457419bebba7a]   STRU  is_copyleft  L=10 N=2 saved=10 sim=1.00
       goal/license/spdx.py:201-210  (is_copyleft)
       goal/license/spdx.py:213-222  (is_permissive)
@@ -60,6 +85,9 @@ DUPLICATES[19] (ranked by impact):
   [395199f7c31b5150]   STRU  get_npm_version  L=9 N=2 saved=9 sim=1.00
       goal/version_validation.py:23-31  (get_npm_version)
       goal/version_validation.py:34-42  (get_cargo_version)
+  [fefe73fb3f5aeff9]   EXAC  _find_git_root  L=8 N=2 saved=8 sim=1.00
+      goal/bootstrap/configurator.py:131-138  (_find_git_root)
+      goal/project_bootstrap.py:409-416  (_find_git_root)
   [79344c1fc3ff9956]   EXAC  __init__  L=8 N=2 saved=8 sim=1.00
       goal/postcommit/manager.py:15-22  (__init__)
       goal/validation/manager.py:16-23  (__init__)
@@ -86,100 +114,127 @@ DUPLICATES[19] (ranked by impact):
       goal/postcommit/actions.py:35-37  (validate_config)
       goal/validation/rules.py:34-36  (validate_config)
 
-REFACTOR[19] (ranked by priority):
-  [1] ○ extract_function   → goal/utils/uninstall_hooks.py
+REFACTOR[28] (ranked by priority):
+  [1] ○ extract_function   → goal/utils/_ensure_python_test_dependency.py
+      WHY: 2 occurrences of 28-line block across 2 files — saves 28 lines
+      FILES: goal/bootstrap/installer.py, goal/project_bootstrap.py
+  [2] ○ extract_function   → goal/utils/_read_openrouter_api_key.py
+      WHY: 2 occurrences of 24-line block across 2 files — saves 24 lines
+      FILES: goal/bootstrap/configurator.py, goal/project_bootstrap.py
+  [3] ○ extract_function   → goal/utils/uninstall_hooks.py
       WHY: 3 occurrences of 11-line block across 3 files — saves 22 lines
       FILES: goal/hooks/manager.py, goal/postcommit/manager.py, goal/validation/manager.py
-  [2] ○ extract_function   → goal/cli/utils/authors_list.py
+  [4] ○ extract_function   → goal/utils/_install_python_deps_broker.py
+      WHY: 2 occurrences of 20-line block across 2 files — saves 20 lines
+      FILES: goal/bootstrap/installer.py, goal/project_bootstrap.py
+  [5] ○ extract_function   → goal/cli/utils/authors_list.py
       WHY: 6 occurrences of 4-line block across 4 files — saves 20 lines
       FILES: goal/cli/authors_cmd.py, goal/cli/hooks_cmd.py, goal/cli/postcommit_cmd.py, goal/cli/validation_cmd.py
-  [3] ○ extract_function   → examples/webhooks/utils/main.py
+  [6] ○ extract_function   → examples/webhooks/utils/main.py
       WHY: 2 occurrences of 19-line block across 2 files — saves 19 lines
       FILES: examples/webhooks/discord-webhook.py, examples/webhooks/slack-webhook.py
-  [4] ○ extract_function   → goal/cli/utils/_update_toml_version.py
-      WHY: 2 occurrences of 18-line block across 1 files — saves 18 lines
-      FILES: goal/cli/version_sync.py
-  [5] ○ extract_function   → goal/cli/utils/authors.py
+  [7] ○ extract_function   → goal/utils/_find_openrouter_api_key.py
+      WHY: 2 occurrences of 19-line block across 2 files — saves 19 lines
+      FILES: goal/bootstrap/configurator.py, goal/project_bootstrap.py
+  [8] ○ extract_function   → goal/utils/ensure_project_environment.py
+      WHY: 2 occurrences of 18-line block across 2 files — saves 18 lines
+      FILES: goal/bootstrap/installer.py, goal/project_bootstrap.py
+  [9] ○ extract_function   → goal/utils/_should_skip_install.py
+      WHY: 2 occurrences of 17-line block across 2 files — saves 17 lines
+      FILES: goal/bootstrap/installer.py, goal/project_bootstrap.py
+  [10] ○ extract_function   → goal/utils/_find_python_bin.py
+      WHY: 2 occurrences of 16-line block across 2 files — saves 16 lines
+      FILES: goal/bootstrap/configurator.py, goal/project_bootstrap.py
+  [11] ○ extract_function   → goal/cli/utils/authors.py
       WHY: 6 occurrences of 3-line block across 6 files — saves 15 lines
       FILES: goal/cli/authors_cmd.py, goal/cli/config_cmd.py, goal/cli/hooks_cmd.py, goal/cli/license_cmd.py, goal/cli/postcommit_cmd.py +1 more
-  [6] ○ extract_function   → goal/utils/get_git_user_name.py
+  [12] ○ extract_function   → goal/utils/get_git_user_name.py
       WHY: 2 occurrences of 14-line block across 1 files — saves 14 lines
       FILES: goal/user_config.py
-  [7] ○ extract_function   → goal/hooks/utils/install_hooks.py
+  [13] ○ extract_function   → goal/hooks/utils/install_hooks.py
       WHY: 2 occurrences of 12-line block across 1 files — saves 12 lines
       FILES: goal/hooks/manager.py
-  [8] ○ extract_function   → goal/cli/utils/postcommit_validate.py
+  [14] ○ extract_function   → goal/utils/_guess_nodejs_name.py
+      WHY: 2 occurrences of 11-line block across 2 files — saves 11 lines
+      FILES: goal/bootstrap/detector.py, goal/project_bootstrap.py
+  [15] ○ extract_function   → goal/cli/utils/postcommit_validate.py
       WHY: 2 occurrences of 11-line block across 2 files — saves 11 lines
       FILES: goal/cli/postcommit_cmd.py, goal/cli/validation_cmd.py
-  [9] ○ extract_function   → goal/license/utils/is_copyleft.py
+  [16] ○ extract_function   → goal/utils/_match_marker.py
+      WHY: 3 occurrences of 5-line block across 3 files — saves 10 lines
+      FILES: goal/bootstrap/detector.py, goal/bootstrap/installer.py, goal/project_bootstrap.py
+  [17] ○ extract_function   → goal/license/utils/is_copyleft.py
       WHY: 2 occurrences of 10-line block across 1 files — saves 10 lines
       FILES: goal/license/spdx.py
-  [10] ○ extract_function   → goal/cli/utils/postcommit_run.py
+  [18] ○ extract_function   → goal/cli/utils/postcommit_run.py
       WHY: 2 occurrences of 9-line block across 2 files — saves 9 lines
       FILES: goal/cli/postcommit_cmd.py, goal/cli/validation_cmd.py
-  [11] ○ extract_function   → goal/utils/get_npm_version.py
+  [19] ○ extract_function   → goal/utils/get_npm_version.py
       WHY: 2 occurrences of 9-line block across 1 files — saves 9 lines
       FILES: goal/version_validation.py
-  [12] ○ extract_function   → goal/utils/__init__.py
+  [20] ○ extract_function   → goal/utils/_find_git_root.py
+      WHY: 2 occurrences of 8-line block across 2 files — saves 8 lines
+      FILES: goal/bootstrap/configurator.py, goal/project_bootstrap.py
+  [21] ○ extract_function   → goal/utils/__init__.py
       WHY: 2 occurrences of 8-line block across 2 files — saves 8 lines
       FILES: goal/postcommit/manager.py, goal/validation/manager.py
-  [13] ○ extract_function   → goal/installers/managers/utils/install_editable.py
+  [22] ○ extract_function   → goal/installers/managers/utils/install_editable.py
       WHY: 2 occurrences of 8-line block across 2 files — saves 8 lines
       FILES: goal/installers/managers/pdm.py, goal/installers/managers/poetry.py
-  [14] ○ extract_function   → goal/summary/utils/validate_summary.py
+  [23] ○ extract_function   → goal/summary/utils/validate_summary.py
       WHY: 2 occurrences of 8-line block across 1 files — saves 8 lines
       FILES: goal/summary/__init__.py
-  [15] ○ extract_function   → goal/installers/managers/utils/install_from_lockfile.py
+  [24] ○ extract_function   → goal/installers/managers/utils/install_from_lockfile.py
       WHY: 3 occurrences of 3-line block across 3 files — saves 6 lines
       FILES: goal/installers/managers/pdm.py, goal/installers/managers/poetry.py, goal/installers/managers/uv.py
-  [16] ○ extract_function   → goal/cli/utils/authors_add.py
+  [25] ○ extract_function   → goal/cli/utils/authors_add.py
       WHY: 2 occurrences of 4-line block across 1 files — saves 4 lines
       FILES: goal/cli/authors_cmd.py
-  [17] ○ extract_function   → goal/cli/utils/display_success_message.py
+  [26] ○ extract_function   → goal/cli/utils/display_success_message.py
       WHY: 2 occurrences of 4-line block across 1 files — saves 4 lines
       FILES: goal/cli/hooks_cmd.py
-  [18] ○ extract_function   → goal/utils/get_name.py
+  [27] ○ extract_function   → goal/utils/get_name.py
       WHY: 2 occurrences of 3-line block across 2 files — saves 3 lines
       FILES: goal/postcommit/actions.py, goal/validation/rules.py
-  [19] ○ extract_function   → goal/utils/validate_config.py
+  [28] ○ extract_function   → goal/utils/validate_config.py
       WHY: 2 occurrences of 3-line block across 2 files — saves 3 lines
       FILES: goal/postcommit/actions.py, goal/validation/rules.py
 
-QUICK_WINS[15] (low risk, high savings — do first):
-  [1] extract_function   saved=22L  → goal/utils/uninstall_hooks.py
+QUICK_WINS[24] (low risk, high savings — do first):
+  [1] extract_function   saved=28L  → goal/utils/_ensure_python_test_dependency.py
+      FILES: installer.py, project_bootstrap.py
+  [2] extract_function   saved=24L  → goal/utils/_read_openrouter_api_key.py
+      FILES: configurator.py, project_bootstrap.py
+  [3] extract_function   saved=22L  → goal/utils/uninstall_hooks.py
       FILES: manager.py, manager.py, manager.py
-  [2] extract_function   saved=20L  → goal/cli/utils/authors_list.py
+  [4] extract_function   saved=20L  → goal/utils/_install_python_deps_broker.py
+      FILES: installer.py, project_bootstrap.py
+  [5] extract_function   saved=20L  → goal/cli/utils/authors_list.py
       FILES: authors_cmd.py, hooks_cmd.py, postcommit_cmd.py +1
-  [3] extract_function   saved=19L  → examples/webhooks/utils/main.py
+  [6] extract_function   saved=19L  → examples/webhooks/utils/main.py
       FILES: discord-webhook.py, slack-webhook.py
-  [4] extract_function   saved=18L  → goal/cli/utils/_update_toml_version.py
-      FILES: version_sync.py
-  [5] extract_function   saved=15L  → goal/cli/utils/authors.py
-      FILES: authors_cmd.py, config_cmd.py, hooks_cmd.py +3
-  [6] extract_function   saved=14L  → goal/utils/get_git_user_name.py
-      FILES: user_config.py
-  [7] extract_function   saved=12L  → goal/hooks/utils/install_hooks.py
-      FILES: manager.py
-  [8] extract_function   saved=11L  → goal/cli/utils/postcommit_validate.py
-      FILES: postcommit_cmd.py, validation_cmd.py
-  [9] extract_function   saved=10L  → goal/license/utils/is_copyleft.py
-      FILES: spdx.py
-  [10] extract_function   saved=9L  → goal/cli/utils/postcommit_run.py
-      FILES: postcommit_cmd.py, validation_cmd.py
+  [7] extract_function   saved=19L  → goal/utils/_find_openrouter_api_key.py
+      FILES: configurator.py, project_bootstrap.py
+  [8] extract_function   saved=18L  → goal/utils/ensure_project_environment.py
+      FILES: installer.py, project_bootstrap.py
+  [9] extract_function   saved=17L  → goal/utils/_should_skip_install.py
+      FILES: installer.py, project_bootstrap.py
+  [10] extract_function   saved=16L  → goal/utils/_find_python_bin.py
+      FILES: configurator.py, project_bootstrap.py
 
-EFFORT_ESTIMATE (total ≈ 6.8h):
+EFFORT_ESTIMATE (total ≈ 11.9h):
+  medium _ensure_python_test_dependency      saved=28L  ~56min
+  medium _read_openrouter_api_key            saved=24L  ~48min
   medium uninstall_hooks                     saved=22L  ~44min
+  medium _install_python_deps_broker         saved=20L  ~40min
   medium authors_list                        saved=20L  ~40min
   medium main                                saved=19L  ~38min
-  medium _update_toml_version                saved=18L  ~36min
-  medium authors                             saved=15L  ~30min
-  easy   get_git_user_name                   saved=14L  ~28min
-  easy   install_hooks                       saved=12L  ~24min
-  easy   postcommit_validate                 saved=11L  ~22min
-  easy   is_copyleft                         saved=10L  ~20min
-  easy   postcommit_run                      saved=9L  ~18min
-  ... +9 more (~106min)
+  medium _find_openrouter_api_key            saved=19L  ~38min
+  medium ensure_project_environment          saved=18L  ~36min
+  medium _should_skip_install                saved=17L  ~34min
+  medium _find_python_bin                    saved=16L  ~32min
+  ... +18 more (~306min)
 
 METRICS-TARGET:
-  dup_groups:  19 → 0
-  saved_lines: 203 lines recoverable
+  dup_groups:  28 → 0
+  saved_lines: 356 lines recoverable

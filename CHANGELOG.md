@@ -31,6 +31,25 @@
 ### Deprecated
 - Legacy `_install_python_deps()` waterfall approach (still works via fallback)
 
+## [2.1.206] - 2026-04-26
+
+### Docs
+- Update README.md
+- Update project/README.md
+
+### Other
+- Update project/calls.mmd
+- Update project/calls.png
+- Update project/calls.toon.yaml
+- Update project/calls.yaml
+- Update project/compact_flow.mmd
+- Update project/compact_flow.png
+- Update project/duplication.toon.yaml
+- Update project/flow.mmd
+- Update project/flow.png
+- Update project/index.html
+- ... and 2 more files
+
 ## [2.1.205] - 2026-04-26
 
 ### Docs
